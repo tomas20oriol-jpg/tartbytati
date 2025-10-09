@@ -7,13 +7,57 @@
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <header><h1>tartbytati</h1></header>
-  <main>
+  <a href="#main-content" class="skip-link">Saltar al contenido</a>
+  
+  <header>
+    <div class="container">
+      <h1 class="logo">tartbytati</h1>
+      <nav>
+        <ul>
+          <li><a href="index.html" class="active" aria-current="page">Inicio</a></li>
+          <li><a href="about.html">Sobre Nosotros</a></li>
+          <li><a href="contact.html">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  
+  <main id="main-content">
     <section class="hero">
+      <div class="container">
       <h2>Dulces caseros, con amor</h2>
-      <a href="#contacto">Haz tu pedido</a>
+        <p>Tartas y postres artesanales para tus momentos especiales</p>
+        <a href="#contacto" class="btn btn-primary">Haz tu pedido</a>
+      </div>
+    </section>
+    
+    <section class="features">
+      <div class="container">
+        <div class="feature-grid">
+          <div class="feature">
+            <h3>🍰 Recetas Caseras</h3>
+            <p>Elaboradas con ingredientes frescos y de calidad</p>
+          </div>
+          <div class="feature">
+            <h3>💝 Hecho con Amor</h3>
+            <p>Cada dulce es único y preparado con dedicación</p>
+          </div>
+          <div class="feature">
+            <h3>🎂 Personalizado</h3>
+            <p>Adaptamos nuestros productos a tus necesidades</p>
+          </div>
+        </div>
+      </div>
     </section>
   </main>
-  <footer id="contacto">Instagram · WhatsApp</footer>
+  
+  <footer id="contacto">
+    <div class="container">
+      <p>Síguenos en <a href="https://instagram.com/tartbytati" target="_blank" rel="noopener noreferrer">Instagram</a> · Contáctanos por <a href="https://wa.me/3469738933" target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
+      <p class="copyright">&copy; 2025 tartbytati. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+  
+  <script src="js/script.js" defer></script>
 </body>
 </html>
