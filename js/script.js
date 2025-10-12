@@ -295,10 +295,17 @@ function initUnifiedCart() {
     // Build items HTML
     let itemsHTML = '';
     let totalPrice = 0;
+    let needsSave = false;
     
     cart.forEach((item, index) => {
       const itemTotal = item.price * (item.quantity || 1);
       totalPrice += itemTotal;
+      
+      // Ensure item has a type (for backwards compatibility)
+      if (!item.type) {
+        item.type = item.quantity > 1 || item.quantity === undefined ? 'product' : 'recipe';
+        needsSave = true;
+      }
       
       if (item.type === 'product') {
         itemsHTML += `
@@ -331,6 +338,11 @@ function initUnifiedCart() {
     if (cartItemsContainer) cartItemsContainer.innerHTML = itemsHTML;
     if (totalItemsSpan) totalItemsSpan.textContent = totalItems;
     if (totalPriceSpan) totalPriceSpan.textContent = totalPrice.toFixed(2).replace('.', ',') + ' €';
+    
+    // Save if we updated any item types
+    if (needsSave) {
+      saveCart();
+    }
   }
   
   // Create order message
