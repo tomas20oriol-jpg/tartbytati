@@ -17,6 +17,9 @@ document.addEventListener('DOMContentLoaded', function() {
   // Initialize custom box builder
   initBoxBuilder();
   
+  // Initialize recipe cart
+  initRecipeCart();
+  
   console.log('tartbytati website loaded successfully! 🍰');
 });
 
@@ -284,5 +287,155 @@ function initBoxBuilder() {
   window.removeItem = function(index) {
     customBox.splice(index, 1);
     updateBoxDisplay();
+  };
+}
+
+// ===========================
+// Recipe Cart
+// ===========================
+function initRecipeCart() {
+  // Check if we're on the recipes page
+  const cartBuilder = document.querySelector('.cart-builder');
+  if (!cartBuilder) return;
+  
+  // Initialize cart state
+  let recipeCart = [];
+  
+  // Get DOM elements
+  const cartItemsContainer = document.getElementById('cart-items');
+  const totalItemsSpan = document.getElementById('cart-total-items');
+  const totalPriceSpan = document.getElementById('cart-total-price');
+  const clearCartBtn = document.getElementById('clear-cart');
+  const orderRecipesBtn = document.getElementById('order-recipes');
+  
+  // Add event listeners to all "Add to cart" buttons
+  const addButtons = document.querySelectorAll('.btn-add-recipe');
+  addButtons.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const recipeName = this.getAttribute('data-recipe');
+      const recipePrice = parseFloat(this.getAttribute('data-price'));
+      addToCart(recipeName, recipePrice);
+    });
+  });
+  
+  // Clear cart button
+  clearCartBtn.addEventListener('click', function() {
+    if (recipeCart.length > 0) {
+      if (confirm('¿Estás seguro de que quieres vaciar el carrito?')) {
+        recipeCart = [];
+        updateCartDisplay();
+      }
+    }
+  });
+  
+  // Order recipes button
+  orderRecipesBtn.addEventListener('click', function(e) {
+    if (recipeCart.length === 0) {
+      e.preventDefault();
+      alert('Tu carrito está vacío. Añade recetas antes de comprar.');
+      return;
+    }
+    
+    // Create WhatsApp message with cart contents
+    const message = createRecipeOrderMessage();
+    const whatsappUrl = `https://wa.me/3469738933?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+  });
+  
+  // Add recipe to cart
+  function addToCart(recipeName, recipePrice) {
+    const existingItem = recipeCart.find(item => item.name === recipeName);
+    
+    if (existingItem) {
+      // Recipe already in cart
+      alert('Esta receta ya está en tu carrito');
+      return;
+    }
+    
+    recipeCart.push({
+      name: recipeName,
+      price: recipePrice
+    });
+    
+    updateCartDisplay();
+    
+    // Visual feedback
+    const btn = event.target;
+    const originalText = btn.textContent;
+    btn.textContent = '✓ Añadido';
+    btn.style.background = '#27ae60';
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.textContent = originalText;
+      btn.style.background = '';
+    }, 1500);
+  }
+  
+  // Update cart display
+  function updateCartDisplay() {
+    if (recipeCart.length === 0) {
+      cartItemsContainer.innerHTML = '<p class="empty-cart">Tu carrito está vacío. Añade recetas usando los botones "Añadir al carrito"</p>';
+      totalItemsSpan.textContent = '0';
+      totalPriceSpan.textContent = '0,00';
+      
+      // Re-enable all buttons
+      const addButtons = document.querySelectorAll('.btn-add-recipe');
+      addButtons.forEach(btn => {
+        btn.disabled = false;
+      });
+      return;
+    }
+    
+    // Build items HTML
+    let itemsHTML = '';
+    let totalPrice = 0;
+    
+    recipeCart.forEach((item, index) => {
+      totalPrice += item.price;
+      
+      itemsHTML += `
+        <div class="cart-item">
+          <div class="cart-item-info">
+            <div class="cart-item-name">${item.name}</div>
+            <div class="cart-item-price">${item.price.toFixed(2)} €</div>
+          </div>
+          <button class="remove-cart-item" onclick="removeRecipe(${index})">Eliminar</button>
+        </div>
+      `;
+    });
+    
+    cartItemsContainer.innerHTML = itemsHTML;
+    totalItemsSpan.textContent = recipeCart.length;
+    totalPriceSpan.textContent = totalPrice.toFixed(2).replace('.', ',');
+  }
+  
+  // Create order message for WhatsApp
+  function createRecipeOrderMessage() {
+    let message = '¡Hola! Me gustaría comprar las siguientes recetas:\n\n';
+    
+    recipeCart.forEach(item => {
+      message += `• ${item.name} - ${item.price.toFixed(2)}€\n`;
+    });
+    
+    const totalPrice = recipeCart.reduce((sum, item) => sum + item.price, 0);
+    message += `\nTotal: ${totalPrice.toFixed(2)}€\n\n`;
+    message += 'Por favor, indícame cómo proceder con el pago. Mi correo electrónico es: [tu email]\n\n¡Gracias!';
+    
+    return message;
+  }
+  
+  // Make function global for onclick handler
+  window.removeRecipe = function(index) {
+    const removedRecipe = recipeCart[index];
+    recipeCart.splice(index, 1);
+    updateCartDisplay();
+    
+    // Re-enable the button for this recipe
+    const addButtons = document.querySelectorAll('.btn-add-recipe');
+    addButtons.forEach(btn => {
+      if (btn.getAttribute('data-recipe') === removedRecipe.name) {
+        btn.disabled = false;
+      }
+    });
   };
 }

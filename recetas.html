@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recetas - tartbytati</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Saltar al contenido</a>
+  
+  <header>
+    <div class="container">
+      <h1 class="logo">tartbytati</h1>
+      <nav>
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="productos.html">Productos</a></li>
+          <li><a href="recetas.html" class="active" aria-current="page">Recetas</a></li>
+          <li><a href="about.html">Sobre Nosotros</a></li>
+          <li><a href="contact.html">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  
+  <main id="main-content">
+    <section class="recipes-hero">
+      <div class="container">
+        <h2>Mis Recetas Secretas</h2>
+        <p class="lead">Aprende a hacer mis dulces favoritos en casa</p>
+      </div>
+    </section>
+    
+    <section class="recipes-section">
+      <div class="container">
+        
+        <div class="recipes-intro">
+          <p>¿Quieres aprender a hacer mis dulces en casa? Comparto mis recetas secretas con instrucciones detalladas, tips profesionales y todo lo que necesitas saber para conseguir resultados perfectos.</p>
+        </div>
+        
+        <!-- Cookies Recipes -->
+        <div class="recipe-category">
+          <h3 class="category-title">🍪 Recetas de Cookies</h3>
+          
+          <div class="recipes-grid">
+            <div class="recipe-card">
+              <div class="recipe-image">
+                <img src="assets/images/cookie-red-velvet.jpg" alt="Receta Cookie Red Velvet" />
+                <span class="recipe-badge">Digital</span>
+              </div>
+              <div class="recipe-info">
+                <h4>Cookie Red Velvet</h4>
+                <p class="recipe-description">Receta completa con ingredientes, paso a paso y secretos para conseguir la textura perfecta</p>
+                <ul class="recipe-includes">
+                  <li>✓ Lista de ingredientes</li>
+                  <li>✓ Instrucciones detalladas</li>
+                  <li>✓ Tips profesionales</li>
+                  <li>✓ Fotos del proceso</li>
+                </ul>
+                <p class="recipe-price">5,00 €</p>
+                <button class="btn btn-small btn-add-recipe" data-recipe="Cookie Red Velvet" data-price="5.00">Añadir al carrito</button>
+              </div>
+            </div>
+            
+            <div class="recipe-card">
+              <div class="recipe-image">
+                <img src="assets/images/cookie-churro.jpg" alt="Receta Cookie de Churro" />
+                <span class="recipe-badge">Digital</span>
+              </div>
+              <div class="recipe-info">
+                <h4>Cookie de Churro</h4>
+                <p class="recipe-description">El sabor auténtico de churro en una cookie crujiente con el toque perfecto de canela</p>
+                <ul class="recipe-includes">
+                  <li>✓ Lista de ingredientes</li>
+                  <li>✓ Instrucciones detalladas</li>
+                  <li>✓ Tips profesionales</li>
+                  <li>✓ Fotos del proceso</li>
+                </ul>
+                <p class="recipe-price">5,00 €</p>
+                <button class="btn btn-small btn-add-recipe" data-recipe="Cookie de Churro" data-price="5.00">Añadir al carrito</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Brownies Recipes -->
+        <div class="recipe-category">
+          <h3 class="category-title">🍫 Recetas de Brownies</h3>
+          
+          <div class="recipes-grid">
+            <div class="recipe-card">
+              <div class="recipe-image">
+                <img src="assets/productos/brownie-clasico.jpg" alt="Receta Brownie Clásico" />
+                <span class="recipe-badge">Digital</span>
+              </div>
+              <div class="recipe-info">
+                <h4>Brownie Clásico</h4>
+                <p class="recipe-description">El brownie perfecto: jugoso por dentro, crujiente por fuera, con intenso sabor a chocolate</p>
+                <ul class="recipe-includes">
+                  <li>✓ Lista de ingredientes</li>
+                  <li>✓ Instrucciones detalladas</li>
+                  <li>✓ Tips profesionales</li>
+                  <li>✓ Fotos del proceso</li>
+                </ul>
+                <p class="recipe-price">5,00 €</p>
+                <button class="btn btn-small btn-add-recipe" data-recipe="Brownie Clásico" data-price="5.00">Añadir al carrito</button>
+              </div>
+            </div>
+            
+            <div class="recipe-card">
+              <div class="recipe-image">
+                <img src="assets/productos/brownie-nueces.jpg" alt="Receta Brownie con Nueces" />
+                <span class="recipe-badge">Digital</span>
+              </div>
+              <div class="recipe-info">
+                <h4>Brownie con Nueces</h4>
+                <p class="recipe-description">Brownie de chocolate con nueces crujientes perfectamente tostadas</p>
+                <ul class="recipe-includes">
+                  <li>✓ Lista de ingredientes</li>
+                  <li>✓ Instrucciones detalladas</li>
+                  <li>✓ Tips profesionales</li>
+                  <li>✓ Fotos del proceso</li>
+                </ul>
+                <p class="recipe-price">5,00 €</p>
+                <button class="btn btn-small btn-add-recipe" data-recipe="Brownie con Nueces" data-price="5.00">Añadir al carrito</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Recipe Cart Section -->
+        <div class="recipe-cart-section">
+          <h3 class="category-title">🛒 Tu Carrito de Recetas</h3>
+          <p class="category-description">Selecciona las recetas que quieres comprar</p>
+          
+          <div class="cart-builder">
+            <div class="cart-summary">
+              <h4>Recetas Seleccionadas</h4>
+              <div id="cart-items" class="cart-items">
+                <p class="empty-cart">Tu carrito está vacío. Añade recetas usando los botones "Añadir al carrito"</p>
+              </div>
+              <div class="cart-total">
+                <p><strong>Total de recetas:</strong> <span id="cart-total-items">0</span></p>
+                <p><strong>Precio total:</strong> <span id="cart-total-price">0,00</span> €</p>
+              </div>
+              <div class="cart-actions">
+                <button id="clear-cart" class="btn btn-secondary">Vaciar carrito</button>
+                <a href="#contacto" id="order-recipes" class="btn btn-primary">Comprar recetas</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="recipe-note">
+          <h3>📧 Entrega Digital</h3>
+          <p>Las recetas se envían en formato PDF a tu correo electrónico en un plazo máximo de 24 horas tras la confirmación del pago.</p>
+          <p><strong>Métodos de pago:</strong> Transferencia bancaria o Bizum</p>
+        </div>
+        
+      </div>
+    </section>
+  </main>
+  
+  <footer id="contacto">
+    <div class="container">
+      <p>Síguenos en <a href="https://instagram.com/tartbytati" target="_blank" rel="noopener noreferrer">Instagram</a> · Contáctanos por <a href="https://wa.me/3469738933" target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
+      <p class="copyright">&copy; 2025 tartbytati. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+  
+  <script src="js/script.js" defer></script>
+</body>
+</html>
