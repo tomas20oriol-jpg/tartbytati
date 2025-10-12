@@ -304,7 +304,7 @@ function initUnifiedCart() {
         itemsHTML += `
           <div class="cart-item">
             <div class="cart-item-info">
-              <div class="cart-item-name">${item.name}</div>
+              <div class="cart-item-name">${item.name} <span class="item-type-badge">Producto</span></div>
               <div class="cart-item-price">${item.price.toFixed(2)} € × ${item.quantity}</div>
             </div>
             <div class="box-item-quantity">
@@ -319,7 +319,7 @@ function initUnifiedCart() {
         itemsHTML += `
           <div class="cart-item">
             <div class="cart-item-info">
-              <div class="cart-item-name">${item.name}</div>
+              <div class="cart-item-name">${item.name} <span class="item-type-badge recipe-badge">Receta</span></div>
               <div class="cart-item-price">${item.price.toFixed(2)} €</div>
             </div>
             <button class="remove-cart-item" onclick="removeCartItem(${index})">✕</button>
