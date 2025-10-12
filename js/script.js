@@ -340,7 +340,7 @@ function initUnifiedCart() {
     const recipes = cart.filter(item => item.type === 'recipe');
     
     if (products.length > 0) {
-      message += '📦 PRODUCTOS:\n';
+      message += 'PRODUCTOS:\n';
       products.forEach(item => {
         message += `• ${item.quantity}x ${item.name} (${(item.price * item.quantity).toFixed(2)}€)\n`;
       });
@@ -348,7 +348,7 @@ function initUnifiedCart() {
     }
     
     if (recipes.length > 0) {
-      message += '📖 RECETAS:\n';
+      message += 'RECETAS:\n';
       recipes.forEach(item => {
         message += `• ${item.name} - ${item.price.toFixed(2)}€\n`;
       });
