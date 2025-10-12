@@ -14,6 +14,9 @@ document.addEventListener('DOMContentLoaded', function() {
   // Add animation on scroll
   initScrollAnimations();
   
+  // Initialize custom box builder
+  initBoxBuilder();
+  
   console.log('tartbytati website loaded successfully! 🍰');
 });
 
@@ -131,3 +134,155 @@ document.addEventListener('keydown', function(e) {
     }
   }
 });
+
+// ===========================
+// Custom Box Builder
+// ===========================
+function initBoxBuilder() {
+  // Check if we're on the products page
+  const boxBuilder = document.querySelector('.box-builder');
+  if (!boxBuilder) return;
+  
+  // Initialize box state
+  let customBox = [];
+  
+  // Get DOM elements
+  const boxItemsContainer = document.getElementById('box-items');
+  const totalItemsSpan = document.getElementById('total-items');
+  const totalPriceSpan = document.getElementById('total-price');
+  const clearBoxBtn = document.getElementById('clear-box');
+  const orderBoxBtn = document.getElementById('order-box');
+  
+  // Add event listeners to all "Add to box" buttons
+  const addButtons = document.querySelectorAll('.btn-add-to-box');
+  addButtons.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const productName = this.getAttribute('data-product');
+      const productPrice = parseFloat(this.getAttribute('data-price'));
+      addToBox(productName, productPrice);
+    });
+  });
+  
+  // Clear box button
+  clearBoxBtn.addEventListener('click', function() {
+    if (customBox.length > 0) {
+      if (confirm('¿Estás seguro de que quieres vaciar la caja?')) {
+        customBox = [];
+        updateBoxDisplay();
+      }
+    }
+  });
+  
+  // Order box button
+  orderBoxBtn.addEventListener('click', function(e) {
+    if (customBox.length === 0) {
+      e.preventDefault();
+      alert('Tu caja está vacía. Añade productos antes de hacer el pedido.');
+      return;
+    }
+    
+    // Create WhatsApp message with box contents
+    const message = createOrderMessage();
+    const whatsappUrl = `https://wa.me/3469738933?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+  });
+  
+  // Add product to box
+  function addToBox(productName, productPrice) {
+    const existingItem = customBox.find(item => item.name === productName);
+    
+    if (existingItem) {
+      existingItem.quantity++;
+    } else {
+      customBox.push({
+        name: productName,
+        price: productPrice,
+        quantity: 1
+      });
+    }
+    
+    updateBoxDisplay();
+    
+    // Visual feedback
+    const btn = event.target;
+    const originalText = btn.textContent;
+    btn.textContent = '✓ Añadido';
+    btn.style.background = '#27ae60';
+    setTimeout(() => {
+      btn.textContent = originalText;
+      btn.style.background = '';
+    }, 1000);
+  }
+  
+  // Update box display
+  function updateBoxDisplay() {
+    if (customBox.length === 0) {
+      boxItemsContainer.innerHTML = '<p class="empty-box">Tu caja está vacía. Añade productos usando los botones "Añadir a caja"</p>';
+      totalItemsSpan.textContent = '0';
+      totalPriceSpan.textContent = '0,00';
+      return;
+    }
+    
+    // Build items HTML
+    let itemsHTML = '';
+    let totalItems = 0;
+    let totalPrice = 0;
+    
+    customBox.forEach((item, index) => {
+      totalItems += item.quantity;
+      totalPrice += item.price * item.quantity;
+      
+      itemsHTML += `
+        <div class="box-item">
+          <div class="box-item-info">
+            <div class="box-item-name">${item.name}</div>
+            <div class="box-item-price">${item.price.toFixed(2)} € c/u</div>
+          </div>
+          <div class="box-item-quantity">
+            <button class="quantity-btn" onclick="decreaseQuantity(${index})">−</button>
+            <span class="quantity-number">${item.quantity}</span>
+            <button class="quantity-btn" onclick="increaseQuantity(${index})">+</button>
+          </div>
+          <button class="remove-item" onclick="removeItem(${index})">Eliminar</button>
+        </div>
+      `;
+    });
+    
+    boxItemsContainer.innerHTML = itemsHTML;
+    totalItemsSpan.textContent = totalItems;
+    totalPriceSpan.textContent = totalPrice.toFixed(2).replace('.', ',');
+  }
+  
+  // Create order message for WhatsApp
+  function createOrderMessage() {
+    let message = '¡Hola! Me gustaría hacer un pedido personalizado:\n\n';
+    
+    customBox.forEach(item => {
+      message += `• ${item.quantity}x ${item.name} (${(item.price * item.quantity).toFixed(2)}€)\n`;
+    });
+    
+    const totalPrice = customBox.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    message += `\nTotal: ${totalPrice.toFixed(2)}€\n\n`;
+    message += '¿Cuándo podría recogerlo? Gracias!';
+    
+    return message;
+  }
+  
+  // Make functions global for onclick handlers
+  window.increaseQuantity = function(index) {
+    customBox[index].quantity++;
+    updateBoxDisplay();
+  };
+  
+  window.decreaseQuantity = function(index) {
+    if (customBox[index].quantity > 1) {
+      customBox[index].quantity--;
+      updateBoxDisplay();
+    }
+  };
+  
+  window.removeItem = function(index) {
+    customBox.splice(index, 1);
+    updateBoxDisplay();
+  };
+}

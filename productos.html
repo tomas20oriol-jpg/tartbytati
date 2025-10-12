@@ -48,8 +48,8 @@
               <div class="product-info">
                 <h4>Cookie de Chocolate</h4>
                 <p class="product-description">Con chips de chocolate belga</p>
-                <p class="product-price">2,00 €</p>
-                <a href="#contacto" class="btn btn-small">Pedir</a>
+                <p class="product-price">3,00 €</p>
+                <button class="btn btn-small btn-add-to-box" data-product="Cookie de Chocolate" data-price="3.00">Añadir a caja</button>
               </div>
             </div>
             
@@ -60,8 +60,8 @@
               <div class="product-info">
                 <h4>Cookie de Avena</h4>
                 <p class="product-description">Con pasas y canela</p>
-                <p class="product-price">2,00 €</p>
-                <a href="#contacto" class="btn btn-small">Pedir</a>
+                <p class="product-price">3,00 €</p>
+                <button class="btn btn-small btn-add-to-box" data-product="Cookie de Avena" data-price="3.00">Añadir a caja</button>
               </div>
             </div>
             
@@ -72,8 +72,8 @@
               <div class="product-info">
                 <h4>Cookie de Nutella</h4>
                 <p class="product-description">Rellena de Nutella cremosa</p>
-                <p class="product-price">2,00 €</p>
-                <a href="#contacto" class="btn btn-small">Pedir</a>
+                <p class="product-price">3,00 €</p>
+                <button class="btn btn-small btn-add-to-box" data-product="Cookie de Nutella" data-price="3.00">Añadir a caja</button>
               </div>
             </div>
             
@@ -84,8 +84,8 @@
               <div class="product-info">
                 <h4>Cookie de Mantequilla</h4>
                 <p class="product-description">Clásica y deliciosa</p>
-                <p class="product-price">2,00 €</p>
-                <a href="#contacto" class="btn btn-small">Pedir</a>
+                <p class="product-price">3,00 €</p>
+                <button class="btn btn-small btn-add-to-box" data-product="Cookie de Mantequilla" data-price="3.00">Añadir a caja</button>
               </div>
             </div>
           </div>
@@ -104,8 +104,8 @@
               <div class="product-info">
                 <h4>Brownie Clásico</h4>
                 <p class="product-description">Chocolate intenso y jugoso</p>
-                <p class="product-price">1,80 € / porción</p>
-                <a href="#contacto" class="btn btn-small">Pedir</a>
+                <p class="product-price">2,50 €</p>
+                <button class="btn btn-small btn-add-to-box" data-product="Brownie Clásico" data-price="2.50">Añadir a caja</button>
               </div>
             </div>
             
@@ -116,8 +116,8 @@
               <div class="product-info">
                 <h4>Brownie con Nueces</h4>
                 <p class="product-description">Con nueces crujientes</p>
-                <p class="product-price">1,80 € / porción</p>
-                <a href="#contacto" class="btn btn-small">Pedir</a>
+                <p class="product-price">2,50 €</p>
+                <button class="btn btn-small btn-add-to-box" data-product="Brownie con Nueces" data-price="2.50">Añadir a caja</button>
               </div>
             </div>
             
@@ -128,16 +128,39 @@
               <div class="product-info">
                 <h4>Brownie con Caramelo</h4>
                 <p class="product-description">Con caramelo salado</p>
-                <p class="product-price">1,80 € / porción</p>
-                <a href="#contacto" class="btn btn-small">Pedir</a>
+                <p class="product-price">2,50 €</p>
+                <button class="btn btn-small btn-add-to-box" data-product="Brownie con Caramelo" data-price="2.50">Añadir a caja</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Custom Box Section -->
+        <div class="custom-box-section">
+          <h3 class="category-title">📦 Diseña tu Caja Personalizada</h3>
+          <p class="category-description">Selecciona tus dulces favoritos y crea tu caja perfecta</p>
+          
+          <div class="box-builder">
+            <div class="box-summary">
+              <h4>Tu Caja</h4>
+              <div id="box-items" class="box-items">
+                <p class="empty-box">Tu caja está vacía. Añade productos usando los botones "Añadir a caja"</p>
+              </div>
+              <div class="box-total">
+                <p><strong>Total de productos:</strong> <span id="total-items">0</span></p>
+                <p><strong>Precio total:</strong> <span id="total-price">0,00</span> €</p>
+              </div>
+              <div class="box-actions">
+                <button id="clear-box" class="btn btn-secondary">Vaciar caja</button>
+                <a href="#contacto" id="order-box" class="btn btn-primary">Hacer pedido</a>
               </div>
             </div>
           </div>
         </div>
         
         <div class="order-note">
-          <p><strong>📦 Pedidos mínimos:</strong> 6 unidades de cookies o 4 porciones de brownie</p>
           <p><strong>⏰ Tiempo de preparación:</strong> 48 horas de antelación</p>
+          <p><strong>📍 Entrega:</strong> Recogida en tienda o envío local</p>
         </div>
         
       </div>
