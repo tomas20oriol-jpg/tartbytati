@@ -22,8 +22,36 @@
           <li><a href="contact.html">Contacto</a></li>
         </ul>
       </nav>
+      <button id="cart-toggle" class="cart-button">
+        🧺
+        <span id="cart-count" class="cart-count">0</span>
+      </button>
     </div>
   </header>
+  
+  <!-- Floating Cart -->
+  <div id="floating-cart" class="floating-cart">
+    <div class="cart-header">
+      <h3>🧺 Tu Cesta</h3>
+      <button id="close-cart" class="close-cart">✕</button>
+    </div>
+    <div class="cart-body">
+      <div id="box-items" class="cart-items-list">
+        <p class="empty-cart">Tu cesta está vacía</p>
+      </div>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Total:</span>
+        <span id="total-price" class="total-price">0,00 €</span>
+      </div>
+      <button id="clear-box" class="btn btn-secondary btn-full">Vaciar cesta</button>
+      <a href="#contacto" id="order-box" class="btn btn-primary btn-full">Hacer pedido (<span id="total-items">0</span>)</a>
+    </div>
+  </div>
+  
+  <!-- Cart Overlay -->
+  <div id="cart-overlay" class="cart-overlay"></div>
   
   <main id="main-content">
     <section class="products-hero">
@@ -107,29 +135,6 @@
                 <p class="product-description">Con caramelo salado</p>
                 <p class="product-price">2,50 €</p>
                 <button class="btn btn-small btn-add-to-box" data-product="Brownie con Caramelo" data-price="2.50">Añadir a caja</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Custom Box Section -->
-        <div class="custom-box-section">
-          <h3 class="category-title">📦 Diseña tu Caja Personalizada</h3>
-          <p class="category-description">Selecciona tus dulces favoritos y crea tu caja perfecta</p>
-          
-          <div class="box-builder">
-            <div class="box-summary">
-              <h4>Tu Caja</h4>
-              <div id="box-items" class="box-items">
-                <p class="empty-box">Tu caja está vacía. Añade productos usando los botones "Añadir a caja"</p>
-              </div>
-              <div class="box-total">
-                <p><strong>Total de productos:</strong> <span id="total-items">0</span></p>
-                <p><strong>Precio total:</strong> <span id="total-price">0,00</span> €</p>
-              </div>
-              <div class="box-actions">
-                <button id="clear-box" class="btn btn-secondary">Vaciar caja</button>
-                <a href="#contacto" id="order-box" class="btn btn-primary">Hacer pedido</a>
               </div>
             </div>
           </div>

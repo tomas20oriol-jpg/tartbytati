@@ -22,8 +22,36 @@
           <li><a href="contact.html">Contacto</a></li>
         </ul>
       </nav>
+      <button id="cart-toggle" class="cart-button">
+        🧺
+        <span id="cart-count" class="cart-count">0</span>
+      </button>
     </div>
   </header>
+  
+  <!-- Floating Cart -->
+  <div id="floating-cart" class="floating-cart">
+    <div class="cart-header">
+      <h3>🧺 Tu Cesta</h3>
+      <button id="close-cart" class="close-cart">✕</button>
+    </div>
+    <div class="cart-body">
+      <div id="cart-items" class="cart-items-list">
+        <p class="empty-cart">Tu cesta está vacía</p>
+      </div>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Total:</span>
+        <span id="cart-total-price" class="total-price">0,00 €</span>
+      </div>
+      <button id="clear-cart" class="btn btn-secondary btn-full">Vaciar cesta</button>
+      <a href="#contacto" id="order-recipes" class="btn btn-primary btn-full">Comprar (<span id="cart-total-items">0</span>)</a>
+    </div>
+  </div>
+  
+  <!-- Cart Overlay -->
+  <div id="cart-overlay" class="cart-overlay"></div>
   
   <main id="main-content">
     <section class="recipes-hero">
@@ -125,29 +153,6 @@
                 </ul>
                 <p class="recipe-price">5,00 €</p>
                 <button class="btn btn-small btn-add-recipe" data-recipe="Brownie con Nueces" data-price="5.00">Añadir al carrito</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Recipe Cart Section -->
-        <div class="recipe-cart-section">
-          <h3 class="category-title">🛒 Tu Carrito de Recetas</h3>
-          <p class="category-description">Selecciona las recetas que quieres comprar</p>
-          
-          <div class="cart-builder">
-            <div class="cart-summary">
-              <h4>Recetas Seleccionadas</h4>
-              <div id="cart-items" class="cart-items">
-                <p class="empty-cart">Tu carrito está vacío. Añade recetas usando los botones "Añadir al carrito"</p>
-              </div>
-              <div class="cart-total">
-                <p><strong>Total de recetas:</strong> <span id="cart-total-items">0</span></p>
-                <p><strong>Precio total:</strong> <span id="cart-total-price">0,00</span> €</p>
-              </div>
-              <div class="cart-actions">
-                <button id="clear-cart" class="btn btn-secondary">Vaciar carrito</button>
-                <a href="#contacto" id="order-recipes" class="btn btn-primary">Comprar recetas</a>
               </div>
             </div>
           </div>

@@ -139,22 +139,42 @@ document.addEventListener('keydown', function(e) {
 });
 
 // ===========================
-// Custom Box Builder
+// Custom Box Builder (Floating)
 // ===========================
 function initBoxBuilder() {
   // Check if we're on the products page
-  const boxBuilder = document.querySelector('.box-builder');
-  if (!boxBuilder) return;
+  const floatingCart = document.getElementById('floating-cart');
+  if (!floatingCart) return;
+  
+  // Check if we have product buttons (not recipe buttons)
+  const productButtons = document.querySelectorAll('.btn-add-to-box');
+  if (productButtons.length === 0) return;
   
   // Initialize box state
   let customBox = [];
   
   // Get DOM elements
+  const cartToggle = document.getElementById('cart-toggle');
+  const closeCart = document.getElementById('close-cart');
+  const cartOverlay = document.getElementById('cart-overlay');
   const boxItemsContainer = document.getElementById('box-items');
+  const cartCountBadge = document.getElementById('cart-count');
   const totalItemsSpan = document.getElementById('total-items');
   const totalPriceSpan = document.getElementById('total-price');
   const clearBoxBtn = document.getElementById('clear-box');
   const orderBoxBtn = document.getElementById('order-box');
+  
+  // Toggle cart visibility
+  function toggleCart() {
+    floatingCart.classList.toggle('active');
+    cartOverlay.classList.toggle('active');
+    document.body.style.overflow = floatingCart.classList.contains('active') ? 'hidden' : '';
+  }
+  
+  // Event listeners for cart toggle
+  cartToggle.addEventListener('click', toggleCart);
+  closeCart.addEventListener('click', toggleCart);
+  cartOverlay.addEventListener('click', toggleCart);
   
   // Add event listeners to all "Add to box" buttons
   const addButtons = document.querySelectorAll('.btn-add-to-box');
@@ -169,7 +189,7 @@ function initBoxBuilder() {
   // Clear box button
   clearBoxBtn.addEventListener('click', function() {
     if (customBox.length > 0) {
-      if (confirm('¿Estás seguro de que quieres vaciar la caja?')) {
+      if (confirm('¿Estás seguro de que quieres vaciar la cesta?')) {
         customBox = [];
         updateBoxDisplay();
       }
@@ -180,7 +200,7 @@ function initBoxBuilder() {
   orderBoxBtn.addEventListener('click', function(e) {
     if (customBox.length === 0) {
       e.preventDefault();
-      alert('Tu caja está vacía. Añade productos antes de hacer el pedido.');
+      alert('Tu cesta está vacía. Añade productos antes de hacer el pedido.');
       return;
     }
     
@@ -188,6 +208,7 @@ function initBoxBuilder() {
     const message = createOrderMessage();
     const whatsappUrl = `https://wa.me/3469738933?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
+    toggleCart(); // Close cart after ordering
   });
   
   // Add product to box
@@ -211,6 +232,12 @@ function initBoxBuilder() {
     const originalText = btn.textContent;
     btn.textContent = '✓ Añadido';
     btn.style.background = '#27ae60';
+    
+    // Auto-open cart briefly to show item was added
+    setTimeout(() => {
+      toggleCart();
+    }, 500);
+    
     setTimeout(() => {
       btn.textContent = originalText;
       btn.style.background = '';
@@ -219,41 +246,49 @@ function initBoxBuilder() {
   
   // Update box display
   function updateBoxDisplay() {
+    const totalItems = customBox.reduce((sum, item) => sum + item.quantity, 0);
+    
+    // Update cart count badge
+    cartCountBadge.textContent = totalItems;
+    if (totalItems === 0) {
+      cartCountBadge.classList.add('hidden');
+    } else {
+      cartCountBadge.classList.remove('hidden');
+    }
+    
     if (customBox.length === 0) {
-      boxItemsContainer.innerHTML = '<p class="empty-box">Tu caja está vacía. Añade productos usando los botones "Añadir a caja"</p>';
+      boxItemsContainer.innerHTML = '<p class="empty-cart">Tu cesta está vacía</p>';
       totalItemsSpan.textContent = '0';
-      totalPriceSpan.textContent = '0,00';
+      totalPriceSpan.textContent = '0,00 €';
       return;
     }
     
     // Build items HTML
     let itemsHTML = '';
-    let totalItems = 0;
     let totalPrice = 0;
     
     customBox.forEach((item, index) => {
-      totalItems += item.quantity;
       totalPrice += item.price * item.quantity;
       
       itemsHTML += `
-        <div class="box-item">
-          <div class="box-item-info">
-            <div class="box-item-name">${item.name}</div>
-            <div class="box-item-price">${item.price.toFixed(2)} € c/u</div>
+        <div class="cart-item">
+          <div class="cart-item-info">
+            <div class="cart-item-name">${item.name}</div>
+            <div class="cart-item-price">${item.price.toFixed(2)} € × ${item.quantity}</div>
           </div>
           <div class="box-item-quantity">
             <button class="quantity-btn" onclick="decreaseQuantity(${index})">−</button>
             <span class="quantity-number">${item.quantity}</span>
             <button class="quantity-btn" onclick="increaseQuantity(${index})">+</button>
           </div>
-          <button class="remove-item" onclick="removeItem(${index})">Eliminar</button>
+          <button class="remove-cart-item" onclick="removeItem(${index})">✕</button>
         </div>
       `;
     });
     
     boxItemsContainer.innerHTML = itemsHTML;
     totalItemsSpan.textContent = totalItems;
-    totalPriceSpan.textContent = totalPrice.toFixed(2).replace('.', ',');
+    totalPriceSpan.textContent = totalPrice.toFixed(2).replace('.', ',') + ' €';
   }
   
   // Create order message for WhatsApp
@@ -291,22 +326,38 @@ function initBoxBuilder() {
 }
 
 // ===========================
-// Recipe Cart
+// Recipe Cart (Floating)
 // ===========================
 function initRecipeCart() {
   // Check if we're on the recipes page
-  const cartBuilder = document.querySelector('.cart-builder');
-  if (!cartBuilder) return;
+  const floatingCart = document.getElementById('floating-cart');
+  if (!floatingCart) return;
   
   // Initialize cart state
   let recipeCart = [];
   
   // Get DOM elements
+  const cartToggle = document.getElementById('cart-toggle');
+  const closeCart = document.getElementById('close-cart');
+  const cartOverlay = document.getElementById('cart-overlay');
   const cartItemsContainer = document.getElementById('cart-items');
+  const cartCountBadge = document.getElementById('cart-count');
   const totalItemsSpan = document.getElementById('cart-total-items');
   const totalPriceSpan = document.getElementById('cart-total-price');
   const clearCartBtn = document.getElementById('clear-cart');
   const orderRecipesBtn = document.getElementById('order-recipes');
+  
+  // Toggle cart visibility
+  function toggleCart() {
+    floatingCart.classList.toggle('active');
+    cartOverlay.classList.toggle('active');
+    document.body.style.overflow = floatingCart.classList.contains('active') ? 'hidden' : '';
+  }
+  
+  // Event listeners for cart toggle
+  cartToggle.addEventListener('click', toggleCart);
+  closeCart.addEventListener('click', toggleCart);
+  cartOverlay.addEventListener('click', toggleCart);
   
   // Add event listeners to all "Add to cart" buttons
   const addButtons = document.querySelectorAll('.btn-add-recipe');
@@ -321,7 +372,7 @@ function initRecipeCart() {
   // Clear cart button
   clearCartBtn.addEventListener('click', function() {
     if (recipeCart.length > 0) {
-      if (confirm('¿Estás seguro de que quieres vaciar el carrito?')) {
+      if (confirm('¿Estás seguro de que quieres vaciar la cesta?')) {
         recipeCart = [];
         updateCartDisplay();
       }
@@ -332,7 +383,7 @@ function initRecipeCart() {
   orderRecipesBtn.addEventListener('click', function(e) {
     if (recipeCart.length === 0) {
       e.preventDefault();
-      alert('Tu carrito está vacío. Añade recetas antes de comprar.');
+      alert('Tu cesta está vacía. Añade recetas antes de comprar.');
       return;
     }
     
@@ -340,6 +391,7 @@ function initRecipeCart() {
     const message = createRecipeOrderMessage();
     const whatsappUrl = `https://wa.me/3469738933?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
+    toggleCart(); // Close cart after ordering
   });
   
   // Add recipe to cart
@@ -347,8 +399,8 @@ function initRecipeCart() {
     const existingItem = recipeCart.find(item => item.name === recipeName);
     
     if (existingItem) {
-      // Recipe already in cart
-      alert('Esta receta ya está en tu carrito');
+      // Recipe already in cart - show cart instead
+      toggleCart();
       return;
     }
     
@@ -365,6 +417,12 @@ function initRecipeCart() {
     btn.textContent = '✓ Añadido';
     btn.style.background = '#27ae60';
     btn.disabled = true;
+    
+    // Auto-open cart briefly to show item was added
+    setTimeout(() => {
+      toggleCart();
+    }, 500);
+    
     setTimeout(() => {
       btn.textContent = originalText;
       btn.style.background = '';
@@ -373,10 +431,20 @@ function initRecipeCart() {
   
   // Update cart display
   function updateCartDisplay() {
+    const itemCount = recipeCart.length;
+    
+    // Update cart count badge
+    cartCountBadge.textContent = itemCount;
+    if (itemCount === 0) {
+      cartCountBadge.classList.add('hidden');
+    } else {
+      cartCountBadge.classList.remove('hidden');
+    }
+    
     if (recipeCart.length === 0) {
-      cartItemsContainer.innerHTML = '<p class="empty-cart">Tu carrito está vacío. Añade recetas usando los botones "Añadir al carrito"</p>';
+      cartItemsContainer.innerHTML = '<p class="empty-cart">Tu cesta está vacía</p>';
       totalItemsSpan.textContent = '0';
-      totalPriceSpan.textContent = '0,00';
+      totalPriceSpan.textContent = '0,00 €';
       
       // Re-enable all buttons
       const addButtons = document.querySelectorAll('.btn-add-recipe');
@@ -399,14 +467,14 @@ function initRecipeCart() {
             <div class="cart-item-name">${item.name}</div>
             <div class="cart-item-price">${item.price.toFixed(2)} €</div>
           </div>
-          <button class="remove-cart-item" onclick="removeRecipe(${index})">Eliminar</button>
+          <button class="remove-cart-item" onclick="removeRecipe(${index})">✕</button>
         </div>
       `;
     });
     
     cartItemsContainer.innerHTML = itemsHTML;
     totalItemsSpan.textContent = recipeCart.length;
-    totalPriceSpan.textContent = totalPrice.toFixed(2).replace('.', ',');
+    totalPriceSpan.textContent = totalPrice.toFixed(2).replace('.', ',') + ' €';
   }
   
   // Create order message for WhatsApp
