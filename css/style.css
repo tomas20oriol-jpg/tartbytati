@@ -1249,22 +1249,20 @@ button:focus,
   color: var(--accent-color);
   margin-bottom: 0.25rem;
   font-size: 0.95rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
 }
 
 .item-type-badge {
   display: inline-block;
   background: var(--primary-color);
   color: white;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 600;
-  padding: 0.15rem 0.5rem;
-  border-radius: 12px;
+  padding: 0.2rem 0.5rem;
+  border-radius: 10px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.3px;
+  margin-left: 0.5rem;
+  vertical-align: middle;
 }
 
 .recipe-badge {
