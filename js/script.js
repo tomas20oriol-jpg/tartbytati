@@ -226,7 +226,8 @@ function initUnifiedCart() {
   
   // Add item to cart
   function addToCart(name, price, type) {
-    const existingItem = cart.find(item => item.name === name);
+    // Find existing item by BOTH name AND type
+    const existingItem = cart.find(item => item.name === name && item.type === type);
     
     if (type === 'recipe' && existingItem) {
       // Recipes can't be duplicated, just show cart
