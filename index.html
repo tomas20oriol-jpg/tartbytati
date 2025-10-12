@@ -22,8 +22,36 @@
           <li><a href="contact.html">Contacto</a></li>
         </ul>
       </nav>
+      <button id="cart-toggle" class="cart-button">
+        🧺
+        <span id="cart-count" class="cart-count hidden">0</span>
+      </button>
     </div>
   </header>
+  
+  <!-- Floating Cart -->
+  <div id="floating-cart" class="floating-cart">
+    <div class="cart-header">
+      <h3>🧺 Tu Cesta</h3>
+      <button id="close-cart" class="close-cart">✕</button>
+    </div>
+    <div class="cart-body">
+      <div id="cart-items" class="cart-items-list">
+        <p class="empty-cart">Tu cesta está vacía</p>
+      </div>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Total:</span>
+        <span id="cart-total-price" class="total-price">0,00 €</span>
+      </div>
+      <button id="clear-cart" class="btn btn-secondary btn-full">Vaciar cesta</button>
+      <a href="#contacto" id="order-cart" class="btn btn-primary btn-full">Hacer pedido (<span id="cart-total-items">0</span>)</a>
+    </div>
+  </div>
+  
+  <!-- Cart Overlay -->
+  <div id="cart-overlay" class="cart-overlay"></div>
   
   <main id="main-content">
     <section class="hero">

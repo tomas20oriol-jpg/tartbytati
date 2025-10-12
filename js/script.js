@@ -14,11 +14,8 @@ document.addEventListener('DOMContentLoaded', function() {
   // Add animation on scroll
   initScrollAnimations();
   
-  // Initialize custom box builder
-  initBoxBuilder();
-  
-  // Initialize recipe cart
-  initRecipeCart();
+  // Initialize unified cart
+  initUnifiedCart();
   
   console.log('tartbytati website loaded successfully! 🍰');
 });
@@ -139,202 +136,15 @@ document.addEventListener('keydown', function(e) {
 });
 
 // ===========================
-// Custom Box Builder (Floating)
+// Unified Cart System (with localStorage)
 // ===========================
-function initBoxBuilder() {
-  // Check if we're on the products page
+function initUnifiedCart() {
+  // Check if cart elements exist
   const floatingCart = document.getElementById('floating-cart');
   if (!floatingCart) return;
   
-  // Check if we have product buttons (not recipe buttons)
-  const productButtons = document.querySelectorAll('.btn-add-to-box');
-  if (productButtons.length === 0) return;
-  
-  // Initialize box state
-  let customBox = [];
-  
-  // Get DOM elements
-  const cartToggle = document.getElementById('cart-toggle');
-  const closeCart = document.getElementById('close-cart');
-  const cartOverlay = document.getElementById('cart-overlay');
-  const boxItemsContainer = document.getElementById('box-items');
-  const cartCountBadge = document.getElementById('cart-count');
-  const totalItemsSpan = document.getElementById('total-items');
-  const totalPriceSpan = document.getElementById('total-price');
-  const clearBoxBtn = document.getElementById('clear-box');
-  const orderBoxBtn = document.getElementById('order-box');
-  
-  // Toggle cart visibility
-  function toggleCart() {
-    floatingCart.classList.toggle('active');
-    cartOverlay.classList.toggle('active');
-    document.body.style.overflow = floatingCart.classList.contains('active') ? 'hidden' : '';
-  }
-  
-  // Event listeners for cart toggle
-  cartToggle.addEventListener('click', toggleCart);
-  closeCart.addEventListener('click', toggleCart);
-  cartOverlay.addEventListener('click', toggleCart);
-  
-  // Add event listeners to all "Add to box" buttons
-  const addButtons = document.querySelectorAll('.btn-add-to-box');
-  addButtons.forEach(btn => {
-    btn.addEventListener('click', function() {
-      const productName = this.getAttribute('data-product');
-      const productPrice = parseFloat(this.getAttribute('data-price'));
-      addToBox(productName, productPrice);
-    });
-  });
-  
-  // Clear box button
-  clearBoxBtn.addEventListener('click', function() {
-    if (customBox.length > 0) {
-      if (confirm('¿Estás seguro de que quieres vaciar la cesta?')) {
-        customBox = [];
-        updateBoxDisplay();
-      }
-    }
-  });
-  
-  // Order box button
-  orderBoxBtn.addEventListener('click', function(e) {
-    if (customBox.length === 0) {
-      e.preventDefault();
-      alert('Tu cesta está vacía. Añade productos antes de hacer el pedido.');
-      return;
-    }
-    
-    // Create WhatsApp message with box contents
-    const message = createOrderMessage();
-    const whatsappUrl = `https://wa.me/3469738933?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
-    toggleCart(); // Close cart after ordering
-  });
-  
-  // Add product to box
-  function addToBox(productName, productPrice) {
-    const existingItem = customBox.find(item => item.name === productName);
-    
-    if (existingItem) {
-      existingItem.quantity++;
-    } else {
-      customBox.push({
-        name: productName,
-        price: productPrice,
-        quantity: 1
-      });
-    }
-    
-    updateBoxDisplay();
-    
-    // Visual feedback
-    const btn = event.target;
-    const originalText = btn.textContent;
-    btn.textContent = '✓ Añadido';
-    btn.style.background = '#27ae60';
-    
-    // Auto-open cart briefly to show item was added
-    setTimeout(() => {
-      toggleCart();
-    }, 500);
-    
-    setTimeout(() => {
-      btn.textContent = originalText;
-      btn.style.background = '';
-    }, 1000);
-  }
-  
-  // Update box display
-  function updateBoxDisplay() {
-    const totalItems = customBox.reduce((sum, item) => sum + item.quantity, 0);
-    
-    // Update cart count badge
-    cartCountBadge.textContent = totalItems;
-    if (totalItems === 0) {
-      cartCountBadge.classList.add('hidden');
-    } else {
-      cartCountBadge.classList.remove('hidden');
-    }
-    
-    if (customBox.length === 0) {
-      boxItemsContainer.innerHTML = '<p class="empty-cart">Tu cesta está vacía</p>';
-      totalItemsSpan.textContent = '0';
-      totalPriceSpan.textContent = '0,00 €';
-      return;
-    }
-    
-    // Build items HTML
-    let itemsHTML = '';
-    let totalPrice = 0;
-    
-    customBox.forEach((item, index) => {
-      totalPrice += item.price * item.quantity;
-      
-      itemsHTML += `
-        <div class="cart-item">
-          <div class="cart-item-info">
-            <div class="cart-item-name">${item.name}</div>
-            <div class="cart-item-price">${item.price.toFixed(2)} € × ${item.quantity}</div>
-          </div>
-          <div class="box-item-quantity">
-            <button class="quantity-btn" onclick="decreaseQuantity(${index})">−</button>
-            <span class="quantity-number">${item.quantity}</span>
-            <button class="quantity-btn" onclick="increaseQuantity(${index})">+</button>
-          </div>
-          <button class="remove-cart-item" onclick="removeItem(${index})">✕</button>
-        </div>
-      `;
-    });
-    
-    boxItemsContainer.innerHTML = itemsHTML;
-    totalItemsSpan.textContent = totalItems;
-    totalPriceSpan.textContent = totalPrice.toFixed(2).replace('.', ',') + ' €';
-  }
-  
-  // Create order message for WhatsApp
-  function createOrderMessage() {
-    let message = '¡Hola! Me gustaría hacer un pedido personalizado:\n\n';
-    
-    customBox.forEach(item => {
-      message += `• ${item.quantity}x ${item.name} (${(item.price * item.quantity).toFixed(2)}€)\n`;
-    });
-    
-    const totalPrice = customBox.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    message += `\nTotal: ${totalPrice.toFixed(2)}€\n\n`;
-    message += '¿Cuándo podría recogerlo? Gracias!';
-    
-    return message;
-  }
-  
-  // Make functions global for onclick handlers
-  window.increaseQuantity = function(index) {
-    customBox[index].quantity++;
-    updateBoxDisplay();
-  };
-  
-  window.decreaseQuantity = function(index) {
-    if (customBox[index].quantity > 1) {
-      customBox[index].quantity--;
-      updateBoxDisplay();
-    }
-  };
-  
-  window.removeItem = function(index) {
-    customBox.splice(index, 1);
-    updateBoxDisplay();
-  };
-}
-
-// ===========================
-// Recipe Cart (Floating)
-// ===========================
-function initRecipeCart() {
-  // Check if we're on the recipes page
-  const floatingCart = document.getElementById('floating-cart');
-  if (!floatingCart) return;
-  
-  // Initialize cart state
-  let recipeCart = [];
+  // Initialize cart from localStorage
+  let cart = JSON.parse(localStorage.getItem('tartbytatiCart')) || [];
   
   // Get DOM elements
   const cartToggle = document.getElementById('cart-toggle');
@@ -345,7 +155,7 @@ function initRecipeCart() {
   const totalItemsSpan = document.getElementById('cart-total-items');
   const totalPriceSpan = document.getElementById('cart-total-price');
   const clearCartBtn = document.getElementById('clear-cart');
-  const orderRecipesBtn = document.getElementById('order-recipes');
+  const orderCartBtn = document.getElementById('order-cart');
   
   // Toggle cart visibility
   function toggleCart() {
@@ -355,60 +165,87 @@ function initRecipeCart() {
   }
   
   // Event listeners for cart toggle
-  cartToggle.addEventListener('click', toggleCart);
-  closeCart.addEventListener('click', toggleCart);
-  cartOverlay.addEventListener('click', toggleCart);
+  if (cartToggle) cartToggle.addEventListener('click', toggleCart);
+  if (closeCart) closeCart.addEventListener('click', toggleCart);
+  if (cartOverlay) cartOverlay.addEventListener('click', toggleCart);
   
-  // Add event listeners to all "Add to cart" buttons
-  const addButtons = document.querySelectorAll('.btn-add-recipe');
-  addButtons.forEach(btn => {
+  // Save cart to localStorage
+  function saveCart() {
+    localStorage.setItem('tartbytatiCart', JSON.stringify(cart));
+  }
+  
+  // Add product buttons (productos.html)
+  const productButtons = document.querySelectorAll('.btn-add-to-box');
+  productButtons.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const productName = this.getAttribute('data-product');
+      const productPrice = parseFloat(this.getAttribute('data-price'));
+      addToCart(productName, productPrice, 'product');
+    });
+  });
+  
+  // Add recipe buttons (recetas.html)
+  const recipeButtons = document.querySelectorAll('.btn-add-recipe');
+  recipeButtons.forEach(btn => {
     btn.addEventListener('click', function() {
       const recipeName = this.getAttribute('data-recipe');
       const recipePrice = parseFloat(this.getAttribute('data-price'));
-      addToCart(recipeName, recipePrice);
+      addToCart(recipeName, recipePrice, 'recipe');
     });
   });
   
   // Clear cart button
-  clearCartBtn.addEventListener('click', function() {
-    if (recipeCart.length > 0) {
-      if (confirm('¿Estás seguro de que quieres vaciar la cesta?')) {
-        recipeCart = [];
-        updateCartDisplay();
+  if (clearCartBtn) {
+    clearCartBtn.addEventListener('click', function() {
+      if (cart.length > 0) {
+        if (confirm('¿Estás seguro de que quieres vaciar la cesta?')) {
+          cart = [];
+          saveCart();
+          updateCartDisplay();
+        }
       }
-    }
-  });
+    });
+  }
   
-  // Order recipes button
-  orderRecipesBtn.addEventListener('click', function(e) {
-    if (recipeCart.length === 0) {
-      e.preventDefault();
-      alert('Tu cesta está vacía. Añade recetas antes de comprar.');
-      return;
-    }
-    
-    // Create WhatsApp message with cart contents
-    const message = createRecipeOrderMessage();
-    const whatsappUrl = `https://wa.me/3469738933?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
-    toggleCart(); // Close cart after ordering
-  });
+  // Order button
+  if (orderCartBtn) {
+    orderCartBtn.addEventListener('click', function(e) {
+      if (cart.length === 0) {
+        e.preventDefault();
+        alert('Tu cesta está vacía. Añade productos antes de hacer el pedido.');
+        return;
+      }
+      
+      // Create WhatsApp message
+      const message = createOrderMessage();
+      const whatsappUrl = `https://wa.me/3469738933?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, '_blank');
+      toggleCart();
+    });
+  }
   
-  // Add recipe to cart
-  function addToCart(recipeName, recipePrice) {
-    const existingItem = recipeCart.find(item => item.name === recipeName);
+  // Add item to cart
+  function addToCart(name, price, type) {
+    const existingItem = cart.find(item => item.name === name);
     
-    if (existingItem) {
-      // Recipe already in cart - show cart instead
+    if (type === 'recipe' && existingItem) {
+      // Recipes can't be duplicated, just show cart
       toggleCart();
       return;
     }
     
-    recipeCart.push({
-      name: recipeName,
-      price: recipePrice
-    });
+    if (existingItem && type === 'product') {
+      existingItem.quantity++;
+    } else {
+      cart.push({
+        name: name,
+        price: price,
+        type: type,
+        quantity: type === 'recipe' ? 1 : 1
+      });
+    }
     
+    saveCart();
     updateCartDisplay();
     
     // Visual feedback
@@ -416,9 +253,9 @@ function initRecipeCart() {
     const originalText = btn.textContent;
     btn.textContent = '✓ Añadido';
     btn.style.background = '#27ae60';
-    btn.disabled = true;
+    if (type === 'recipe') btn.disabled = true;
     
-    // Auto-open cart briefly to show item was added
+    // Auto-open cart
     setTimeout(() => {
       toggleCart();
     }, 500);
@@ -426,31 +263,31 @@ function initRecipeCart() {
     setTimeout(() => {
       btn.textContent = originalText;
       btn.style.background = '';
-    }, 1500);
+    }, 1000);
   }
   
   // Update cart display
   function updateCartDisplay() {
-    const itemCount = recipeCart.length;
+    const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
     
     // Update cart count badge
-    cartCountBadge.textContent = itemCount;
-    if (itemCount === 0) {
-      cartCountBadge.classList.add('hidden');
-    } else {
-      cartCountBadge.classList.remove('hidden');
+    if (cartCountBadge) {
+      cartCountBadge.textContent = totalItems;
+      if (totalItems === 0) {
+        cartCountBadge.classList.add('hidden');
+      } else {
+        cartCountBadge.classList.remove('hidden');
+      }
     }
     
-    if (recipeCart.length === 0) {
-      cartItemsContainer.innerHTML = '<p class="empty-cart">Tu cesta está vacía</p>';
-      totalItemsSpan.textContent = '0';
-      totalPriceSpan.textContent = '0,00 €';
+    if (cart.length === 0) {
+      if (cartItemsContainer) cartItemsContainer.innerHTML = '<p class="empty-cart">Tu cesta está vacía</p>';
+      if (totalItemsSpan) totalItemsSpan.textContent = '0';
+      if (totalPriceSpan) totalPriceSpan.textContent = '0,00 €';
       
-      // Re-enable all buttons
-      const addButtons = document.querySelectorAll('.btn-add-recipe');
-      addButtons.forEach(btn => {
-        btn.disabled = false;
-      });
+      // Re-enable recipe buttons
+      const recipeButtons = document.querySelectorAll('.btn-add-recipe');
+      recipeButtons.forEach(btn => btn.disabled = false);
       return;
     }
     
@@ -458,52 +295,112 @@ function initRecipeCart() {
     let itemsHTML = '';
     let totalPrice = 0;
     
-    recipeCart.forEach((item, index) => {
-      totalPrice += item.price;
+    cart.forEach((item, index) => {
+      const itemTotal = item.price * (item.quantity || 1);
+      totalPrice += itemTotal;
       
-      itemsHTML += `
-        <div class="cart-item">
-          <div class="cart-item-info">
-            <div class="cart-item-name">${item.name}</div>
-            <div class="cart-item-price">${item.price.toFixed(2)} €</div>
+      if (item.type === 'product') {
+        itemsHTML += `
+          <div class="cart-item">
+            <div class="cart-item-info">
+              <div class="cart-item-name">${item.name}</div>
+              <div class="cart-item-price">${item.price.toFixed(2)} € × ${item.quantity}</div>
+            </div>
+            <div class="box-item-quantity">
+              <button class="quantity-btn" onclick="decreaseQuantity(${index})">−</button>
+              <span class="quantity-number">${item.quantity}</span>
+              <button class="quantity-btn" onclick="increaseQuantity(${index})">+</button>
+            </div>
+            <button class="remove-cart-item" onclick="removeCartItem(${index})">✕</button>
           </div>
-          <button class="remove-cart-item" onclick="removeRecipe(${index})">✕</button>
-        </div>
-      `;
+        `;
+      } else {
+        itemsHTML += `
+          <div class="cart-item">
+            <div class="cart-item-info">
+              <div class="cart-item-name">${item.name}</div>
+              <div class="cart-item-price">${item.price.toFixed(2)} €</div>
+            </div>
+            <button class="remove-cart-item" onclick="removeCartItem(${index})">✕</button>
+          </div>
+        `;
+      }
     });
     
-    cartItemsContainer.innerHTML = itemsHTML;
-    totalItemsSpan.textContent = recipeCart.length;
-    totalPriceSpan.textContent = totalPrice.toFixed(2).replace('.', ',') + ' €';
+    if (cartItemsContainer) cartItemsContainer.innerHTML = itemsHTML;
+    if (totalItemsSpan) totalItemsSpan.textContent = totalItems;
+    if (totalPriceSpan) totalPriceSpan.textContent = totalPrice.toFixed(2).replace('.', ',') + ' €';
   }
   
-  // Create order message for WhatsApp
-  function createRecipeOrderMessage() {
-    let message = '¡Hola! Me gustaría comprar las siguientes recetas:\n\n';
+  // Create order message
+  function createOrderMessage() {
+    let message = '¡Hola! Me gustaría hacer un pedido:\n\n';
     
-    recipeCart.forEach(item => {
-      message += `• ${item.name} - ${item.price.toFixed(2)}€\n`;
-    });
+    const products = cart.filter(item => item.type === 'product');
+    const recipes = cart.filter(item => item.type === 'recipe');
     
-    const totalPrice = recipeCart.reduce((sum, item) => sum + item.price, 0);
-    message += `\nTotal: ${totalPrice.toFixed(2)}€\n\n`;
-    message += 'Por favor, indícame cómo proceder con el pago. Mi correo electrónico es: [tu email]\n\n¡Gracias!';
+    if (products.length > 0) {
+      message += '📦 PRODUCTOS:\n';
+      products.forEach(item => {
+        message += `• ${item.quantity}x ${item.name} (${(item.price * item.quantity).toFixed(2)}€)\n`;
+      });
+      message += '\n';
+    }
+    
+    if (recipes.length > 0) {
+      message += '📖 RECETAS:\n';
+      recipes.forEach(item => {
+        message += `• ${item.name} - ${item.price.toFixed(2)}€\n`;
+      });
+      message += '\n';
+    }
+    
+    const totalPrice = cart.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
+    message += `Total: ${totalPrice.toFixed(2)}€\n\n`;
+    
+    if (recipes.length > 0) {
+      message += 'Mi correo electrónico para las recetas: [tu email]\n\n';
+    }
+    
+    message += '¡Gracias!';
     
     return message;
   }
   
-  // Make function global for onclick handler
-  window.removeRecipe = function(index) {
-    const removedRecipe = recipeCart[index];
-    recipeCart.splice(index, 1);
+  // Global functions for onclick handlers
+  window.increaseQuantity = function(index) {
+    if (cart[index] && cart[index].type === 'product') {
+      cart[index].quantity++;
+      saveCart();
+      updateCartDisplay();
+    }
+  };
+  
+  window.decreaseQuantity = function(index) {
+    if (cart[index] && cart[index].type === 'product' && cart[index].quantity > 1) {
+      cart[index].quantity--;
+      saveCart();
+      updateCartDisplay();
+    }
+  };
+  
+  window.removeCartItem = function(index) {
+    const removedItem = cart[index];
+    cart.splice(index, 1);
+    saveCart();
     updateCartDisplay();
     
-    // Re-enable the button for this recipe
-    const addButtons = document.querySelectorAll('.btn-add-recipe');
-    addButtons.forEach(btn => {
-      if (btn.getAttribute('data-recipe') === removedRecipe.name) {
-        btn.disabled = false;
-      }
-    });
+    // Re-enable recipe button if it was a recipe
+    if (removedItem.type === 'recipe') {
+      const recipeButtons = document.querySelectorAll('.btn-add-recipe');
+      recipeButtons.forEach(btn => {
+        if (btn.getAttribute('data-recipe') === removedItem.name) {
+          btn.disabled = false;
+        }
+      });
+    }
   };
+  
+  // Initial display update
+  updateCartDisplay();
 }
