@@ -303,7 +303,14 @@ function initUnifiedCart() {
       
       // Ensure item has a type (for backwards compatibility)
       if (!item.type) {
-        item.type = item.quantity > 1 || item.quantity === undefined ? 'product' : 'recipe';
+        // If item has quantity property and it's a number, it's a product
+        // Otherwise it's a recipe
+        if (item.quantity !== undefined && typeof item.quantity === 'number') {
+          item.type = 'product';
+        } else {
+          item.type = 'recipe';
+          item.quantity = 1; // Ensure recipes have quantity 1
+        }
         needsSave = true;
       }
       
