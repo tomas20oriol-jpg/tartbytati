@@ -1043,6 +1043,7 @@ button:focus,
   font-weight: 700;
   color: var(--primary-color);
   margin: 1rem 0;
+  font-family: 'Playfair Display', serif;
 }
 
 .btn-add-recipe {
