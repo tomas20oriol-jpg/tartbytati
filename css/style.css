@@ -677,11 +677,12 @@ button:focus,
 }
 
 .product-price {
-  font-size: 1.75rem;
-  font-weight: 700;
+  font-size: 1.5rem;
+  font-weight: 600;
   color: var(--accent-color);
   margin-bottom: 1.25rem;
-  font-family: 'Playfair Display', serif;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: -0.01em;
 }
 
 .btn-small {
@@ -1039,11 +1040,12 @@ button:focus,
 }
 
 .recipe-price {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: var(--primary-color);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--accent-color);
   margin: 1rem 0;
-  font-family: 'Playfair Display', serif;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: -0.01em;
 }
 
 .btn-add-recipe {
