@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Initialize unified cart
   initUnifiedCart();
   
-  console.log('tartbytati website loaded successfully! 🍰');
+  console.log('tartbytati website loaded successfully!');
 });
 
 // ===========================
@@ -253,7 +253,7 @@ function initUnifiedCart() {
     // Visual feedback
     const btn = event.target;
     const originalText = btn.textContent;
-    btn.textContent = '✓ Añadido';
+    btn.textContent = 'Añadido';
     btn.style.background = '#27ae60';
     if (type === 'recipe') btn.disabled = true;
     
