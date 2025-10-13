@@ -219,7 +219,7 @@ function initUnifiedCart() {
       
       // Create WhatsApp message and open directly
       const message = createOrderMessage();
-      const whatsappUrl = `https://wa.me/3469738933?text=${encodeURIComponent(message)}`;
+      const whatsappUrl = `https://wa.me/34697389330?text=${encodeURIComponent(message)}`;
       window.open(whatsappUrl, '_blank');
       toggleCart();
     });

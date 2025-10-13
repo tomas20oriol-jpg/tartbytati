@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Recetas - tartbytati</title>
-  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -23,8 +23,10 @@
         </ul>
       </nav>
       <button id="cart-toggle" class="cart-button">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M9 2L11 8M15 8L17 2M4 8h16l-1 13H5L4 8z"/>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <path d="M16 10a4 4 0 0 1-8 0"></path>
         </svg>
         <span id="cart-count" class="cart-count">0</span>
       </button>
@@ -58,7 +60,7 @@
   <main id="main-content">
     <section class="recipes-hero">
       <div class="container">
-        <h2>Mis Recetas Secretas</h2>
+        <h2>Mis Recetas</h2>
         <p class="lead">Aprende a hacer mis dulces favoritos en casa</p>
       </div>
     </section>
@@ -67,7 +69,7 @@
       <div class="container">
         
         <div class="recipes-intro">
-          <p>¿Quieres aprender a hacer mis dulces en casa? Comparto mis recetas secretas con instrucciones detalladas, tips profesionales y todo lo que necesitas saber para conseguir resultados perfectos.</p>
+          <p>¿Quieres aprender a hacer mis dulces en casa? Comparto mis recetas con instrucciones detalladas, tips profesionales y todo lo que necesitas saber para conseguir resultados perfectos.</p>
         </div>
         
         <!-- Cookies Recipes -->
@@ -112,12 +114,31 @@
                 <button class="btn btn-small btn-add-recipe" data-recipe="Cookie de Churro" data-price="5.00">Añadir al carrito</button>
               </div>
             </div>
+            
+            <div class="recipe-card">
+              <div class="recipe-image">
+                <img src="assets/images/cookie-lotus.jpg" alt="Receta Cookie Lotus" />
+                <span class="recipe-badge">Digital</span>
+              </div>
+              <div class="recipe-info">
+                <h4>Cookie Lotus</h4>
+                <p class="recipe-description">Cookie con galletas Lotus Biscoff caramelizadas, una combinación irresistible</p>
+                <ul class="recipe-includes">
+                  <li>Lista de ingredientes</li>
+                  <li>Instrucciones detalladas</li>
+                  <li>Tips profesionales</li>
+                  <li>Fotos del proceso</li>
+                </ul>
+                <p class="recipe-price">5,00 €</p>
+                <button class="btn btn-small btn-add-recipe" data-recipe="Cookie Lotus" data-price="5.00">Añadir al carrito</button>
+              </div>
+            </div>
           </div>
         </div>
         
-        <!-- Brownies Recipes -->
+        <!-- Brownies & Brookies Recipes -->
         <div class="recipe-category">
-          <h3 class="category-title">Recetas de Brownies</h3>
+          <h3 class="category-title">Recetas de Brownies & Brookies</h3>
           
           <div class="recipes-grid">
             <div class="recipe-card">
@@ -138,6 +159,25 @@
                 <button class="btn btn-small btn-add-recipe" data-recipe="Brownie Clásico" data-price="5.00">Añadir al carrito</button>
               </div>
             </div>
+            
+            <div class="recipe-card">
+              <div class="recipe-image">
+                <img src="assets/images/brookie-clasico.jpg" alt="Receta Brookie Clásico" />
+                <span class="recipe-badge">Digital</span>
+              </div>
+              <div class="recipe-info">
+                <h4>Brookie Clásico</h4>
+                <p class="recipe-description">La fusión perfecta: mitad brownie jugoso, mitad cookie crujiente. Lo mejor de ambos mundos</p>
+                <ul class="recipe-includes">
+                  <li>Lista de ingredientes</li>
+                  <li>Instrucciones detalladas</li>
+                  <li>Tips profesionales</li>
+                  <li>Fotos del proceso</li>
+                </ul>
+                <p class="recipe-price">5,00 €</p>
+                <button class="btn btn-small btn-add-recipe" data-recipe="Brookie Clásico" data-price="5.00">Añadir al carrito</button>
+              </div>
+            </div>
           </div>
         </div>
         
@@ -153,7 +193,7 @@
   
   <footer id="contacto">
     <div class="container">
-      <p>Síguenos en <a href="https://instagram.com/tartbytati" target="_blank" rel="noopener noreferrer">Instagram</a> · Contáctanos por <a href="https://wa.me/3469738933" target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
+      <p>Síguenos en <a href="https://instagram.com/tartbytati" target="_blank" rel="noopener noreferrer">Instagram</a> · Contáctanos por <a href="https://wa.me/34697389330" target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
       <p class="copyright">&copy; 2025 tartbytati. Todos los derechos reservados.</p>
     </div>
   </footer>
