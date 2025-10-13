@@ -207,16 +207,17 @@ function initUnifiedCart() {
     });
   }
   
-  // Order button
+  // Order button - Send directly to WhatsApp
   if (orderCartBtn) {
     orderCartBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      
       if (cart.length === 0) {
-        e.preventDefault();
         alert('Tu cesta está vacía. Añade productos antes de hacer el pedido.');
         return;
       }
       
-      // Create WhatsApp message
+      // Create WhatsApp message and open directly
       const message = createOrderMessage();
       const whatsappUrl = `https://wa.me/3469738933?text=${encodeURIComponent(message)}`;
       window.open(whatsappUrl, '_blank');
@@ -378,11 +379,23 @@ function initUnifiedCart() {
     const totalPrice = cart.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
     message += `Total: ${totalPrice.toFixed(2)}€\n\n`;
     
+    // Ask for additional information
+    message += '--- POR FAVOR, COMPLETA ESTA INFORMACIÓN ---\n\n';
+    
+    message += 'Nombre completo: \n';
+    message += 'Teléfono: \n';
+    
     if (recipes.length > 0) {
-      message += 'Mi correo electrónico para las recetas: [tu email]\n\n';
+      message += 'Email (para enviar las recetas): \n';
     }
     
-    message += '¡Gracias!';
+    if (products.length > 0) {
+      message += 'Método de entrega (Recogida en tienda / Envío): \n';
+      message += 'Dirección de entrega (si aplica): \n';
+      message += 'Fecha deseada de entrega: \n';
+    }
+    
+    message += '\n¡Gracias!';
     
     return message;
   }
