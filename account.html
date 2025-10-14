@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mi Cuenta - tartbytati</title>
+  <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .account-page {
+      padding: 80px 0;
+      min-height: 70vh;
+    }
+    
+    .account-container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    
+    .account-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    
+    .account-header h2 {
+      font-size: 40px;
+      margin-bottom: 12px;
+      font-weight: 400;
+    }
+    
+    .account-header p {
+      color: var(--text-light);
+      font-size: 15px;
+    }
+    
+    .account-grid {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 60px;
+      margin-top: 40px;
+    }
+    
+    .account-sidebar {
+      position: sticky;
+      top: 100px;
+      height: fit-content;
+    }
+    
+    .account-nav {
+      list-style: none;
+      padding: 0;
+    }
+    
+    .account-nav li {
+      margin-bottom: 8px;
+    }
+    
+    .account-nav a {
+      display: block;
+      padding: 12px 16px;
+      color: var(--text-color);
+      text-decoration: none;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: var(--transition);
+      border-left: 2px solid transparent;
+    }
+    
+    .account-nav a:hover,
+    .account-nav a.active {
+      background: var(--bg-light);
+      border-left-color: var(--text-color);
+    }
+    
+    .account-content {
+      background: var(--bg-color);
+      border: 1px solid var(--border-color);
+      padding: 40px;
+    }
+    
+    .account-section {
+      display: none;
+    }
+    
+    .account-section.active {
+      display: block;
+    }
+    
+    .account-section h3 {
+      font-size: 24px;
+      margin-bottom: 24px;
+      font-weight: 400;
+    }
+    
+    .info-card {
+      background: var(--bg-light);
+      padding: 24px;
+      margin-bottom: 24px;
+      border: 1px solid var(--border-color);
+    }
+    
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .info-row:last-child {
+      border-bottom: none;
+    }
+    
+    .info-label {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-light);
+    }
+    
+    .info-value {
+      font-size: 15px;
+      color: var(--text-color);
+    }
+    
+    .subscription-status {
+      display: inline-block;
+      padding: 6px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-radius: 2px;
+    }
+    
+    .subscription-status.active {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+    
+    .subscription-status.inactive {
+      background: #ffebee;
+      color: #c62828;
+    }
+    
+    .form-group {
+      margin-bottom: 24px;
+    }
+    
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+      color: var(--text-color);
+    }
+    
+    .form-group input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid var(--border-color);
+      font-size: 15px;
+      font-family: 'DM Sans', sans-serif;
+      transition: var(--transition);
+      background: var(--bg-color);
+    }
+    
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--text-color);
+    }
+    
+    .form-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 32px;
+    }
+    
+    .subscription-card {
+      background: var(--bg-light);
+      padding: 32px;
+      text-align: center;
+      border: 1px solid var(--border-color);
+      margin-bottom: 24px;
+    }
+    
+    .subscription-card h4 {
+      font-size: 20px;
+      margin-bottom: 16px;
+      font-weight: 400;
+    }
+    
+    .subscription-card .price {
+      font-size: 36px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    .subscription-card .period {
+      color: var(--text-light);
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+    
+    .orders-list {
+      list-style: none;
+      padding: 0;
+    }
+    
+    .order-item {
+      background: var(--bg-light);
+      padding: 20px;
+      margin-bottom: 16px;
+      border: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .order-info h4 {
+      font-size: 16px;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+    
+    .order-info p {
+      font-size: 14px;
+      color: var(--text-light);
+      margin: 4px 0;
+    }
+    
+    .order-status {
+      padding: 6px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      background: var(--bg-color);
+      border: 1px solid var(--border-color);
+    }
+    
+    .logout-btn {
+      margin-top: 32px;
+      width: 100%;
+    }
+    
+    @media (max-width: 768px) {
+      .account-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      
+      .account-sidebar {
+        position: relative;
+        top: 0;
+      }
+      
+      .account-content {
+        padding: 24px;
+      }
+      
+      .account-header h2 {
+        font-size: 32px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Saltar al contenido</a>
+  
+  <header>
+    <div class="container">
+      <h1 class="logo"><a href="index.html" style="text-decoration: none; color: inherit;">tartbytati</a></h1>
+      <nav>
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="productos.html">Productos</a></li>
+          <li><a href="subscription.html">Suscripción</a></li>
+          <li><a href="about.html">Sobre Nosotros</a></li>
+          <li><a href="contact.html">Contacto</a></li>
+        </ul>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 16px;">
+        <a href="account.html" style="text-decoration: none; color: var(--text-color); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; font-weight: 500;">
+          Mi Cuenta
+        </a>
+        <button id="cart-toggle" class="cart-button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <span id="cart-count" class="cart-count hidden">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+  
+  <!-- Floating Cart -->
+  <div id="floating-cart" class="floating-cart">
+    <div class="cart-header">
+      <h3>Tu Cesta</h3>
+      <button id="close-cart" class="close-cart">✕</button>
+    </div>
+    <div class="cart-body">
+      <div id="cart-items" class="cart-items-list">
+        <p class="empty-cart">Tu cesta está vacía</p>
+      </div>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Total:</span>
+        <span id="cart-total-price" class="total-price">0,00 €</span>
+      </div>
+      <button id="clear-cart" class="btn btn-secondary btn-full">Vaciar cesta</button>
+      <a href="#contacto" id="order-cart" class="btn btn-primary btn-full">Hacer pedido (<span id="cart-total-items">0</span>)</a>
+    </div>
+  </div>
+  
+  <!-- Cart Overlay -->
+  <div id="cart-overlay" class="cart-overlay"></div>
+  
+  <main id="main-content">
+    <section class="account-page">
+      <div class="container">
+        <div class="account-header">
+          <h2>mi cuenta</h2>
+          <p id="user-welcome">Bienvenida de vuelta</p>
+        </div>
+        
+        <div class="account-container">
+          <div class="account-grid">
+            <aside class="account-sidebar">
+              <ul class="account-nav">
+                <li><a href="#overview" class="nav-link active" data-section="overview">Resumen</a></li>
+                <li><a href="#subscription" class="nav-link" data-section="subscription">Suscripción</a></li>
+                <li><a href="#orders" class="nav-link" data-section="orders">Mis Pedidos</a></li>
+                <li><a href="#settings" class="nav-link" data-section="settings">Configuración</a></li>
+              </ul>
+              <button class="btn btn-secondary logout-btn" id="logout-btn">Cerrar Sesión</button>
+            </aside>
+            
+            <div class="account-content">
+              <!-- Overview Section -->
+              <div id="overview" class="account-section active">
+                <h3>Resumen de tu cuenta</h3>
+                
+                <div class="info-card">
+                  <div class="info-row">
+                    <span class="info-label">Nombre</span>
+                    <span class="info-value" id="user-name">-</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="info-label">Email</span>
+                    <span class="info-value" id="user-email">-</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="info-label">Estado de Suscripción</span>
+                    <span class="subscription-status inactive" id="subscription-status">Inactiva</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="info-label">Pedidos Realizados</span>
+                    <span class="info-value">0</span>
+                  </div>
+                </div>
+                
+                <a href="#subscription" class="btn btn-primary" onclick="switchSection('subscription')">Ver Planes de Suscripción</a>
+              </div>
+              
+              <!-- Subscription Section -->
+              <div id="subscription" class="account-section">
+                <h3>Tu Suscripción</h3>
+                
+                <div class="subscription-card">
+                  <h4>Estado Actual</h4>
+                  <p class="subscription-status inactive" id="sub-status-detail">No tienes una suscripción activa</p>
+                  <p style="margin-top: 16px; color: var(--text-light); font-size: 14px;">Suscríbete para acceder a todas nuestras recetas exclusivas</p>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px;">
+                  <div class="subscription-card">
+                    <h4>Mensual</h4>
+                    <div class="price">2,99€</div>
+                    <p class="period">por mes</p>
+                    <a href="checkout.html?plan=monthly" class="btn btn-primary btn-full">Suscribirme</a>
+                  </div>
+                  
+                  <div class="subscription-card" style="border: 2px solid var(--text-color);">
+                    <span style="display: inline-block; background: var(--text-color); color: white; padding: 4px 12px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px;">Más Popular</span>
+                    <h4>Anual</h4>
+                    <div class="price">20€</div>
+                    <p class="period">por año</p>
+                    <a href="checkout.html?plan=annual" class="btn btn-primary btn-full">Suscribirme</a>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Orders Section -->
+              <div id="orders" class="account-section">
+                <h3>Mis Pedidos</h3>
+                
+                <ul class="orders-list">
+                  <li style="text-align: center; padding: 40px; color: var(--text-light);">
+                    Aún no has realizado ningún pedido
+                  </li>
+                </ul>
+                
+                <a href="productos.html" class="btn btn-primary">Ver Productos</a>
+              </div>
+              
+              <!-- Settings Section -->
+              <div id="settings" class="account-section">
+                <h3>Configuración de la Cuenta</h3>
+                
+                <form id="settings-form">
+                  <div class="form-group">
+                    <label for="settings-name">Nombre Completo</label>
+                    <input type="text" id="settings-name" name="name" required />
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="settings-email">Email</label>
+                    <input type="email" id="settings-email" name="email" required />
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="settings-phone">Teléfono (opcional)</label>
+                    <input type="tel" id="settings-phone" name="phone" placeholder="+34 600 000 000" />
+                  </div>
+                  
+                  <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    <button type="button" class="btn btn-secondary" onclick="loadUserData()">Cancelar</button>
+                  </div>
+                </form>
+                
+                <hr style="margin: 40px 0; border: none; border-top: 1px solid var(--border-color);" />
+                
+                <h3 style="margin-bottom: 24px;">Cambiar Contraseña</h3>
+                
+                <form id="password-form">
+                  <div class="form-group">
+                    <label for="current-password">Contraseña Actual</label>
+                    <input type="password" id="current-password" name="current-password" required />
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="new-password">Nueva Contraseña</label>
+                    <input type="password" id="new-password" name="new-password" required minlength="6" />
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="confirm-password">Confirmar Nueva Contraseña</label>
+                    <input type="password" id="confirm-password" name="confirm-password" required minlength="6" />
+                  </div>
+                  
+                  <button type="submit" class="btn btn-primary">Actualizar Contraseña</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+  <footer id="contacto">
+    <div class="container">
+      <p>Síguenos en <a href="https://instagram.com/tartbytati" target="_blank" rel="noopener noreferrer">Instagram</a> · Contáctanos por <a href="https://wa.me/34691738933" target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
+      <p class="copyright">&copy; 2025 tartbytati. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+  
+  <script src="js/script.js" defer></script>
+  <script>
+    // Check if user is logged in
+    function checkAuth() {
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (!user) {
+        window.location.href = 'login.html';
+        return null;
+      }
+      return user;
+    }
+    
+    // Load user data
+    function loadUserData() {
+      const user = checkAuth();
+      if (!user) return;
+      
+      document.getElementById('user-welcome').textContent = `Bienvenida de vuelta, ${user.name}`;
+      document.getElementById('user-name').textContent = user.name;
+      document.getElementById('user-email').textContent = user.email;
+      document.getElementById('settings-name').value = user.name;
+      document.getElementById('settings-email').value = user.email;
+      
+      if (user.subscribed) {
+        document.getElementById('subscription-status').textContent = 'Activa';
+        document.getElementById('subscription-status').classList.remove('inactive');
+        document.getElementById('subscription-status').classList.add('active');
+        document.getElementById('sub-status-detail').textContent = 'Suscripción Activa';
+        document.getElementById('sub-status-detail').classList.remove('inactive');
+        document.getElementById('sub-status-detail').classList.add('active');
+      }
+    }
+    
+    // Section navigation
+    function switchSection(sectionId) {
+      document.querySelectorAll('.account-section').forEach(section => {
+        section.classList.remove('active');
+      });
+      document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+      });
+      
+      document.getElementById(sectionId).classList.add('active');
+      document.querySelector(`[data-section="${sectionId}"]`).classList.add('active');
+    }
+    
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const section = this.dataset.section;
+        switchSection(section);
+      });
+    });
+    
+    // Settings form submission
+    document.getElementById('settings-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const user = JSON.parse(localStorage.getItem('user'));
+      user.name = document.getElementById('settings-name').value;
+      user.email = document.getElementById('settings-email').value;
+      user.phone = document.getElementById('settings-phone').value;
+      
+      localStorage.setItem('user', JSON.stringify(user));
+      
+      alert('Cambios guardados exitosamente');
+      loadUserData();
+    });
+    
+    // Password form submission
+    document.getElementById('password-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const newPassword = document.getElementById('new-password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+      
+      if (newPassword !== confirmPassword) {
+        alert('Las contraseñas no coinciden');
+        return;
+      }
+      
+      alert('Contraseña actualizada exitosamente');
+      this.reset();
+    });
+    
+    // Logout
+    document.getElementById('logout-btn').addEventListener('click', function() {
+      if (confirm('¿Estás segura de que quieres cerrar sesión?')) {
+        localStorage.removeItem('user');
+        window.location.href = 'index.html';
+      }
+    });
+    
+    // Initialize
+    loadUserData();
+  </script>
+</body>
+</html>

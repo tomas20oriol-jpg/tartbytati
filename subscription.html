@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Suscripción - tartbytati</title>
+  <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/cookies.css" />
+  <style>
+    .subscription-hero {
+      background: var(--bg-color);
+      padding: 100px 0 80px;
+      text-align: center;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .subscription-hero h2 {
+      font-size: 48px;
+      color: var(--text-color);
+      margin-bottom: 16px;
+      font-weight: 400;
+    }
+    
+    .subscription-intro {
+      max-width: 700px;
+      margin: 0 auto 60px;
+      text-align: center;
+      font-size: 16px;
+      color: var(--text-color);
+      line-height: 1.8;
+      padding: 0 20px;
+    }
+    
+    .subscription-section {
+      padding: 80px 0;
+    }
+    
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 40px;
+      max-width: 1000px;
+      margin: 0 auto 80px;
+    }
+    
+    .pricing-card {
+      background: var(--bg-color);
+      border: 1px solid var(--border-color);
+      padding: 60px 40px;
+      text-align: center;
+      transition: var(--transition);
+      position: relative;
+    }
+    
+    .pricing-card.featured {
+      border: 2px solid var(--text-color);
+      transform: scale(1.05);
+    }
+    
+    .pricing-card:hover {
+      border-color: var(--text-color);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    }
+    
+    .pricing-badge {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--text-color);
+      color: white;
+      padding: 6px 20px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .pricing-card h3 {
+      font-size: 28px;
+      margin-bottom: 16px;
+      font-weight: 400;
+    }
+    
+    .pricing-price {
+      font-size: 48px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text-color);
+    }
+    
+    .pricing-price span {
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--text-light);
+    }
+    
+    .pricing-period {
+      font-size: 14px;
+      color: var(--text-light);
+      margin-bottom: 32px;
+    }
+    
+    .pricing-features {
+      list-style: none;
+      padding: 0;
+      margin: 32px 0;
+      text-align: left;
+    }
+    
+    .pricing-features li {
+      padding: 12px 0;
+      font-size: 14px;
+      color: var(--text-color);
+      border-bottom: 1px solid var(--bg-light);
+    }
+    
+    .pricing-features li:last-child {
+      border-bottom: none;
+    }
+    
+    .pricing-features li::before {
+      content: "✓ ";
+      margin-right: 12px;
+      font-weight: 600;
+    }
+    
+    .recipes-preview {
+      background: var(--bg-light);
+      padding: 80px 0;
+      margin-top: 80px;
+      border-top: 1px solid var(--border-color);
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .recipes-preview h3 {
+      font-size: 32px;
+      text-align: center;
+      margin-bottom: 16px;
+      font-weight: 400;
+    }
+    
+    .recipes-preview-subtitle {
+      text-align: center;
+      color: var(--text-light);
+      font-size: 15px;
+      margin-bottom: 60px;
+    }
+    
+    .recipes-preview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .recipe-preview-card {
+      text-align: center;
+    }
+    
+    .recipe-preview-image {
+      width: 100%;
+      height: 280px;
+      background: var(--bg-color);
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+    
+    .recipe-preview-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: var(--transition);
+    }
+    
+    .recipe-preview-card:hover .recipe-preview-image img {
+      transform: scale(1.05);
+    }
+    
+    .recipe-preview-card h4 {
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--text-color);
+    }
+    
+    .faq-section {
+      max-width: 800px;
+      margin: 80px auto 0;
+      padding: 0 20px;
+    }
+    
+    .faq-section h3 {
+      font-size: 32px;
+      text-align: center;
+      margin-bottom: 60px;
+      font-weight: 400;
+    }
+    
+    .faq-item {
+      margin-bottom: 32px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .faq-item:last-child {
+      border-bottom: none;
+    }
+    
+    .faq-question {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: var(--text-color);
+    }
+    
+    .faq-answer {
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--text-light);
+    }
+    
+    @media (max-width: 768px) {
+      .pricing-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .pricing-card.featured {
+        transform: scale(1);
+      }
+      
+      .subscription-hero h2 {
+        font-size: 32px;
+      }
+      
+      .recipes-preview-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Saltar al contenido</a>
+  
+  <header>
+    <div class="container">
+      <h1 class="logo">tartbytati</h1>
+      <nav>
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="productos.html">Productos</a></li>
+          <li><a href="subscription.html" class="active" aria-current="page">Suscripción</a></li>
+          <li><a href="about.html">Sobre Nosotros</a></li>
+          <li><a href="contact.html">Contacto</a></li>
+        </ul>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 20px;">
+        <a href="login.html" id="login-link" style="text-decoration: none; color: var(--text-color); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; font-weight: 500; transition: var(--transition);">
+          Log In
+        </a>
+        <button id="cart-toggle" class="cart-button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <span id="cart-count" class="cart-count hidden">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+  
+  <!-- Floating Cart -->
+  <div id="floating-cart" class="floating-cart">
+    <div class="cart-header">
+      <h3>Tu Cesta</h3>
+      <button id="close-cart" class="close-cart">✕</button>
+    </div>
+    <div class="cart-body">
+      <div id="cart-items" class="cart-items-list">
+        <p class="empty-cart">Tu cesta está vacía</p>
+      </div>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Total:</span>
+        <span id="cart-total-price" class="total-price">0,00 €</span>
+      </div>
+      <button id="clear-cart" class="btn btn-secondary btn-full">Vaciar cesta</button>
+      <a href="#contacto" id="order-cart" class="btn btn-primary btn-full">Hacer pedido (<span id="cart-total-items">0</span>)</a>
+    </div>
+  </div>
+  
+  <!-- Cart Overlay -->
+  <div id="cart-overlay" class="cart-overlay"></div>
+  
+  <main id="main-content">
+    <section class="subscription-hero">
+      <div class="container">
+        <h2>subscription</h2>
+        <p class="lead">Acceso ilimitado a todas nuestras recetas probadas</p>
+      </div>
+    </section>
+    
+    <section class="subscription-section">
+      <div class="container">
+        <div class="subscription-intro">
+          <p>Únete a nuestra comunidad y accede a todas las recetas que hemos perfeccionado con el tiempo. Cada receta incluye instrucciones detalladas, tips profesionales y fotos del proceso para que consigas resultados perfectos en casa.</p>
+        </div>
+        
+        <div class="pricing-grid">
+          <div class="pricing-card">
+            <h3>Mensual</h3>
+            <div class="pricing-price">2,99€ <span>/mes</span></div>
+            <p class="pricing-period">Facturación mensual</p>
+            <ul class="pricing-features">
+              <li>Acceso a todas las recetas</li>
+              <li>Nuevas recetas cada mes</li>
+              <li>Instrucciones paso a paso</li>
+              <li>Tips profesionales</li>
+              <li>Fotos del proceso</li>
+              <li>Soporte por email</li>
+              <li>Cancela cuando quieras</li>
+            </ul>
+            <a href="contact.html" class="btn btn-primary btn-full">Suscribirme</a>
+          </div>
+          
+          <div class="pricing-card featured">
+            <div class="pricing-badge">Más Popular</div>
+            <h3>Anual</h3>
+            <div class="pricing-price">20€ <span>/año</span></div>
+            <p class="pricing-period">Ahorra 15,88€ al año</p>
+            <ul class="pricing-features">
+              <li>Acceso a todas las recetas</li>
+              <li>Nuevas recetas cada mes</li>
+              <li>Instrucciones paso a paso</li>
+              <li>Tips profesionales</li>
+              <li>Fotos del proceso</li>
+              <li>Soporte prioritario</li>
+              <li>Descuentos en productos</li>
+              <li>Contenido exclusivo</li>
+            </ul>
+            <a href="contact.html" class="btn btn-primary btn-full">Suscribirme</a>
+          </div>
+        </div>
+        
+        <div class="recipes-preview">
+          <div class="container">
+            <h3>Recetas Disponibles</h3>
+            <p class="recipes-preview-subtitle">Más de 25 recetas y sumando cada mes</p>
+            
+            <div class="recipes-preview-grid">
+              <div class="recipe-preview-card">
+                <div class="recipe-preview-image">
+                  <img src="assets/images/cookie-red-velvet.jpg" alt="Cookie Red Velvet" />
+                </div>
+                <h4>Cookie Red Velvet</h4>
+              </div>
+              
+              <div class="recipe-preview-card">
+                <div class="recipe-preview-image">
+                  <img src="assets/images/cookie-churro.jpg" alt="Cookie de Churro" />
+                </div>
+                <h4>Cookie de Churro</h4>
+              </div>
+              
+              <div class="recipe-preview-card">
+                <div class="recipe-preview-image">
+                  <img src="assets/images/cookie-lotus.jpg" alt="Cookie Lotus" />
+                </div>
+                <h4>Cookie Lotus</h4>
+              </div>
+              
+              <div class="recipe-preview-card">
+                <div class="recipe-preview-image">
+                  <img src="assets/images/brownie-clasico.jpg" alt="Brownie Clásico" />
+                </div>
+                <h4>Brownie Clásico</h4>
+              </div>
+              
+              <div class="recipe-preview-card">
+                <div class="recipe-preview-image">
+                  <img src="assets/images/brookie-clasico.jpg" alt="Brookie Clásico" />
+                </div>
+                <h4>Brookie Clásico</h4>
+              </div>
+              
+              <div class="recipe-preview-card">
+                <div class="recipe-preview-image">
+                  <img src="assets/images/cookie-red-velvet.jpg" alt="Y muchas más..." />
+                </div>
+                <h4>Y muchas más...</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="faq-section">
+          <h3>Preguntas Frecuentes</h3>
+          
+          <div class="faq-item">
+            <div class="faq-question">¿Cómo funciona la suscripción?</div>
+            <div class="faq-answer">Una vez te suscribes, recibirás acceso inmediato a todas nuestras recetas en formato PDF. Cada mes añadimos nuevas recetas que estarán disponibles automáticamente para ti.</div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">¿Puedo cancelar en cualquier momento?</div>
+            <div class="faq-answer">Sí, puedes cancelar tu suscripción en cualquier momento. No hay compromisos ni penalizaciones. Mantendrás el acceso hasta el final de tu período de facturación.</div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">¿Cómo recibo las recetas?</div>
+            <div class="faq-answer">Las recetas se envían en formato PDF a tu correo electrónico. También tendrás acceso a un área privada donde podrás descargar todas las recetas disponibles.</div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">¿Qué incluye cada receta?</div>
+            <div class="faq-answer">Cada receta incluye lista completa de ingredientes, instrucciones paso a paso con fotos, tips profesionales para conseguir el mejor resultado, información nutricional y sugerencias de presentación.</div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">¿Hay descuentos para suscriptores?</div>
+            <div class="faq-answer">Sí, los suscriptores anuales reciben un 10% de descuento en todos nuestros productos físicos y acceso anticipado a nuevos lanzamientos.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+  <footer id="contacto">
+    <div class="container">
+      <p>Síguenos en <a href="https://instagram.com/tartbytati" target="_blank" rel="noopener noreferrer">Instagram</a> · Contáctanos por <a href="https://wa.me/34691738933" target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
+      <p class="copyright">&copy; 2025 tartbytati. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+  
+  <script src="js/script.js" defer></script>
+  <script src="js/cookies.js" defer></script>
+  <script>
+    // Check if user is logged in and update nav
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
+      document.getElementById('login-link').href = 'account.html';
+      document.getElementById('login-link').textContent = 'Mi Cuenta';
+    }
+  </script>
+</body>
+</html>

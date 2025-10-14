@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cookie Red Velvet - tartbytati</title>
+  <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .product-detail {
+      padding: 80px 0;
+    }
+    
+    .product-detail-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    
+    .product-detail-image {
+      width: 100%;
+      position: sticky;
+      top: 100px;
+    }
+    
+    .product-detail-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    
+    .product-detail-info h1 {
+      font-size: 40px;
+      margin-bottom: 16px;
+      font-weight: 400;
+    }
+    
+    .product-detail-price {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 32px;
+      color: var(--text-color);
+    }
+    
+    .product-detail-description {
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--text-color);
+      margin-bottom: 32px;
+    }
+    
+    .product-detail-features {
+      margin-bottom: 40px;
+    }
+    
+    .product-detail-features h3 {
+      font-size: 18px;
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+    
+    .product-detail-features ul {
+      list-style: none;
+      padding: 0;
+    }
+    
+    .product-detail-features li {
+      padding: 8px 0;
+      font-size: 14px;
+      color: var(--text-light);
+    }
+    
+    .product-detail-features li::before {
+      content: "• ";
+      margin-right: 8px;
+    }
+    
+    .product-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    
+    .quantity-selector {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    
+    .quantity-selector label {
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .quantity-input {
+      display: flex;
+      align-items: center;
+      border: 1px solid var(--border-color);
+    }
+    
+    .quantity-input button {
+      background: transparent;
+      border: none;
+      padding: 12px 16px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: var(--transition);
+    }
+    
+    .quantity-input button:hover {
+      background: var(--bg-light);
+    }
+    
+    .quantity-input input {
+      border: none;
+      width: 60px;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 600;
+      padding: 12px 0;
+    }
+    
+    .back-link {
+      display: inline-block;
+      margin-bottom: 40px;
+      color: var(--text-light);
+      text-decoration: none;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: var(--transition);
+    }
+    
+    .back-link:hover {
+      color: var(--text-color);
+    }
+    
+    @media (max-width: 768px) {
+      .product-detail-container {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      
+      .product-detail-image {
+        position: relative;
+        top: 0;
+      }
+      
+      .product-detail-info h1 {
+        font-size: 32px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Saltar al contenido</a>
+  
+  <header>
+    <div class="container">
+      <h1 class="logo">tartbytati</h1>
+      <nav>
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="productos.html" class="active" aria-current="page">Productos</a></li>
+          <li><a href="subscription.html">Suscripción</a></li>
+          <li><a href="about.html">Sobre Nosotros</a></li>
+          <li><a href="contact.html">Contacto</a></li>
+        </ul>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 20px;">
+        <a href="login.html" id="login-link" style="text-decoration: none; color: var(--text-color); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; font-weight: 500; transition: var(--transition);">
+          Log In
+        </a>
+        <button id="cart-toggle" class="cart-button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <span id="cart-count" class="cart-count">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+  
+  <!-- Floating Cart -->
+  <div id="floating-cart" class="floating-cart">
+    <div class="cart-header">
+      <h3>Tu Cesta</h3>
+      <button id="close-cart" class="close-cart">✕</button>
+    </div>
+    <div class="cart-body">
+      <div id="cart-items" class="cart-items-list">
+        <p class="empty-cart">Tu cesta está vacía</p>
+      </div>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Total:</span>
+        <span id="cart-total-price" class="total-price">0,00 €</span>
+      </div>
+      <button id="clear-cart" class="btn btn-secondary btn-full">Vaciar cesta</button>
+      <a href="#contacto" id="order-cart" class="btn btn-primary btn-full">Hacer pedido (<span id="cart-total-items">0</span>)</a>
+    </div>
+  </div>
+  
+  <!-- Cart Overlay -->
+  <div id="cart-overlay" class="cart-overlay"></div>
+  
+  <main id="main-content">
+    <section class="product-detail">
+      <div class="container">
+        <a href="productos.html" class="back-link">← Volver a productos</a>
+        
+        <div class="product-detail-container">
+          <div class="product-detail-image">
+            <img src="assets/images/cookie-red-velvet.jpg" alt="Cookie Red Velvet" />
+          </div>
+          
+          <div class="product-detail-info">
+            <h1>Cookie Red Velvet</h1>
+            <p class="product-detail-price">3,00 €</p>
+            
+            <div class="product-detail-description">
+              <p>Nuestra Cookie Red Velvet es una delicia irresistible con su característico color rojo y su suave textura aterciopelada. Elaborada con cacao de calidad y generosos chips de chocolate blanco, cada bocado es una experiencia única.</p>
+              
+              <p>Perfecta para acompañar tu café o como un capricho dulce en cualquier momento del día. Su textura es crujiente por fuera y suave por dentro, con el equilibrio perfecto entre el sabor del red velvet y el dulzor del chocolate blanco.</p>
+            </div>
+            
+            <div class="product-detail-features">
+              <h3>Características</h3>
+              <ul>
+                <li>Peso aproximado: 80-90g por cookie</li>
+                <li>Ingredientes: Harina, mantequilla, azúcar, huevos, cacao, chips de chocolate blanco, colorante alimentario</li>
+                <li>Conservación: 5-7 días en recipiente hermético</li>
+                <li>Alérgenos: Gluten, lácteos, huevo</li>
+              </ul>
+            </div>
+            
+            <div class="product-actions">
+              <div class="quantity-selector">
+                <label>Cantidad:</label>
+                <div class="quantity-input">
+                  <button type="button" id="decrease-qty">−</button>
+                  <input type="number" id="product-quantity" value="1" min="1" max="50" readonly />
+                  <button type="button" id="increase-qty">+</button>
+                </div>
+              </div>
+              
+              <button class="btn btn-primary btn-full" id="add-to-cart-detail" data-product="Cookie Red Velvet" data-price="3.00">
+                Añadir a la cesta
+              </button>
+              
+              <a href="contact.html" class="btn btn-secondary btn-full">
+                Consultar personalización
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+  <footer id="contacto">
+    <div class="container">
+      <p>Síguenos en <a href="https://instagram.com/tartbytati" target="_blank" rel="noopener noreferrer">Instagram</a> · Contáctanos por <a href="https://wa.me/34691738933" target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
+      <p class="copyright">&copy; 2025 tartbytati. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+  
+  <script src="js/script.js" defer></script>
+  <script>
+    // Check if user is logged in and update nav
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
+      document.getElementById('login-link').href = 'account.html';
+      document.getElementById('login-link').textContent = 'Mi Cuenta';
+    }
+  </script>
+  <script>
+    // Quantity selector functionality
+    document.getElementById('decrease-qty').addEventListener('click', function() {
+      const input = document.getElementById('product-quantity');
+      const currentValue = parseInt(input.value);
+      if (currentValue > 1) {
+        input.value = currentValue - 1;
+      }
+    });
+    
+    document.getElementById('increase-qty').addEventListener('click', function() {
+      const input = document.getElementById('product-quantity');
+      const currentValue = parseInt(input.value);
+      if (currentValue < 50) {
+        input.value = currentValue + 1;
+      }
+    });
+    
+    // Add to cart with quantity
+    document.getElementById('add-to-cart-detail').addEventListener('click', function() {
+      const quantity = parseInt(document.getElementById('product-quantity').value);
+      const productName = this.dataset.product;
+      const productPrice = parseFloat(this.dataset.price);
+      
+      // Add multiple items to cart
+      for (let i = 0; i < quantity; i++) {
+        // Trigger the existing add to cart functionality
+        const event = new CustomEvent('addToCart', {
+          detail: { name: productName, price: productPrice }
+        });
+        document.dispatchEvent(event);
+      }
+      
+      // Show feedback
+      const originalText = this.textContent;
+      this.textContent = '✓ Añadido a la cesta';
+      setTimeout(() => {
+        this.textContent = originalText;
+      }, 2000);
+    });
+  </script>
+</body>
+</html>

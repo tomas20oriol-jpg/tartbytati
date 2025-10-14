@@ -17,19 +17,24 @@
         <ul>
           <li><a href="index.html">Inicio</a></li>
           <li><a href="productos.html">Productos</a></li>
-          <li><a href="recetas.html">Recetas</a></li>
+          <li><a href="subscription.html">Suscripción</a></li>
           <li><a href="about.html" class="active" aria-current="page">Sobre Nosotros</a></li>
           <li><a href="contact.html">Contacto</a></li>
         </ul>
       </nav>
-      <button id="cart-toggle" class="cart-button">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-          <line x1="3" y1="6" x2="21" y2="6"></line>
-          <path d="M16 10a4 4 0 0 1-8 0"></path>
-        </svg>
-        <span id="cart-count" class="cart-count hidden">0</span>
-      </button>
+      <div style="display: flex; align-items: center; gap: 20px;">
+        <a href="login.html" id="login-link" style="text-decoration: none; color: var(--text-color); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; font-weight: 500; transition: var(--transition);">
+          Log In
+        </a>
+        <button id="cart-toggle" class="cart-button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <span id="cart-count" class="cart-count hidden">0</span>
+        </button>
+      </div>
     </div>
   </header>
   
@@ -60,7 +65,7 @@
   <main id="main-content">
     <section class="about-hero">
       <div class="container">
-        <h2>Sobre Nosotros</h2>
+        <h2>sobre nosotros</h2>
         <p class="lead">Pasión por la repostería artesanal</p>
       </div>
     </section>
@@ -91,5 +96,13 @@
   </footer>
   
   <script src="js/script.js" defer></script>
+  <script>
+    // Check if user is logged in and update nav
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
+      document.getElementById('login-link').href = 'account.html';
+      document.getElementById('login-link').textContent = 'Mi Cuenta';
+    }
+  </script>
 </body>
 </html>

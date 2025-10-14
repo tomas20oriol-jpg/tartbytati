@@ -207,7 +207,7 @@ function initUnifiedCart() {
     });
   }
   
-  // Order button - Send directly to WhatsApp
+  // Order button - Redirect to checkout
   if (orderCartBtn) {
     orderCartBtn.addEventListener('click', function(e) {
       e.preventDefault();
@@ -217,11 +217,11 @@ function initUnifiedCart() {
         return;
       }
       
-      // Create WhatsApp message and open directly
-      const message = createOrderMessage();
-      const whatsappUrl = `https://wa.me/34691738933?text=${encodeURIComponent(message)}`;
-      window.open(whatsappUrl, '_blank');
-      toggleCart();
+      // Save cart with new key for checkout page
+      localStorage.setItem('cart', JSON.stringify(cart));
+      
+      // Redirect to checkout
+      window.location.href = 'checkout-cart.html';
     });
   }
   

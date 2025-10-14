@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iniciar Sesión - tartbytati</title>
+  <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .auth-page {
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 20px;
+    }
+    
+    .auth-container {
+      max-width: 450px;
+      width: 100%;
+      background: var(--bg-color);
+      border: 1px solid var(--border-color);
+      padding: 60px 50px;
+    }
+    
+    .auth-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    .auth-header h2 {
+      font-size: 32px;
+      margin-bottom: 12px;
+      font-weight: 400;
+    }
+    
+    .auth-header p {
+      color: var(--text-light);
+      font-size: 14px;
+    }
+    
+    .auth-tabs {
+      display: flex;
+      gap: 0;
+      margin-bottom: 40px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .auth-tab {
+      flex: 1;
+      padding: 16px;
+      background: transparent;
+      border: none;
+      font-size: 14px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      color: var(--text-light);
+      border-bottom: 2px solid transparent;
+      transition: var(--transition);
+    }
+    
+    .auth-tab.active {
+      color: var(--text-color);
+      border-bottom-color: var(--text-color);
+    }
+    
+    .auth-form {
+      display: none;
+    }
+    
+    .auth-form.active {
+      display: block;
+    }
+    
+    .form-group {
+      margin-bottom: 24px;
+    }
+    
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+      color: var(--text-color);
+    }
+    
+    .form-group input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid var(--border-color);
+      font-size: 15px;
+      font-family: 'DM Sans', sans-serif;
+      transition: var(--transition);
+      background: var(--bg-color);
+    }
+    
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--text-color);
+    }
+    
+    .form-checkbox {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+    
+    .form-checkbox input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+    
+    .form-checkbox label {
+      font-size: 14px;
+      color: var(--text-color);
+      cursor: pointer;
+    }
+    
+    .form-links {
+      text-align: center;
+      margin-top: 24px;
+    }
+    
+    .form-links a {
+      color: var(--text-color);
+      text-decoration: none;
+      font-size: 14px;
+      transition: var(--transition);
+    }
+    
+    .form-links a:hover {
+      color: var(--text-light);
+    }
+    
+    .divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      margin: 32px 0;
+      color: var(--text-light);
+      font-size: 13px;
+    }
+    
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .divider span {
+      padding: 0 16px;
+    }
+    
+    .social-login {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    .social-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 14px 24px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-color);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+      color: var(--text-color);
+    }
+    
+    .social-btn:hover {
+      background: var(--bg-light);
+      border-color: var(--text-color);
+    }
+    
+    .error-message {
+      background: #fee;
+      border: 1px solid #fcc;
+      color: #c33;
+      padding: 12px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      display: none;
+    }
+    
+    .success-message {
+      background: #efe;
+      border: 1px solid #cfc;
+      color: #3c3;
+      padding: 12px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      display: none;
+    }
+    
+    @media (max-width: 768px) {
+      .auth-container {
+        padding: 40px 30px;
+      }
+      
+      .auth-header h2 {
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Saltar al contenido</a>
+  
+  <header>
+    <div class="container">
+      <h1 class="logo"><a href="index.html" style="text-decoration: none; color: inherit;">tartbytati</a></h1>
+      <nav>
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="productos.html">Productos</a></li>
+          <li><a href="subscription.html">Suscripción</a></li>
+          <li><a href="about.html">Sobre Nosotros</a></li>
+          <li><a href="contact.html">Contacto</a></li>
+        </ul>
+      </nav>
+      <button id="cart-toggle" class="cart-button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <path d="M16 10a4 4 0 0 1-8 0"></path>
+        </svg>
+        <span id="cart-count" class="cart-count hidden">0</span>
+      </button>
+    </div>
+  </header>
+  
+  <!-- Floating Cart -->
+  <div id="floating-cart" class="floating-cart">
+    <div class="cart-header">
+      <h3>Tu Cesta</h3>
+      <button id="close-cart" class="close-cart">✕</button>
+    </div>
+    <div class="cart-body">
+      <div id="cart-items" class="cart-items-list">
+        <p class="empty-cart">Tu cesta está vacía</p>
+      </div>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Total:</span>
+        <span id="cart-total-price" class="total-price">0,00 €</span>
+      </div>
+      <button id="clear-cart" class="btn btn-secondary btn-full">Vaciar cesta</button>
+      <a href="#contacto" id="order-cart" class="btn btn-primary btn-full">Hacer pedido (<span id="cart-total-items">0</span>)</a>
+    </div>
+  </div>
+  
+  <!-- Cart Overlay -->
+  <div id="cart-overlay" class="cart-overlay"></div>
+  
+  <main id="main-content">
+    <section class="auth-page">
+      <div class="auth-container">
+        <div class="auth-header">
+          <h2>bienvenida</h2>
+          <p>Accede a tu cuenta o crea una nueva</p>
+        </div>
+        
+        <div class="auth-tabs">
+          <button class="auth-tab active" data-tab="login">Iniciar Sesión</button>
+          <button class="auth-tab" data-tab="register">Registrarse</button>
+        </div>
+        
+        <!-- Login Form -->
+        <form id="login-form" class="auth-form active">
+          <div class="error-message" id="login-error"></div>
+          <div class="success-message" id="login-success"></div>
+          
+          <div class="form-group">
+            <label for="login-email">Email</label>
+            <input type="email" id="login-email" name="email" required placeholder="tu@email.com" />
+          </div>
+          
+          <div class="form-group">
+            <label for="login-password">Contraseña</label>
+            <input type="password" id="login-password" name="password" required placeholder="••••••••" />
+          </div>
+          
+          <div class="form-checkbox">
+            <input type="checkbox" id="remember-me" name="remember" />
+            <label for="remember-me">Recordarme</label>
+          </div>
+          
+          <button type="submit" class="btn btn-primary btn-full">Iniciar Sesión</button>
+          
+          <div class="form-links">
+            <a href="#forgot-password">¿Olvidaste tu contraseña?</a>
+          </div>
+        </form>
+        
+        <!-- Register Form -->
+        <form id="register-form" class="auth-form">
+          <div class="error-message" id="register-error"></div>
+          <div class="success-message" id="register-success"></div>
+          
+          <div class="form-group">
+            <label for="register-name">Nombre Completo</label>
+            <input type="text" id="register-name" name="name" required placeholder="Tu nombre" />
+          </div>
+          
+          <div class="form-group">
+            <label for="register-email">Email</label>
+            <input type="email" id="register-email" name="email" required placeholder="tu@email.com" />
+          </div>
+          
+          <div class="form-group">
+            <label for="register-password">Contraseña</label>
+            <input type="password" id="register-password" name="password" required placeholder="••••••••" minlength="6" />
+          </div>
+          
+          <div class="form-group">
+            <label for="register-password-confirm">Confirmar Contraseña</label>
+            <input type="password" id="register-password-confirm" name="password-confirm" required placeholder="••••••••" minlength="6" />
+          </div>
+          
+          <div class="form-checkbox">
+            <input type="checkbox" id="accept-terms" name="terms" required />
+            <label for="accept-terms">Acepto los <a href="#terms" style="text-decoration: underline;">términos y condiciones</a></label>
+          </div>
+          
+          <button type="submit" class="btn btn-primary btn-full">Crear Cuenta</button>
+        </form>
+        
+        <div class="divider">
+          <span>o continúa con</span>
+        </div>
+        
+        <div class="social-login">
+          <button class="social-btn" id="google-login">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z" fill="#4285F4"/>
+              <path d="M9.003 18c2.43 0 4.467-.806 5.956-2.18L12.05 13.56c-.806.54-1.836.86-3.047.86-2.344 0-4.328-1.584-5.036-3.711H.96v2.332C2.44 15.983 5.485 18 9.003 18z" fill="#34A853"/>
+              <path d="M3.964 10.712c-.18-.54-.282-1.117-.282-1.71 0-.593.102-1.17.282-1.71V4.96H.957C.347 6.175 0 7.55 0 9.002c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
+              <path d="M9.003 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.464.891 11.426 0 9.003 0 5.485 0 2.44 2.017.96 4.958L3.967 7.29c.708-2.127 2.692-3.71 5.036-3.71z" fill="#EA4335"/>
+            </svg>
+            Google
+          </button>
+          
+          <button class="social-btn" id="facebook-login">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="#1877F2">
+              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+            </svg>
+            Facebook
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+  <footer id="contacto">
+    <div class="container">
+      <p>Síguenos en <a href="https://instagram.com/tartbytati" target="_blank" rel="noopener noreferrer">Instagram</a> · Contáctanos por <a href="https://wa.me/34691738933" target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
+      <p class="copyright">&copy; 2025 tartbytati. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+  
+  <script src="js/script.js" defer></script>
+  <script>
+    // Tab switching
+    document.querySelectorAll('.auth-tab').forEach(tab => {
+      tab.addEventListener('click', function() {
+        const targetTab = this.dataset.tab;
+        
+        // Update active tab
+        document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+        
+        // Show corresponding form
+        document.querySelectorAll('.auth-form').forEach(form => form.classList.remove('active'));
+        document.getElementById(targetTab + '-form').classList.add('active');
+      });
+    });
+    
+    // Login form submission
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+      const remember = document.getElementById('remember-me').checked;
+      
+      // Simulate login (replace with actual API call)
+      const user = {
+        email: email,
+        name: email.split('@')[0],
+        subscribed: false
+      };
+      
+      localStorage.setItem('user', JSON.stringify(user));
+      if (remember) {
+        localStorage.setItem('rememberMe', 'true');
+      }
+      
+      // Show success and redirect
+      document.getElementById('login-success').textContent = 'Iniciando sesión...';
+      document.getElementById('login-success').style.display = 'block';
+      
+      setTimeout(() => {
+        window.location.href = 'account.html';
+      }, 1000);
+    });
+    
+    // Register form submission
+    document.getElementById('register-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const name = document.getElementById('register-name').value;
+      const email = document.getElementById('register-email').value;
+      const password = document.getElementById('register-password').value;
+      const passwordConfirm = document.getElementById('register-password-confirm').value;
+      
+      // Validate passwords match
+      if (password !== passwordConfirm) {
+        document.getElementById('register-error').textContent = 'Las contraseñas no coinciden';
+        document.getElementById('register-error').style.display = 'block';
+        return;
+      }
+      
+      // Simulate registration (replace with actual API call)
+      const user = {
+        name: name,
+        email: email,
+        subscribed: false
+      };
+      
+      localStorage.setItem('user', JSON.stringify(user));
+      
+      // Show success and redirect
+      document.getElementById('register-success').textContent = 'Cuenta creada exitosamente. Redirigiendo...';
+      document.getElementById('register-success').style.display = 'block';
+      
+      setTimeout(() => {
+        window.location.href = 'account.html';
+      }, 1500);
+    });
+    
+    // Social login buttons
+    document.getElementById('google-login').addEventListener('click', function() {
+      alert('Integración con Google en desarrollo. Por favor usa el formulario de registro.');
+    });
+    
+    document.getElementById('facebook-login').addEventListener('click', function() {
+      alert('Integración con Facebook en desarrollo. Por favor usa el formulario de registro.');
+    });
+  </script>
+</body>
+</html>

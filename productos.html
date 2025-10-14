@@ -6,6 +6,7 @@
   <title>Productos - tartbytati</title>
   <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg" />
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/cookies.css" />
 </head>
 <body>
   <a href="#main-content" class="skip-link">Saltar al contenido</a>
@@ -17,19 +18,24 @@
         <ul>
           <li><a href="index.html">Inicio</a></li>
           <li><a href="productos.html" class="active" aria-current="page">Productos</a></li>
-          <li><a href="recetas.html">Recetas</a></li>
+          <li><a href="subscription.html">Suscripción</a></li>
           <li><a href="about.html">Sobre Nosotros</a></li>
           <li><a href="contact.html">Contacto</a></li>
         </ul>
       </nav>
-      <button id="cart-toggle" class="cart-button">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-          <line x1="3" y1="6" x2="21" y2="6"></line>
-          <path d="M16 10a4 4 0 0 1-8 0"></path>
-        </svg>
-        <span id="cart-count" class="cart-count">0</span>
-      </button>
+      <div style="display: flex; align-items: center; gap: 20px;">
+        <a href="login.html" id="login-link" style="text-decoration: none; color: var(--text-color); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; font-weight: 500; transition: var(--transition);">
+          Log In
+        </a>
+        <button id="cart-toggle" class="cart-button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <span id="cart-count" class="cart-count">0</span>
+        </button>
+      </div>
     </div>
   </header>
   
@@ -60,7 +66,7 @@
   <main id="main-content">
     <section class="products-hero">
       <div class="container">
-        <h2>Nuestros Productos</h2>
+        <h2>productos</h2>
         <p class="lead">Dulces artesanales hechos con amor</p>
       </div>
     </section>
@@ -75,38 +81,50 @@
           
           <div class="products-grid">
             <div class="product-card">
-              <div class="product-image">
-                <img src="assets/images/cookie-red-velvet.jpg" alt="Cookie Red Velvet" />
-              </div>
-              <div class="product-info">
-                <h4>Cookie Red Velvet</h4>
-                <p class="product-description">Suave textura con chips de chocolate blanco</p>
-                <p class="product-price">3,00 €</p>
-                <button class="btn btn-small btn-add-to-box" data-product="Cookie Red Velvet" data-price="3.00">Añadir a caja</button>
-              </div>
-            </div>
-            
-            <div class="product-card">
-              <div class="product-image">
-                <img src="assets/images/cookie-churro.jpg" alt="Cookie de Churro" />
-              </div>
-              <div class="product-info">
-                <h4>Cookie de Churro</h4>
-                <p class="product-description">Con canela y azúcar, sabor a churro</p>
-                <p class="product-price">3,00 €</p>
-                <button class="btn btn-small btn-add-to-box" data-product="Cookie de Churro" data-price="3.00">Añadir a caja</button>
+              <a href="producto-detalle.html" style="text-decoration: none; color: inherit;">
+                <div class="product-image">
+                  <img src="assets/images/cookie-red-velvet.jpg" alt="Cookie Red Velvet" />
+                </div>
+                <div class="product-info">
+                  <h4>Cookie Red Velvet</h4>
+                  <p class="product-description">Suave textura con chips de chocolate blanco</p>
+                  <p class="product-price">3,00 €</p>
+                </div>
+              </a>
+              <div style="padding: 0 32px 32px;">
+                <button class="btn btn-small btn-add-to-box btn-full" data-product="Cookie Red Velvet" data-price="3.00">Añadir a caja</button>
               </div>
             </div>
             
             <div class="product-card">
-              <div class="product-image">
-                <img src="assets/images/cookie-lotus.jpg" alt="Cookie Lotus" />
+              <a href="producto-detalle.html" style="text-decoration: none; color: inherit;">
+                <div class="product-image">
+                  <img src="assets/images/cookie-churro.jpg" alt="Cookie de Churro" />
+                </div>
+                <div class="product-info">
+                  <h4>Cookie de Churro</h4>
+                  <p class="product-description">Con canela y azúcar, sabor a churro</p>
+                  <p class="product-price">3,00 €</p>
+                </div>
+              </a>
+              <div style="padding: 0 32px 32px;">
+                <button class="btn btn-small btn-add-to-box btn-full" data-product="Cookie de Churro" data-price="3.00">Añadir a caja</button>
               </div>
-              <div class="product-info">
-                <h4>Cookie Lotus</h4>
-                <p class="product-description">Con galletas Lotus Biscoff caramelizadas</p>
-                <p class="product-price">3,00 €</p>
-                <button class="btn btn-small btn-add-to-box" data-product="Cookie Lotus" data-price="3.00">Añadir a caja</button>
+            </div>
+            
+            <div class="product-card">
+              <a href="producto-detalle.html" style="text-decoration: none; color: inherit;">
+                <div class="product-image">
+                  <img src="assets/images/cookie-lotus.jpg" alt="Cookie Lotus" />
+                </div>
+                <div class="product-info">
+                  <h4>Cookie Lotus</h4>
+                  <p class="product-description">Con galletas Lotus Biscoff caramelizadas</p>
+                  <p class="product-price">3,00 €</p>
+                </div>
+              </a>
+              <div style="padding: 0 32px 32px;">
+                <button class="btn btn-small btn-add-to-box btn-full" data-product="Cookie Lotus" data-price="3.00">Añadir a caja</button>
               </div>
             </div>
           </div>
@@ -119,26 +137,34 @@
           
           <div class="products-grid">
             <div class="product-card">
-              <div class="product-image">
-                <img src="assets/images/brownie-clasico.jpg" alt="Brownie Clásico" />
-              </div>
-              <div class="product-info">
-                <h4>Brownie Clásico</h4>
-                <p class="product-description">Chocolate intenso y jugoso</p>
-                <p class="product-price">2,50 €</p>
-                <button class="btn btn-small btn-add-to-box" data-product="Brownie Clásico" data-price="2.50">Añadir a caja</button>
+              <a href="producto-detalle.html" style="text-decoration: none; color: inherit;">
+                <div class="product-image">
+                  <img src="assets/images/brownie-clasico.jpg" alt="Brownie Clásico" />
+                </div>
+                <div class="product-info">
+                  <h4>Brownie Clásico</h4>
+                  <p class="product-description">Chocolate intenso y jugoso</p>
+                  <p class="product-price">2,50 €</p>
+                </div>
+              </a>
+              <div style="padding: 0 32px 32px;">
+                <button class="btn btn-small btn-add-to-box btn-full" data-product="Brownie Clásico" data-price="2.50">Añadir a caja</button>
               </div>
             </div>
             
             <div class="product-card">
-              <div class="product-image">
-                <img src="assets/images/brookie-clasico.jpg" alt="Brookie Clásico" />
-              </div>
-              <div class="product-info">
-                <h4>Brookie Clásico</h4>
-                <p class="product-description">Mitad brownie, mitad cookie - lo mejor de ambos mundos</p>
-                <p class="product-price">3,50 €</p>
-                <button class="btn btn-small btn-add-to-box" data-product="Brookie Clásico" data-price="3.50">Añadir a caja</button>
+              <a href="producto-detalle.html" style="text-decoration: none; color: inherit;">
+                <div class="product-image">
+                  <img src="assets/images/brookie-clasico.jpg" alt="Brookie Clásico" />
+                </div>
+                <div class="product-info">
+                  <h4>Brookie Clásico</h4>
+                  <p class="product-description">Mitad brownie, mitad cookie - lo mejor de ambos mundos</p>
+                  <p class="product-price">3,50 €</p>
+                </div>
+              </a>
+              <div style="padding: 0 32px 32px;">
+                <button class="btn btn-small btn-add-to-box btn-full" data-product="Brookie Clásico" data-price="3.50">Añadir a caja</button>
               </div>
             </div>
           </div>
@@ -161,5 +187,14 @@
   </footer>
   
   <script src="js/script.js" defer></script>
+  <script src="js/cookies.js" defer></script>
+  <script>
+    // Check if user is logged in and update nav
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
+      document.getElementById('login-link').href = 'account.html';
+      document.getElementById('login-link').textContent = 'Mi Cuenta';
+    }
+  </script>
 </body>
 </html>

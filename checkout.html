@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pago - tartbytati</title>
+  <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .checkout-page {
+      padding: 80px 0;
+      min-height: 70vh;
+    }
+    
+    .checkout-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 60px;
+    }
+    
+    .checkout-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    
+    .checkout-header h2 {
+      font-size: 40px;
+      margin-bottom: 12px;
+      font-weight: 400;
+    }
+    
+    .checkout-header p {
+      color: var(--text-light);
+      font-size: 15px;
+    }
+    
+    .checkout-form {
+      background: var(--bg-color);
+      border: 1px solid var(--border-color);
+      padding: 40px;
+    }
+    
+    .checkout-form h3 {
+      font-size: 20px;
+      margin-bottom: 24px;
+      font-weight: 400;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .form-section {
+      margin-bottom: 40px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+      color: var(--text-color);
+    }
+    
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid var(--border-color);
+      font-size: 15px;
+      font-family: 'DM Sans', sans-serif;
+      transition: var(--transition);
+      background: var(--bg-color);
+    }
+    
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--text-color);
+    }
+    
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    
+    .payment-methods {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    
+    .payment-method {
+      padding: 16px;
+      border: 2px solid var(--border-color);
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      background: var(--bg-color);
+    }
+    
+    .payment-method:hover {
+      border-color: var(--text-color);
+    }
+    
+    .payment-method.active {
+      border-color: var(--text-color);
+      background: var(--bg-light);
+    }
+    
+    .payment-method svg {
+      height: 24px;
+      margin-bottom: 8px;
+    }
+    
+    .payment-method span {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .order-summary {
+      background: var(--bg-light);
+      border: 1px solid var(--border-color);
+      padding: 40px;
+      height: fit-content;
+      position: sticky;
+      top: 100px;
+    }
+    
+    .order-summary h3 {
+      font-size: 20px;
+      margin-bottom: 24px;
+      font-weight: 400;
+    }
+    
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .summary-item:last-child {
+      border-bottom: none;
+    }
+    
+    .summary-label {
+      font-size: 14px;
+      color: var(--text-color);
+    }
+    
+    .summary-value {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-color);
+    }
+    
+    .summary-total {
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 2px solid var(--text-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .summary-total .label {
+      font-size: 16px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .summary-total .value {
+      font-size: 28px;
+      font-weight: 600;
+    }
+    
+    .plan-badge {
+      display: inline-block;
+      background: var(--text-color);
+      color: white;
+      padding: 6px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+    
+    .security-note {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px;
+      background: var(--bg-light);
+      border: 1px solid var(--border-color);
+      margin-top: 24px;
+      font-size: 13px;
+      color: var(--text-light);
+    }
+    
+    .security-note svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+    
+    .form-checkbox {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin: 24px 0;
+    }
+    
+    .form-checkbox input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    
+    .form-checkbox label {
+      font-size: 14px;
+      color: var(--text-color);
+      cursor: pointer;
+      line-height: 1.6;
+    }
+    
+    @media (max-width: 768px) {
+      .checkout-container {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      
+      .order-summary {
+        position: relative;
+        top: 0;
+        order: -1;
+      }
+      
+      .checkout-form {
+        padding: 24px;
+      }
+      
+      .payment-methods {
+        grid-template-columns: 1fr;
+      }
+      
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      
+      .checkout-header h2 {
+        font-size: 32px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Saltar al contenido</a>
+  
+  <header>
+    <div class="container">
+      <h1 class="logo"><a href="index.html" style="text-decoration: none; color: inherit;">tartbytati</a></h1>
+      <nav>
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="productos.html">Productos</a></li>
+          <li><a href="subscription.html">Suscripción</a></li>
+          <li><a href="about.html">Sobre Nosotros</a></li>
+          <li><a href="contact.html">Contacto</a></li>
+        </ul>
+      </nav>
+      <button id="cart-toggle" class="cart-button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <path d="M16 10a4 4 0 0 1-8 0"></path>
+        </svg>
+        <span id="cart-count" class="cart-count hidden">0</span>
+      </button>
+    </div>
+  </header>
+  
+  <!-- Floating Cart -->
+  <div id="floating-cart" class="floating-cart">
+    <div class="cart-header">
+      <h3>Tu Cesta</h3>
+      <button id="close-cart" class="close-cart">✕</button>
+    </div>
+    <div class="cart-body">
+      <div id="cart-items" class="cart-items-list">
+        <p class="empty-cart">Tu cesta está vacía</p>
+      </div>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Total:</span>
+        <span id="cart-total-price" class="total-price">0,00 €</span>
+      </div>
+      <button id="clear-cart" class="btn btn-secondary btn-full">Vaciar cesta</button>
+      <a href="#contacto" id="order-cart" class="btn btn-primary btn-full">Hacer pedido (<span id="cart-total-items">0</span>)</a>
+    </div>
+  </div>
+  
+  <!-- Cart Overlay -->
+  <div id="cart-overlay" class="cart-overlay"></div>
+  
+  <main id="main-content">
+    <section class="checkout-page">
+      <div class="container">
+        <div class="checkout-header">
+          <h2>completar suscripción</h2>
+          <p>Estás a un paso de acceder a todas nuestras recetas</p>
+        </div>
+        
+        <div class="checkout-container">
+          <div class="checkout-form">
+            <form id="payment-form">
+              <!-- Personal Information -->
+              <div class="form-section">
+                <h3>Información Personal</h3>
+                
+                <div class="form-group">
+                  <label for="full-name">Nombre Completo</label>
+                  <input type="text" id="full-name" name="full-name" required />
+                </div>
+                
+                <div class="form-group">
+                  <label for="email">Email</label>
+                  <input type="email" id="email" name="email" required />
+                </div>
+                
+                <div class="form-group">
+                  <label for="phone">Teléfono</label>
+                  <input type="tel" id="phone" name="phone" placeholder="+34 600 000 000" />
+                </div>
+              </div>
+              
+              <!-- Payment Method -->
+              <div class="form-section">
+                <h3>Método de Pago</h3>
+                
+                <div class="payment-methods">
+                  <div class="payment-method active" data-method="card">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                      <line x1="1" y1="10" x2="23" y2="10"></line>
+                    </svg>
+                    <span>Tarjeta</span>
+                  </div>
+                  
+                  <div class="payment-method" data-method="paypal">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944 3.72a.77.77 0 0 1 .76-.633h7.2c3.426 0 5.756 1.716 5.756 5.087 0 3.74-2.67 6.24-6.63 6.24H9.596l-1.304 7.563a.641.641 0 0 1-.633.56h-.883zm2.264-13.13l-1.32 7.65h2.67c2.67 0 4.56-1.32 4.56-4.23 0-2.01-1.32-3.42-3.96-3.42h-1.95z"/>
+                    </svg>
+                    <span>PayPal</span>
+                  </div>
+                  
+                  <div class="payment-method" data-method="bizum">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.31-8.86c-1.77-.45-2.34-.94-2.34-1.67 0-.84.79-1.43 2.1-1.43 1.38 0 1.9.66 1.94 1.64h1.71c-.05-1.34-.87-2.57-2.49-2.97V5H10.9v1.69c-1.51.32-2.72 1.3-2.72 2.81 0 1.79 1.49 2.69 3.66 3.21 1.95.46 2.34 1.15 2.34 1.87 0 .53-.39 1.39-2.1 1.39-1.6 0-2.23-.72-2.32-1.64H8.04c.1 1.7 1.36 2.66 2.86 2.97V19h2.34v-1.67c1.52-.29 2.72-1.16 2.73-2.77-.01-2.2-1.9-2.96-3.66-3.42z"/>
+                    </svg>
+                    <span>Bizum</span>
+                  </div>
+                </div>
+                
+                <div id="card-details">
+                  <div class="form-group">
+                    <label for="card-number">Número de Tarjeta</label>
+                    <input type="text" id="card-number" name="card-number" placeholder="1234 5678 9012 3456" maxlength="19" />
+                  </div>
+                  
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="expiry">Fecha de Expiración</label>
+                      <input type="text" id="expiry" name="expiry" placeholder="MM/AA" maxlength="5" />
+                    </div>
+                    
+                    <div class="form-group">
+                      <label for="cvv">CVV</label>
+                      <input type="text" id="cvv" name="cvv" placeholder="123" maxlength="3" />
+                    </div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="cardholder">Nombre del Titular</label>
+                    <input type="text" id="cardholder" name="cardholder" placeholder="Como aparece en la tarjeta" />
+                  </div>
+                </div>
+                
+                <div id="paypal-details" style="display: none;">
+                  <p style="text-align: center; padding: 40px 20px; color: var(--text-light);">
+                    Serás redirigida a PayPal para completar el pago de forma segura.
+                  </p>
+                </div>
+                
+                <div id="bizum-details" style="display: none;">
+                  <div class="form-group">
+                    <label for="bizum-phone">Teléfono Bizum</label>
+                    <input type="tel" id="bizum-phone" name="bizum-phone" placeholder="+34 600 000 000" />
+                  </div>
+                  <p style="font-size: 13px; color: var(--text-light); margin-top: 12px;">
+                    Recibirás una notificación en tu app de Bizum para confirmar el pago.
+                  </p>
+                </div>
+              </div>
+              
+              <div class="form-checkbox">
+                <input type="checkbox" id="accept-terms" name="terms" required />
+                <label for="accept-terms">
+                  Acepto los <a href="#terms" style="text-decoration: underline;">términos y condiciones</a> y la <a href="#privacy" style="text-decoration: underline;">política de privacidad</a>. La suscripción se renovará automáticamente.
+                </label>
+              </div>
+              
+              <button type="submit" class="btn btn-primary btn-full">Completar Pago</button>
+              
+              <div class="security-note">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <span>Pago 100% seguro. Tus datos están protegidos con encriptación SSL.</span>
+              </div>
+            </form>
+          </div>
+          
+          <aside class="order-summary">
+            <span class="plan-badge" id="plan-badge">Plan Mensual</span>
+            <h3>Resumen del Pedido</h3>
+            
+            <div class="summary-item">
+              <span class="summary-label">Suscripción</span>
+              <span class="summary-value" id="plan-name">Plan Mensual</span>
+            </div>
+            
+            <div class="summary-item">
+              <span class="summary-label">Subtotal</span>
+              <span class="summary-value" id="subtotal">2,99€</span>
+            </div>
+            
+            <div class="summary-item">
+              <span class="summary-label">IVA (21%)</span>
+              <span class="summary-value" id="tax">0,63€</span>
+            </div>
+            
+            <div class="summary-total">
+              <span class="label">Total</span>
+              <span class="value" id="total">3,62€</span>
+            </div>
+            
+            <div style="margin-top: 32px; padding-top: 32px; border-top: 1px solid var(--border-color);">
+              <h4 style="font-size: 16px; margin-bottom: 16px; font-weight: 500;">Incluye:</h4>
+              <ul style="list-style: none; padding: 0; font-size: 14px; color: var(--text-light);">
+                <li style="padding: 6px 0; display: flex; align-items: center; gap: 8px;">
+                  <span style="color: var(--text-color);">✓</span> Acceso a todas las recetas
+                </li>
+                <li style="padding: 6px 0; display: flex; align-items: center; gap: 8px;">
+                  <span style="color: var(--text-color);">✓</span> Nuevas recetas cada mes
+                </li>
+                <li style="padding: 6px 0; display: flex; align-items: center; gap: 8px;">
+                  <span style="color: var(--text-color);">✓</span> Instrucciones detalladas
+                </li>
+                <li style="padding: 6px 0; display: flex; align-items: center; gap: 8px;">
+                  <span style="color: var(--text-color);">✓</span> Soporte por email
+                </li>
+                <li style="padding: 6px 0; display: flex; align-items: center; gap: 8px;">
+                  <span style="color: var(--text-color);">✓</span> Cancela cuando quieras
+                </li>
+              </ul>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+  <footer id="contacto">
+    <div class="container">
+      <p>Síguenos en <a href="https://instagram.com/tartbytati" target="_blank" rel="noopener noreferrer">Instagram</a> · Contáctanos por <a href="https://wa.me/34691738933" target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
+      <p class="copyright">&copy; 2025 tartbytati. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+  
+  <script src="js/script.js" defer></script>
+  <script>
+    // Get plan from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const plan = urlParams.get('plan') || 'monthly';
+    
+    // Plan pricing
+    const plans = {
+      monthly: {
+        name: 'Plan Mensual',
+        price: 2.99,
+        badge: 'Plan Mensual'
+      },
+      annual: {
+        name: 'Plan Anual',
+        price: 20.00,
+        badge: 'Plan Anual'
+      }
+    };
+    
+    // Update summary based on plan
+    function updateSummary() {
+      const selectedPlan = plans[plan];
+      const subtotal = selectedPlan.price;
+      const tax = subtotal * 0.21;
+      const total = subtotal + tax;
+      
+      document.getElementById('plan-badge').textContent = selectedPlan.badge;
+      document.getElementById('plan-name').textContent = selectedPlan.name;
+      document.getElementById('subtotal').textContent = subtotal.toFixed(2) + '€';
+      document.getElementById('tax').textContent = tax.toFixed(2) + '€';
+      document.getElementById('total').textContent = total.toFixed(2) + '€';
+    }
+    
+    // Load user data if logged in
+    function loadUserData() {
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (user) {
+        document.getElementById('full-name').value = user.name || '';
+        document.getElementById('email').value = user.email || '';
+      }
+    }
+    
+    // Payment method switching
+    document.querySelectorAll('.payment-method').forEach(method => {
+      method.addEventListener('click', function() {
+        document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('active'));
+        this.classList.add('active');
+        
+        const selectedMethod = this.dataset.method;
+        
+        document.getElementById('card-details').style.display = selectedMethod === 'card' ? 'block' : 'none';
+        document.getElementById('paypal-details').style.display = selectedMethod === 'paypal' ? 'block' : 'none';
+        document.getElementById('bizum-details').style.display = selectedMethod === 'bizum' ? 'block' : 'none';
+      });
+    });
+    
+    // Card number formatting
+    document.getElementById('card-number').addEventListener('input', function(e) {
+      let value = e.target.value.replace(/\s/g, '');
+      let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+      e.target.value = formattedValue;
+    });
+    
+    // Expiry date formatting
+    document.getElementById('expiry').addEventListener('input', function(e) {
+      let value = e.target.value.replace(/\D/g, '');
+      if (value.length >= 2) {
+        value = value.slice(0, 2) + '/' + value.slice(2, 4);
+      }
+      e.target.value = value;
+    });
+    
+    // Form submission with validation
+    document.getElementById('payment-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Get selected payment method
+      const selectedMethod = document.querySelector('.payment-method.active').dataset.method;
+      
+      // Validate required fields
+      const fullName = document.getElementById('full-name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const termsAccepted = document.getElementById('accept-terms').checked;
+      
+      if (!fullName || !email || !phone) {
+        alert('Por favor completa todos los campos obligatorios.');
+        return;
+      }
+      
+      if (!termsAccepted) {
+        alert('Debes aceptar los términos y condiciones para continuar.');
+        return;
+      }
+      
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        alert('Por favor introduce un email válido.');
+        return;
+      }
+      
+      // Validate payment method specific fields
+      if (selectedMethod === 'card') {
+        const cardNumber = document.getElementById('card-number').value.replace(/\s/g, '');
+        const expiry = document.getElementById('expiry').value;
+        const cvv = document.getElementById('cvv').value;
+        const cardholder = document.getElementById('cardholder').value.trim();
+        
+        if (!cardNumber || cardNumber.length < 13) {
+          alert('Por favor introduce un número de tarjeta válido.');
+          return;
+        }
+        
+        if (!expiry || expiry.length !== 5) {
+          alert('Por favor introduce una fecha de expiración válida (MM/AA).');
+          return;
+        }
+        
+        if (!cvv || cvv.length < 3) {
+          alert('Por favor introduce un CVV válido.');
+          return;
+        }
+        
+        if (!cardholder) {
+          alert('Por favor introduce el nombre del titular de la tarjeta.');
+          return;
+        }
+      } else if (selectedMethod === 'bizum') {
+        const bizumPhone = document.getElementById('bizum-phone').value.trim();
+        if (!bizumPhone) {
+          alert('Por favor introduce tu número de teléfono Bizum.');
+          return;
+        }
+      }
+      
+      // All validations passed - process payment
+      const btn = this.querySelector('button[type="submit"]');
+      const originalText = btn.textContent;
+      btn.textContent = 'Procesando pago...';
+      btn.disabled = true;
+      
+      setTimeout(() => {
+        // Update user subscription status
+        const user = JSON.parse(localStorage.getItem('user')) || {};
+        user.subscribed = true;
+        user.subscriptionPlan = plan;
+        user.subscriptionDate = new Date().toISOString();
+        user.subscriptionEndDate = plan === 'annual' 
+          ? new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString()
+          : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+        localStorage.setItem('user', JSON.stringify(user));
+        
+        // Redirect to success page or account
+        alert('¡Pago completado exitosamente! Bienvenida a la comunidad tartbytati.');
+        window.location.href = 'account.html';
+      }, 2000);
+    });
+    
+    // Initialize
+    updateSummary();
+    loadUserData();
+  </script>
+</body>
+</html>

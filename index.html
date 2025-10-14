@@ -6,6 +6,7 @@
   <title>tartbytati</title>
   <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg" />
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/cookies.css" />
 </head>
 <body>
   <a href="#main-content" class="skip-link">Saltar al contenido</a>
@@ -17,19 +18,24 @@
         <ul>
           <li><a href="index.html" class="active" aria-current="page">Inicio</a></li>
           <li><a href="productos.html">Productos</a></li>
-          <li><a href="recetas.html">Recetas</a></li>
+          <li><a href="subscription.html">Suscripción</a></li>
           <li><a href="about.html">Sobre Nosotros</a></li>
           <li><a href="contact.html">Contacto</a></li>
         </ul>
       </nav>
-      <button id="cart-toggle" class="cart-button">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-          <line x1="3" y1="6" x2="21" y2="6"></line>
-          <path d="M16 10a4 4 0 0 1-8 0"></path>
-        </svg>
-        <span id="cart-count" class="cart-count hidden">0</span>
-      </button>
+      <div style="display: flex; align-items: center; gap: 20px;">
+        <a href="login.html" id="login-link" style="text-decoration: none; color: var(--text-color); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; font-weight: 500; transition: var(--transition);">
+          Log In
+        </a>
+        <button id="cart-toggle" class="cart-button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <span id="cart-count" class="cart-count hidden">0</span>
+        </button>
+      </div>
     </div>
   </header>
   
@@ -60,9 +66,9 @@
   <main id="main-content">
     <section class="hero">
       <div class="container">
-      <h2>Dulces caseros, con amor</h2>
+        <h2>dulces caseros, con amor</h2>
         <p>Tartas y postres artesanales para tus momentos especiales</p>
-        <a href="productos.html" class="btn btn-primary">Haz tu pedido</a>
+        <a href="productos.html" class="btn btn-primary">Ver productos</a>
       </div>
     </section>
     
@@ -84,6 +90,68 @@
         </div>
       </div>
     </section>
+    
+    <!-- Featured Products Section -->
+    <section class="products-section" style="padding-top: 60px; padding-bottom: 60px; background: var(--bg-light);">
+      <div class="container">
+        <h2 style="font-size: 32px; text-align: center; margin-bottom: 16px; font-weight: 400;">nuestros productos</h2>
+        <p style="text-align: center; color: var(--text-light); font-size: 15px; margin-bottom: 60px;">Dulces artesanales hechos con amor</p>
+        
+        <div class="products-grid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 40px; max-width: 900px; margin: 0 auto 40px;">
+          <a href="producto-detalle.html" style="text-decoration: none; color: inherit;">
+            <div class="product-card">
+              <div class="product-image">
+                <img src="assets/images/cookie-red-velvet.jpg" alt="Cookie Red Velvet" />
+              </div>
+              <div class="product-info">
+                <h4>Cookie Red Velvet</h4>
+                <p class="product-description">Suave textura con chips de chocolate blanco</p>
+                <p class="product-price">3,00 €</p>
+              </div>
+            </div>
+          </a>
+          
+          <a href="producto-detalle.html" style="text-decoration: none; color: inherit;">
+            <div class="product-card">
+              <div class="product-image">
+                <img src="assets/images/cookie-churro.jpg" alt="Cookie de Churro" />
+              </div>
+              <div class="product-info">
+                <h4>Cookie de Churro</h4>
+                <p class="product-description">Con canela y azúcar, sabor a churro</p>
+                <p class="product-price">3,00 €</p>
+              </div>
+            </div>
+          </a>
+          
+          <a href="producto-detalle.html" style="text-decoration: none; color: inherit;">
+            <div class="product-card">
+              <div class="product-image">
+                <img src="assets/images/brownie-clasico.jpg" alt="Brownie Clásico" />
+              </div>
+              <div class="product-info">
+                <h4>Brownie Clásico</h4>
+                <p class="product-description">Chocolate intenso y jugoso</p>
+                <p class="product-price">2,50 €</p>
+              </div>
+            </div>
+          </a>
+        </div>
+        
+        <div style="text-align: center;">
+          <a href="productos.html" class="btn btn-secondary">Ver todos los productos</a>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Subscription CTA Section -->
+    <section style="padding: 80px 0; text-align: center;">
+      <div class="container">
+        <h2 style="font-size: 32px; margin-bottom: 16px; font-weight: 400;">aprende a hacerlos tú misma</h2>
+        <p style="color: var(--text-light); font-size: 15px; margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto;">Accede a todas nuestras recetas probadas con una suscripción mensual o anual. Nuevas recetas cada mes.</p>
+        <a href="subscription.html" class="btn btn-primary">Ver suscripción</a>
+      </div>
+    </section>
   </main>
   
   <footer id="contacto">
@@ -94,5 +162,14 @@
   </footer>
   
   <script src="js/script.js" defer></script>
+  <script src="js/cookies.js" defer></script>
+  <script>
+    // Check if user is logged in and update nav
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
+      document.getElementById('login-link').href = 'account.html';
+      document.getElementById('login-link').textContent = 'Mi Cuenta';
+    }
+  </script>
 </body>
 </html>

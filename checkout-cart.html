@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finalizar Pedido - tartbytati</title>
+  <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .checkout-page {
+      padding: 80px 0;
+      min-height: 70vh;
+    }
+    
+    .checkout-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 60px;
+    }
+    
+    .checkout-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    
+    .checkout-header h2 {
+      font-size: 40px;
+      margin-bottom: 12px;
+      font-weight: 400;
+    }
+    
+    .checkout-form {
+      background: var(--bg-color);
+      border: 1px solid var(--border-color);
+      padding: 40px;
+    }
+    
+    .checkout-form h3 {
+      font-size: 20px;
+      margin-bottom: 24px;
+      font-weight: 400;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .form-section {
+      margin-bottom: 40px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+      color: var(--text-color);
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid var(--border-color);
+      font-size: 15px;
+      font-family: 'DM Sans', sans-serif;
+      transition: var(--transition);
+      background: var(--bg-color);
+    }
+    
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--text-color);
+    }
+    
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    
+    .delivery-methods {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    
+    .delivery-method {
+      padding: 20px;
+      border: 2px solid var(--border-color);
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      background: var(--bg-color);
+    }
+    
+    .delivery-method:hover {
+      border-color: var(--text-color);
+    }
+    
+    .delivery-method.active {
+      border-color: var(--text-color);
+      background: var(--bg-light);
+    }
+    
+    .delivery-method h4 {
+      font-size: 16px;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+    
+    .delivery-method p {
+      font-size: 13px;
+      color: var(--text-light);
+    }
+    
+    .order-summary {
+      background: var(--bg-light);
+      border: 1px solid var(--border-color);
+      padding: 40px;
+      height: fit-content;
+      position: sticky;
+      top: 100px;
+    }
+    
+    .order-summary h3 {
+      font-size: 20px;
+      margin-bottom: 24px;
+      font-weight: 400;
+    }
+    
+    .summary-items {
+      max-height: 300px;
+      overflow-y: auto;
+      margin-bottom: 24px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      font-size: 14px;
+    }
+    
+    .summary-item-name {
+      flex: 1;
+    }
+    
+    .summary-item-qty {
+      color: var(--text-light);
+      margin: 0 12px;
+    }
+    
+    .summary-pricing {
+      border-top: 1px solid var(--border-color);
+      padding-top: 16px;
+    }
+    
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      font-size: 14px;
+    }
+    
+    .summary-total {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 2px solid var(--text-color);
+      display: flex;
+      justify-content: space-between;
+      font-size: 20px;
+      font-weight: 600;
+    }
+    
+    .empty-cart-message {
+      text-align: center;
+      padding: 60px 20px;
+    }
+    
+    .empty-cart-message h3 {
+      font-size: 24px;
+      margin-bottom: 16px;
+      font-weight: 400;
+    }
+    
+    @media (max-width: 768px) {
+      .checkout-container {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      
+      .order-summary {
+        position: relative;
+        top: 0;
+        order: -1;
+      }
+      
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      
+      .delivery-methods {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1 class="logo"><a href="index.html" style="text-decoration: none; color: inherit;">tartbytati</a></h1>
+      <nav>
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="productos.html">Productos</a></li>
+          <li><a href="subscription.html">Suscripción</a></li>
+          <li><a href="about.html">Sobre Nosotros</a></li>
+          <li><a href="contact.html">Contacto</a></li>
+        </ul>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 20px;">
+        <a href="login.html" id="login-link" style="text-decoration: none; color: var(--text-color); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; font-weight: 500;">
+          Log In
+        </a>
+        <button id="cart-toggle" class="cart-button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <span id="cart-count" class="cart-count hidden">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+  
+  <main id="main-content">
+    <section class="checkout-page">
+      <div class="container">
+        <div class="checkout-header">
+          <h2>finalizar pedido</h2>
+          <p>Completa tus datos para recibir tu pedido</p>
+        </div>
+        
+        <div id="empty-cart" class="empty-cart-message" style="display: none;">
+          <h3>Tu carrito está vacío</h3>
+          <p style="color: var(--text-light); margin-bottom: 32px;">Añade productos para continuar</p>
+          <a href="productos.html" class="btn btn-primary">Ver Productos</a>
+        </div>
+        
+        <div id="checkout-content" class="checkout-container">
+          <div class="checkout-form">
+            <form id="order-form">
+              <!-- Personal Information -->
+              <div class="form-section">
+                <h3>Información de Contacto</h3>
+                
+                <div class="form-group">
+                  <label for="full-name">Nombre Completo *</label>
+                  <input type="text" id="full-name" name="full-name" required />
+                </div>
+                
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" name="email" required />
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="phone">Teléfono *</label>
+                    <input type="tel" id="phone" name="phone" required placeholder="+34 600 000 000" />
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Delivery Method -->
+              <div class="form-section">
+                <h3>Método de Entrega</h3>
+                
+                <div class="delivery-methods">
+                  <div class="delivery-method active" data-method="pickup">
+                    <h4>Recogida en Tienda</h4>
+                    <p>Gratis</p>
+                  </div>
+                  
+                  <div class="delivery-method" data-method="delivery">
+                    <h4>Envío a Domicilio</h4>
+                    <p>5,00€</p>
+                  </div>
+                </div>
+                
+                <div id="delivery-address" style="display: none;">
+                  <div class="form-group">
+                    <label for="address">Dirección *</label>
+                    <input type="text" id="address" name="address" />
+                  </div>
+                  
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="city">Ciudad *</label>
+                      <input type="text" id="city" name="city" />
+                    </div>
+                    
+                    <div class="form-group">
+                      <label for="postal-code">Código Postal *</label>
+                      <input type="text" id="postal-code" name="postal-code" />
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="delivery-date">Fecha de Entrega/Recogida *</label>
+                  <input type="date" id="delivery-date" name="delivery-date" required />
+                </div>
+              </div>
+              
+              <!-- Notes -->
+              <div class="form-section">
+                <div class="form-group">
+                  <label for="notes">Notas del Pedido (opcional)</label>
+                  <textarea id="notes" name="notes" rows="3" placeholder="Alergias, preferencias, instrucciones especiales..."></textarea>
+                </div>
+              </div>
+              
+              <button type="submit" class="btn btn-primary btn-full">Confirmar Pedido</button>
+              
+              <p style="font-size: 13px; color: var(--text-light); margin-top: 16px; text-align: center;">
+                Tiempo de preparación: 48 horas de antelación mínimo
+              </p>
+            </form>
+          </div>
+          
+          <aside class="order-summary">
+            <h3>Resumen del Pedido</h3>
+            
+            <div class="summary-items" id="summary-items">
+              <!-- Items will be inserted here -->
+            </div>
+            
+            <div class="summary-pricing">
+              <div class="summary-row">
+                <span>Subtotal</span>
+                <span id="summary-subtotal">0,00€</span>
+              </div>
+              <div class="summary-row">
+                <span>Envío</span>
+                <span id="summary-shipping">Gratis</span>
+              </div>
+              <div class="summary-row">
+                <span>IVA (10%)</span>
+                <span id="summary-tax">0,00€</span>
+              </div>
+              
+              <div class="summary-total">
+                <span>Total</span>
+                <span id="summary-total">0,00€</span>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+  <footer id="contacto">
+    <div class="container">
+      <p>Síguenos en <a href="https://instagram.com/tartbytati" target="_blank" rel="noopener noreferrer">Instagram</a> · Contáctanos por <a href="https://wa.me/34691738933" target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
+      <p class="copyright">&copy; 2025 tartbytati. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+  
+  <script src="js/script.js" defer></script>
+  <script>
+    // Check if user is logged in
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
+      document.getElementById('login-link').href = 'account.html';
+      document.getElementById('login-link').textContent = 'Mi Cuenta';
+      
+      // Pre-fill form
+      document.getElementById('full-name').value = user.name || '';
+      document.getElementById('email').value = user.email || '';
+    }
+    
+    // Get cart from localStorage
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let deliveryMethod = 'pickup';
+    let shippingCost = 0;
+    
+    // Check if cart is empty
+    if (cart.length === 0) {
+      document.getElementById('empty-cart').style.display = 'block';
+      document.getElementById('checkout-content').style.display = 'none';
+    } else {
+      loadCartSummary();
+    }
+    
+    // Load cart summary
+    function loadCartSummary() {
+      const summaryItems = document.getElementById('summary-items');
+      summaryItems.innerHTML = '';
+      
+      let subtotal = 0;
+      
+      cart.forEach(item => {
+        const itemTotal = item.price * item.quantity;
+        subtotal += itemTotal;
+        
+        summaryItems.innerHTML += `
+          <div class="summary-item">
+            <span class="summary-item-name">${item.name}</span>
+            <span class="summary-item-qty">x${item.quantity}</span>
+            <span>${itemTotal.toFixed(2)}€</span>
+          </div>
+        `;
+      });
+      
+      updatePricing(subtotal);
+    }
+    
+    // Update pricing
+    function updatePricing(subtotal) {
+      const tax = subtotal * 0.10; // 10% IVA
+      const total = subtotal + shippingCost + tax;
+      
+      document.getElementById('summary-subtotal').textContent = subtotal.toFixed(2) + '€';
+      document.getElementById('summary-shipping').textContent = shippingCost === 0 ? 'Gratis' : shippingCost.toFixed(2) + '€';
+      document.getElementById('summary-tax').textContent = tax.toFixed(2) + '€';
+      document.getElementById('summary-total').textContent = total.toFixed(2) + '€';
+    }
+    
+    // Delivery method selection
+    document.querySelectorAll('.delivery-method').forEach(method => {
+      method.addEventListener('click', function() {
+        document.querySelectorAll('.delivery-method').forEach(m => m.classList.remove('active'));
+        this.classList.add('active');
+        
+        deliveryMethod = this.dataset.method;
+        const deliveryAddress = document.getElementById('delivery-address');
+        
+        if (deliveryMethod === 'delivery') {
+          deliveryAddress.style.display = 'block';
+          shippingCost = 5.00;
+          deliveryAddress.querySelectorAll('input').forEach(input => input.required = true);
+        } else {
+          deliveryAddress.style.display = 'none';
+          shippingCost = 0;
+          deliveryAddress.querySelectorAll('input').forEach(input => input.required = false);
+        }
+        
+        const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        updatePricing(subtotal);
+      });
+    });
+    
+    // Set minimum date (48 hours from now)
+    const deliveryDateInput = document.getElementById('delivery-date');
+    const minDate = new Date();
+    minDate.setDate(minDate.getDate() + 2);
+    deliveryDateInput.min = minDate.toISOString().split('T')[0];
+    
+    // Form submission
+    document.getElementById('order-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = {
+        customer: {
+          name: document.getElementById('full-name').value,
+          email: document.getElementById('email').value,
+          phone: document.getElementById('phone').value
+        },
+        deliveryMethod: deliveryMethod,
+        deliveryDate: document.getElementById('delivery-date').value,
+        notes: document.getElementById('notes').value,
+        items: cart,
+        pricing: {
+          subtotal: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0),
+          shipping: shippingCost,
+          tax: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) * 0.10,
+          total: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) + shippingCost + (cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) * 0.10)
+        }
+      };
+      
+      if (deliveryMethod === 'delivery') {
+        formData.address = {
+          street: document.getElementById('address').value,
+          city: document.getElementById('city').value,
+          postalCode: document.getElementById('postal-code').value
+        };
+      }
+      
+      // Save order
+      localStorage.setItem('pendingOrder', JSON.stringify(formData));
+      
+      // Show confirmation
+      alert('¡Pedido confirmado! Te contactaremos pronto para confirmar el pago y los detalles.');
+      
+      // Clear cart
+      localStorage.removeItem('cart');
+      
+      // Redirect to home
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>
