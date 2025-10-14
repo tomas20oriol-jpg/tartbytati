@@ -332,11 +332,20 @@
           </div>
           
           <div class="form-checkbox">
-            <input type="checkbox" id="accept-terms" name="terms" required />
-            <label for="accept-terms">Acepto los <a href="#terms" style="text-decoration: underline;">términos y condiciones</a></label>
+            <input type="checkbox" id="data-processing-consent" name="dataProcessingConsent" required />
+            <label for="data-processing-consent">Acepto el tratamiento de mis datos según la política de privacidad</label>
+          </div>
+
+          <div class="form-checkbox">
+            <input type="checkbox" id="marketing-consent" name="marketingConsent" />
+            <label for="marketing-consent">Acepto recibir ofertas y novedades por email</label>
           </div>
           
           <button type="submit" class="btn btn-primary btn-full">Crear Cuenta</button>
+          
+          <p class="text-xs mt-4 text-gray-500">
+            Al registrarte, aceptas nuestros <a href="#" class="underline">Términos de Servicio</a> y <a href="#" class="underline">Política de Privacidad</a>.
+          </p>
         </form>
         
         <div class="divider">
