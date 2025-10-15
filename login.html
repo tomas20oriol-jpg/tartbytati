@@ -382,92 +382,155 @@
   </footer>
   
   <script src="js/script.js" defer></script>
-  <script>
+  <script type="module">
+    // Import Firebase Auth functions
+    import {
+      loginWithEmail,
+      registerWithEmail,
+      loginWithGoogle,
+      loginWithFacebook,
+      initAuth,
+      logout
+    } from './js/firebase-auth.js';
+
+    // Initialize Firebase Auth
+    initAuth();
+
     // Tab switching
     document.querySelectorAll('.auth-tab').forEach(tab => {
       tab.addEventListener('click', function() {
         const targetTab = this.dataset.tab;
-        
+
         // Update active tab
         document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
         this.classList.add('active');
-        
+
         // Show corresponding form
         document.querySelectorAll('.auth-form').forEach(form => form.classList.remove('active'));
         document.getElementById(targetTab + '-form').classList.add('active');
       });
     });
-    
+
     // Login form submission
-    document.getElementById('login-form').addEventListener('submit', function(e) {
+    document.getElementById('login-form').addEventListener('submit', async function(e) {
       e.preventDefault();
-      
+
       const email = document.getElementById('login-email').value;
       const password = document.getElementById('login-password').value;
-      const remember = document.getElementById('remember-me').checked;
-      
-      // Simulate login (replace with actual API call)
-      const user = {
-        email: email,
-        name: email.split('@')[0],
-        subscribed: false
-      };
-      
-      localStorage.setItem('user', JSON.stringify(user));
-      if (remember) {
-        localStorage.setItem('rememberMe', 'true');
+      const errorDiv = document.getElementById('login-error');
+      const successDiv = document.getElementById('login-success');
+
+      // Clear previous messages
+      errorDiv.style.display = 'none';
+      successDiv.style.display = 'none';
+
+      // Show loading
+      successDiv.textContent = 'Iniciando sesión...';
+      successDiv.style.display = 'block';
+
+      // Attempt login
+      const result = await loginWithEmail(email, password);
+
+      if (result.success) {
+        // Redirect to account page
+        setTimeout(() => {
+          window.location.href = 'account.html';
+        }, 1000);
+      } else {
+        // Show error
+        errorDiv.textContent = result.error;
+        errorDiv.style.display = 'block';
+        successDiv.style.display = 'none';
       }
-      
-      // Show success and redirect
-      document.getElementById('login-success').textContent = 'Iniciando sesión...';
-      document.getElementById('login-success').style.display = 'block';
-      
-      setTimeout(() => {
-        window.location.href = 'account.html';
-      }, 1000);
     });
-    
+
     // Register form submission
-    document.getElementById('register-form').addEventListener('submit', function(e) {
+    document.getElementById('register-form').addEventListener('submit', async function(e) {
       e.preventDefault();
-      
+
       const name = document.getElementById('register-name').value;
       const email = document.getElementById('register-email').value;
       const password = document.getElementById('register-password').value;
       const passwordConfirm = document.getElementById('register-password-confirm').value;
-      
+      const errorDiv = document.getElementById('register-error');
+      const successDiv = document.getElementById('register-success');
+
+      // Clear previous messages
+      errorDiv.style.display = 'none';
+      successDiv.style.display = 'none';
+
       // Validate passwords match
       if (password !== passwordConfirm) {
-        document.getElementById('register-error').textContent = 'Las contraseñas no coinciden';
-        document.getElementById('register-error').style.display = 'block';
+        errorDiv.textContent = 'Las contraseñas no coinciden';
+        errorDiv.style.display = 'block';
         return;
       }
-      
-      // Simulate registration (replace with actual API call)
-      const user = {
-        name: name,
-        email: email,
-        subscribed: false
-      };
-      
-      localStorage.setItem('user', JSON.stringify(user));
-      
-      // Show success and redirect
-      document.getElementById('register-success').textContent = 'Cuenta creada exitosamente. Redirigiendo...';
-      document.getElementById('register-success').style.display = 'block';
-      
-      setTimeout(() => {
-        window.location.href = 'account.html';
-      }, 1500);
+
+      // Show loading
+      successDiv.textContent = 'Creando cuenta...';
+      successDiv.style.display = 'block';
+
+      // Attempt registration
+      const result = await registerWithEmail(name, email, password);
+
+      if (result.success) {
+        // Redirect to account page
+        setTimeout(() => {
+          window.location.href = 'account.html';
+        }, 1500);
+      } else {
+        // Show error
+        errorDiv.textContent = result.error;
+        errorDiv.style.display = 'block';
+        successDiv.style.display = 'none';
+      }
     });
-    
+
     // Social login buttons
-    document.getElementById('google-login').addEventListener('click', function() {
-      alert('Integración con Google en desarrollo. Por favor usa el formulario de registro.');
+    document.getElementById('google-login').addEventListener('click', async function() {
+      const errorDiv = document.getElementById('login-error');
+      const successDiv = document.getElementById('login-success');
+
+      errorDiv.style.display = 'none';
+      successDiv.style.display = 'none';
+
+      successDiv.textContent = 'Conectando con Google...';
+      successDiv.style.display = 'block';
+
+      const result = await loginWithGoogle();
+
+      if (result.success) {
+        setTimeout(() => {
+          window.location.href = 'account.html';
+        }, 1000);
+      } else {
+        errorDiv.textContent = result.error;
+        errorDiv.style.display = 'block';
+        successDiv.style.display = 'none';
+      }
     });
-    
-    document.getElementById('facebook-login').addEventListener('click', function() {
-      alert('Integración con Facebook en desarrollo. Por favor usa el formulario de registro.');
+
+    document.getElementById('facebook-login').addEventListener('click', async function() {
+      const errorDiv = document.getElementById('login-error');
+      const successDiv = document.getElementById('login-success');
+
+      errorDiv.style.display = 'none';
+      successDiv.style.display = 'none';
+
+      successDiv.textContent = 'Conectando con Facebook...';
+      successDiv.style.display = 'block';
+
+      const result = await loginWithFacebook();
+
+      if (result.success) {
+        setTimeout(() => {
+          window.location.href = 'account.html';
+        }, 1000);
+      } else {
+        errorDiv.textContent = result.error;
+        errorDiv.style.display = 'block';
+        successDiv.style.display = 'none';
+      }
     });
   </script>
 </body>

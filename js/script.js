@@ -4,21 +4,77 @@
 
 // Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
-  
+
+  // Initialize Firebase Auth (if available)
+  if (typeof window.firebaseAuth !== 'undefined') {
+    initFirebaseAuth();
+  }
+
   // Smooth scrolling for anchor links
   initSmoothScroll();
-  
+
   // Add active state to navigation
   highlightActiveNav();
-  
+
   // Add animation on scroll
   initScrollAnimations();
-  
+
   // Initialize unified cart
   initUnifiedCart();
-  
+
+  // Update auth UI
+  updateAuthUI();
+
   console.log('tartdesserts website loaded successfully!');
 });
+
+// Initialize Firebase Auth
+function initFirebaseAuth() {
+  // Import auth functions if available
+  if (window.firebaseAuth && window.firebaseDb) {
+    import('./firebase-auth.js').then(({ initAuth }) => {
+      initAuth();
+    }).catch(err => {
+      console.log('Firebase Auth not available on this page');
+    });
+  }
+}
+
+// Update authentication UI elements
+function updateAuthUI() {
+  const loginLink = document.getElementById('login-link');
+  const userMenu = document.getElementById('user-menu');
+  const userName = document.getElementById('user-name-display');
+
+  // Check if user is authenticated
+  const isLoggedIn = checkAuthStatus();
+
+  if (isLoggedIn && loginLink) {
+    // Hide login link, show user menu
+    if (loginLink) loginLink.style.display = 'none';
+
+    // Show user info if available
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user && userName) {
+      userName.textContent = user.name || 'Usuario';
+    }
+  } else {
+    // Show login link, hide user menu
+    if (loginLink) loginLink.style.display = 'inline';
+    if (userMenu) userMenu.style.display = 'none';
+  }
+}
+
+// Check authentication status
+function checkAuthStatus() {
+  // Check Firebase Auth state
+  if (typeof window.firebaseAuth !== 'undefined') {
+    return window.firebaseAuth.currentUser !== null;
+  }
+
+  // Fallback to localStorage
+  return localStorage.getItem('user') !== null;
+}
 
 // ===========================
 // Smooth Scroll Function
