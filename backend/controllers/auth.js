@@ -54,7 +54,7 @@ exports.register = async (req, res, next) => {
     // Send verification email
     const verificationUrl = `${process.env.CLIENT_URL}/verify-email/${verificationToken}`;
     const message = `
-      <h1>Bienvenida a tartbytati</h1>
+      <h1>Bienvenida a tartdesserts</h1>
       <p>Por favor verifica tu email haciendo clic en el siguiente enlace:</p>
       <a href="${verificationUrl}" target="_blank">Verificar Email</a>
       <p>Este enlace expira en 24 horas.</p>
@@ -63,7 +63,7 @@ exports.register = async (req, res, next) => {
     try {
       await sendEmail({
         email: user.email,
-        subject: 'Verifica tu email - tartbytati',
+        subject: 'Verifica tu email - tartdesserts',
         html: message
       });
     } catch (err) {
@@ -210,7 +210,7 @@ exports.forgotPassword = async (req, res, next) => {
     try {
       await sendEmail({
         email: user.email,
-        subject: 'Restablecer contraseña - tartbytati',
+        subject: 'Restablecer contraseña - tartdesserts',
         html: message
       });
       

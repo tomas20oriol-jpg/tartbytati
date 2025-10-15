@@ -5,7 +5,7 @@
 (function() {
   'use strict';
   
-  const COOKIE_NAME = 'tartbytati_cookie_consent';
+  const COOKIE_NAME = 'tartdesserts_cookie_consent';
   const COOKIE_EXPIRY_DAYS = 365;
   
   // Check if consent has already been given

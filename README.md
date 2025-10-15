@@ -1,10 +1,10 @@
-# tartbytati 🍰
+# tartdesserts 🍰
 
-Sitio web oficial de **tartbytati** - Dulces caseros hechos con amor.
+Sitio web oficial de **tartdesserts** - Dulces caseros hechos con amor.
 
 ## 📋 Descripción
 
-tartbytati es un negocio de repostería artesanal que ofrece tartas, postres y dulces caseros elaborados con ingredientes frescos y de calidad. Este sitio web presenta nuestros servicios y permite a los clientes contactarnos fácilmente para hacer pedidos personalizados.
+tartdesserts es un negocio de repostería artesanal que ofrece tartas, postres y dulces caseros elaborados con ingredientes frescos y de calidad. Este sitio web presenta nuestros servicios y permite a los clientes contactarnos fácilmente para hacer pedidos personalizados.
 
 ## 🚀 Características
 
@@ -18,7 +18,7 @@ tartbytati es un negocio de repostería artesanal que ofrece tartas, postres y d
 ## 📁 Estructura del Proyecto
 
 ```
-tartbytati/
+tartdesserts/
 ├── index.html          # Página principal
 ├── about.html          # Página sobre nosotros
 ├── contact.html        # Página de contacto
@@ -62,7 +62,7 @@ Luego abre `http://localhost:8000` en tu navegador.
 
 ## 📱 Contacto
 
-- **Instagram**: [@tartbytati](https://instagram.com/tartbytati)
+- **Instagram**: [@tartdesserts](https://instagram.com/tartdesserts)
 - **WhatsApp**: [+34 697 389 33](https://wa.me/3469738933)
 
 ## 📝 Tareas Pendientes
@@ -90,11 +90,11 @@ Este sitio es estático y puede desplegarse fácilmente en:
 1. Sube el proyecto a un repositorio de GitHub
 2. Ve a Settings → Pages
 3. Selecciona la rama `main` y carpeta `/root`
-4. Tu sitio estará disponible en `https://tuusuario.github.io/tartbytati`
+4. Tu sitio estará disponible en `https://tuusuario.github.io/tartdesserts`
 
 ## 📄 Licencia
 
-© 2025 tartbytati. Todos los derechos reservados.
+© 2025 tartdesserts. Todos los derechos reservados.
 
 ## 🤝 Contribuciones
 

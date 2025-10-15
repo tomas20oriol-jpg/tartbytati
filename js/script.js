@@ -1,5 +1,5 @@
 // ===========================
-// tartbytati - Main JavaScript
+// tartdesserts - Main JavaScript
 // ===========================
 
 // Wait for DOM to be fully loaded
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Initialize unified cart
   initUnifiedCart();
   
-  console.log('tartbytati website loaded successfully!');
+  console.log('tartdesserts website loaded successfully!');
 });
 
 // ===========================
@@ -144,7 +144,7 @@ function initUnifiedCart() {
   if (!floatingCart) return;
   
   // Initialize cart from localStorage
-  let cart = JSON.parse(localStorage.getItem('tartbytatiCart')) || [];
+  let cart = JSON.parse(localStorage.getItem('tartdessertsCart')) || [];
   
   // Get DOM elements
   const cartToggle = document.getElementById('cart-toggle');
@@ -171,7 +171,7 @@ function initUnifiedCart() {
   
   // Save cart to localStorage
   function saveCart() {
-    localStorage.setItem('tartbytatiCart', JSON.stringify(cart));
+    localStorage.setItem('tartdessertsCart', JSON.stringify(cart));
   }
   
   // Add product buttons (productos.html)

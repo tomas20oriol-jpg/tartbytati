@@ -12,13 +12,13 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:wght@400&display=swap');
 
 :root {
-  --primary-color: #000000;
-  --text-color: #000000;
-  --text-light: #666666;
+  --primary-color: #e91e63;
+  --text-color: #ad1457;
+  --text-light: #f48fb1;
   --bg-color: #ffffff;
-  --bg-light: #fafafa;
-  --border-color: #e5e5e5;
-  --accent-hover: #333333;
+  --bg-light: #fce4ec;
+  --border-color: #f8bbd9;
+  --accent-hover: #880e4f;
   --transition: all 0.3s ease;
   --transition-fast: all 0.15s ease;
 }
