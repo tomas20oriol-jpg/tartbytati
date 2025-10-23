@@ -102,16 +102,9 @@ header .container {
   padding-bottom: 24px;
 }
 
-.logo {
-  font-family: 'DM Serif Display', serif;
-  font-size: 24px;
-  font-weight: 400;
-  color: var(--text-color);
+.logo a {
   text-decoration: none;
-  letter-spacing: 0;
-  margin: 0;
-  flex-shrink: 0;
-  text-transform: lowercase;
+  color: inherit;
 }
 
 nav {

@@ -1,6 +1,6 @@
-# tartbytati Backend API
+# tartdesserts Backend API
 
-Backend seguro y compliant con todas las normativas legales para tartbytati.
+Backend seguro y compliant con todas las normativas legales para tartdesserts.
 
 ## 🔒 Características de Seguridad
 
@@ -251,7 +251,7 @@ NODE_ENV=production
 MONGODB_URI=mongodb+srv://...
 JWT_SECRET=clave_muy_segura_y_larga
 COOKIE_SECURE=true
-CORS_ORIGIN=https://www.tartbytati.com
+CORS_ORIGIN=https://www.tartdesserts.com
 ```
 
 ### Checklist de Producción
@@ -321,9 +321,9 @@ En producción: usar Winston o Morgan con archivos
 ## 🆘 Soporte
 
 Para problemas o preguntas:
-- Email: soporte@tartbytati.com
+- Email: soporte@tartdesserts.com
 - Issues: GitHub repository
 
 ## 📄 Licencia
 
-Propietario - tartbytati © 2025
+Propietario - tartdesserts © 2025
