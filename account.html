@@ -4,8 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mi Cuenta - tartdesserts</title>
-  <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg" />
-  <link rel="stylesheet" href="css/style.css" />
+  <!-- Firebase SDK v8 -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <style>
     .account-page {
       padding: 80px 0;
@@ -475,70 +477,59 @@
     </div>
   </footer>
   
-  <script type="module">
-    // Import Firebase Auth functions
-    import {
-      getCurrentUser,
-      isAuthenticated,
-      getUserSubscription,
-      logout,
-      loadUserProfile
-    } from './js/firebase-auth.js';
+  <script>
+    // Simple Firebase initialization and auth for account page
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCPE5bk4zESRhzts3xod2YqrUE09j8RfBQ",
+      authDomain: "tartdesserts-3b414.firebaseapp.com",
+      projectId: "tartdesserts-3b414",
+      storageBucket: "tartdesserts-3b414.firebasestorage.app",
+      messagingSenderId: "534807668671",
+      appId: "1:534807668671:web:c2ad9d868c1a930f86e30a",
+      measurementId: "G-CWFFD5JD20"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // Make Firebase available globally
+    window.firebaseAuth = auth;
+    window.firebaseDb = db;
+
+    console.log('Firebase initialized for account page');
 
     // Check authentication and redirect if not logged in
-    if (!isAuthenticated()) {
-      window.location.href = 'login.html';
-    }
-
-    const currentUser = getCurrentUser();
-
-    // Load user data from Firebase
-    async function loadUserData() {
-      if (!currentUser) {
+    auth.onAuthStateChanged(function(user) {
+      if (!user) {
         window.location.href = 'login.html';
         return;
       }
 
+      console.log('User authenticated:', user.email);
+      loadUserData(user);
+    });
+
+    // Load user data from Firebase/localStorage
+    async function loadUserData(user) {
       try {
-        // Load fresh user profile from Firestore
-        const userProfile = await loadUserProfile(currentUser.uid);
+        // Update UI with user data
+        document.getElementById('user-name').textContent = user.displayName || user.email.split('@')[0] || 'Usuario';
+        document.getElementById('user-email').textContent = user.email;
 
-        if (userProfile) {
-          // Update UI with real user data
-          document.getElementById('user-name').textContent = userProfile.name || 'Usuario';
-          document.getElementById('user-email').textContent = userProfile.email || currentUser.email;
+        // Update form fields
+        document.getElementById('settings-name').value = user.displayName || '';
+        document.getElementById('settings-email').value = user.email;
 
-          // Update form fields
-          document.getElementById('settings-name').value = userProfile.name || '';
-          document.getElementById('settings-email').value = userProfile.email || '';
+        // Load subscription status from localStorage
+        const userData = JSON.parse(localStorage.getItem('user') || '{}');
+        updateSubscriptionDisplay(userData.subscription);
 
-          // Update subscription status
-          updateSubscriptionDisplay(userProfile.subscription);
-
-          // Show user avatar if available
-          if (currentUser.photoURL) {
-            document.getElementById('user-avatar').src = currentUser.photoURL;
-            document.getElementById('user-avatar').style.display = 'block';
-          }
-        }
+        console.log('User data loaded successfully');
       } catch (error) {
         console.error('Error loading user data:', error);
-        // Fallback to localStorage if Firebase fails
-        loadUserDataFromStorage();
-      }
-    }
-
-    // Fallback function for localStorage (temporary)
-    function loadUserDataFromStorage() {
-      const user = JSON.parse(localStorage.getItem('user'));
-      if (user) {
-        document.getElementById('user-name').textContent = user.name || 'Usuario';
-        document.getElementById('user-email').textContent = user.email || 'usuario@email.com';
-
-        document.getElementById('settings-name').value = user.name || '';
-        document.getElementById('settings-email').value = user.email || '';
-
-        updateSubscriptionDisplay(user.subscription);
       }
     }
 
@@ -578,6 +569,7 @@
       document.querySelector(`[data-section="${sectionId}"]`).classList.add('active');
     }
 
+    // Event listeners
     document.querySelectorAll('.nav-link').forEach(link => {
       link.addEventListener('click', function(e) {
         e.preventDefault();
@@ -586,27 +578,32 @@
       });
     });
 
-    // Settings form submission (update Firestore)
+    // Settings form submission
     document.getElementById('settings-form').addEventListener('submit', async function(e) {
       e.preventDefault();
 
-      if (!currentUser) return;
-
       const newName = document.getElementById('settings-name').value;
-      const newEmail = document.getElementById('settings-email').value;
 
       try {
-        // Update in Firestore (you might need to implement this in firebase-auth.js)
-        // For now, just show success message
-        alert('Funcionalidad de actualización en desarrollo. Los cambios se guardarán automáticamente.');
-        loadUserData(); // Refresh data
+        // Update display name in Firebase Auth
+        await auth.currentUser.updateProfile({
+          displayName: newName
+        });
+
+        // Update localStorage
+        const userData = JSON.parse(localStorage.getItem('user') || '{}');
+        userData.name = newName;
+        localStorage.setItem('user', JSON.stringify(userData));
+
+        alert('Cambios guardados correctamente');
+        loadUserData(auth.currentUser);
       } catch (error) {
         console.error('Error updating profile:', error);
         alert('Error al guardar cambios. Inténtalo de nuevo.');
       }
     });
 
-    // Password form submission (update Firebase Auth)
+    // Password form submission
     document.getElementById('password-form').addEventListener('submit', async function(e) {
       e.preventDefault();
 
@@ -624,12 +621,12 @@
       }
 
       try {
-        // Update password in Firebase Auth (you might need to implement this)
-        alert('Funcionalidad de cambio de contraseña en desarrollo.');
+        await auth.currentUser.updatePassword(newPassword);
+        alert('Contraseña actualizada correctamente');
         this.reset();
       } catch (error) {
         console.error('Error updating password:', error);
-        alert('Error al cambiar contraseña. Inténtalo de nuevo.');
+        alert('Error al cambiar contraseña: ' + error.message);
       }
     });
 
@@ -637,19 +634,20 @@
     document.getElementById('logout-btn').addEventListener('click', async function() {
       if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
         try {
-          await logout();
+          await auth.signOut();
+          localStorage.removeItem('user');
           window.location.href = 'index.html';
         } catch (error) {
           console.error('Error during logout:', error);
-          // Fallback to redirect
           window.location.href = 'index.html';
         }
       }
     });
 
-    // Initialize
+    // Initialize when page loads
     document.addEventListener('DOMContentLoaded', function() {
-      loadUserData();
+      // Set default active section
+      switchSection('overview');
     });
   </script>
 </body>
