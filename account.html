@@ -478,20 +478,21 @@
   </footer>
   
   <script>
-    // Simple Firebase initialization and auth for account page
-    // Firebase configuration
+    // Firebase configuration (same as login.html)
     const firebaseConfig = {
       apiKey: "AIzaSyCPE5bk4zESRhzts3xod2YqrUE09j8RfBQ",
       authDomain: "tartdesserts-3b414.firebaseapp.com",
       projectId: "tartdesserts-3b414",
-      storageBucket: "tartdesserts-3b414.firebasestorage.app",
+      storageBucket: "tartdesserts-3b414.appspot.com",
       messagingSenderId: "534807668671",
-      appId: "1:534807668671:web:c2ad9d868c1a930f86e30a",
-      measurementId: "G-CWFFD5JD20"
+      appId: "1:534807668671:web:c2ad9d868c1a930f86e30a"
     };
 
     // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+
     const auth = firebase.auth();
     const db = firebase.firestore();
 
@@ -499,7 +500,7 @@
     window.firebaseAuth = auth;
     window.firebaseDb = db;
 
-    console.log('Firebase initialized for account page');
+    console.log('Firebase inicializado correctamente');
 
     // Check authentication and redirect if not logged in
     auth.onAuthStateChanged(function(user) {
@@ -512,20 +513,37 @@
       loadUserData(user);
     });
 
-    // Load user data from Firebase/localStorage
+    // Load user data from Firebase Firestore
     async function loadUserData(user) {
       try {
-        // Update UI with user data
-        document.getElementById('user-name').textContent = user.displayName || user.email.split('@')[0] || 'Usuario';
-        document.getElementById('user-email').textContent = user.email;
+        // Get additional data from Firestore
+        const userDoc = await db.collection('users').doc(user.uid).get();
 
-        // Update form fields
-        document.getElementById('settings-name').value = user.displayName || '';
-        document.getElementById('settings-email').value = user.email;
+        if (userDoc.exists) {
+          const userData = userDoc.data();
+          document.getElementById('user-name').textContent = userData.name || user.email;
+          document.getElementById('user-email').textContent = user.email;
+          document.getElementById('settings-name').value = userData.name || '';
 
-        // Load subscription status from localStorage
-        const userData = JSON.parse(localStorage.getItem('user') || '{}');
-        updateSubscriptionDisplay(userData.subscription);
+          // Update subscription display
+          updateSubscriptionDisplay(userData.subscription);
+        } else {
+          // If no document exists, create one with basic info
+          await db.collection('users').doc(user.uid).set({
+            name: user.displayName || user.email.split('@')[0],
+            email: user.email,
+            registrationDate: new Date().toISOString(),
+            subscription: null,
+            lastLogin: new Date().toISOString()
+          });
+
+          // Reload data
+          const updatedDoc = await db.collection('users').doc(user.uid).get();
+          const userData = updatedDoc.data();
+          document.getElementById('user-name').textContent = userData.name;
+          document.getElementById('settings-name').value = userData.name;
+          updateSubscriptionDisplay(userData.subscription);
+        }
 
         console.log('User data loaded successfully');
       } catch (error) {
@@ -590,10 +608,10 @@
           displayName: newName
         });
 
-        // Update localStorage
-        const userData = JSON.parse(localStorage.getItem('user') || '{}');
-        userData.name = newName;
-        localStorage.setItem('user', JSON.stringify(userData));
+        // Update name in Firestore
+        await db.collection('users').doc(auth.currentUser.uid).update({
+          name: newName
+        });
 
         alert('Cambios guardados correctamente');
         loadUserData(auth.currentUser);
@@ -635,7 +653,7 @@
       if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
         try {
           await auth.signOut();
-          localStorage.removeItem('user');
+          console.log('Usuario desconectado correctamente');
           window.location.href = 'index.html';
         } catch (error) {
           console.error('Error during logout:', error);

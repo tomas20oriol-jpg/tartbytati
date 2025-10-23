@@ -3,12 +3,79 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Iniciar Sesión - tartdesserts</title>
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/cookies.css" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:wght@400&display=swap" rel="stylesheet">
+  <!-- Firebase SDK v8 -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <style>
+    /* CSS Variables */
+    :root {
+      --primary-color: #e91e63;
+      --text-color: #ad1457;
+      --text-light: #f48fb1;
+      --bg-color: #ffffff;
+      --bg-light: #fce4ec;
+      --border-color: #f8bbd9;
+      --accent-hover: #880e4f;
+      --transition: all 0.3s ease;
+      --transition-fast: all 0.15s ease;
+    }
+
+    /* Button Styles */
+    .btn {
+      display: inline-block;
+      padding: 16px 32px;
+      text-decoration: none;
+      border-radius: 0;
+      font-weight: 500;
+      transition: var(--transition);
+      cursor: pointer;
+      border: 1px solid var(--text-color);
+      font-size: 14px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-family: 'DM Sans', sans-serif;
+      background: transparent;
+    }
+
+    .btn-primary {
+      background: var(--text-color);
+      color: white;
+      border-color: var(--text-color);
+    }
+
+    .btn-primary:hover,
+    .btn-primary:focus {
+      background: var(--accent-hover);
+      border-color: var(--accent-hover);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-color);
+      border-color: var(--text-color);
+    }
+
+    .btn-secondary:hover {
+      background: var(--text-color);
+      color: white;
+    }
+
+    .btn-full {
+      width: 100%;
+      text-align: center;
+    }
+
+    /* Button Focus Styles */
+    a:focus,
+    button:focus,
+    .btn:focus {
+      outline: 2px solid var(--text-color);
+      outline-offset: 2px;
+    }
+
+    /* Auth Page Layout */
     .auth-page {
       min-height: 80vh;
       display: flex;
@@ -16,7 +83,7 @@
       justify-content: center;
       padding: 80px 20px;
     }
-    
+
     .auth-container {
       max-width: 450px;
       width: 100%;
@@ -24,30 +91,31 @@
       border: 1px solid var(--border-color);
       padding: 60px 50px;
     }
-    
+
     .auth-header {
       text-align: center;
       margin-bottom: 40px;
     }
-    
+
     .auth-header h2 {
       font-size: 32px;
       margin-bottom: 12px;
       font-weight: 400;
     }
-    
+
     .auth-header p {
       color: var(--text-light);
       font-size: 14px;
     }
-    
+
+    /* Auth Tabs */
     .auth-tabs {
       display: flex;
       gap: 0;
       margin-bottom: 40px;
       border-bottom: 1px solid var(--border-color);
     }
-    
+
     .auth-tab {
       flex: 1;
       padding: 16px;
@@ -62,24 +130,30 @@
       border-bottom: 2px solid transparent;
       transition: var(--transition);
     }
-    
+
+    .auth-tab:hover {
+      color: var(--text-color);
+    }
+
     .auth-tab.active {
       color: var(--text-color);
       border-bottom-color: var(--text-color);
     }
-    
+
+    /* Auth Forms */
     .auth-form {
       display: none;
     }
-    
+
     .auth-form.active {
       display: block;
     }
-    
+
+    /* Form Styles */
     .form-group {
       margin-bottom: 24px;
     }
-    
+
     .form-group label {
       display: block;
       font-size: 13px;
@@ -89,7 +163,7 @@
       margin-bottom: 8px;
       color: var(--text-color);
     }
-    
+
     .form-group input {
       width: 100%;
       padding: 14px 16px;
@@ -99,47 +173,50 @@
       transition: var(--transition);
       background: var(--bg-color);
     }
-    
+
     .form-group input:focus {
       outline: none;
       border-color: var(--text-color);
     }
-    
+
+    /* Form Checkbox */
     .form-checkbox {
       display: flex;
       align-items: center;
       gap: 8px;
       margin-bottom: 24px;
     }
-    
+
     .form-checkbox input[type="checkbox"] {
       width: 18px;
       height: 18px;
       cursor: pointer;
     }
-    
+
     .form-checkbox label {
       font-size: 14px;
       color: var(--text-color);
       cursor: pointer;
     }
-    
+
+    /* Form Links */
     .form-links {
       text-align: center;
       margin-top: 24px;
     }
-    
+
     .form-links a {
       color: var(--text-color);
       text-decoration: none;
       font-size: 14px;
       transition: var(--transition);
     }
-    
+
     .form-links a:hover {
       color: var(--text-light);
     }
-    
+
+    /* Divider */
     .divider {
       display: flex;
       align-items: center;
@@ -148,24 +225,25 @@
       color: var(--text-light);
       font-size: 13px;
     }
-    
+
     .divider::before,
     .divider::after {
       content: '';
       flex: 1;
       border-bottom: 1px solid var(--border-color);
     }
-    
+
     .divider span {
       padding: 0 16px;
     }
-    
+
+    /* Social Login */
     .social-login {
       display: flex;
       flex-direction: column;
       gap: 12px;
     }
-    
+
     .social-btn {
       display: flex;
       align-items: center;
@@ -181,12 +259,13 @@
       text-decoration: none;
       color: var(--text-color);
     }
-    
+
     .social-btn:hover {
       background: var(--bg-light);
       border-color: var(--text-color);
     }
-    
+
+    /* Messages */
     .error-message {
       background: #fee;
       border: 1px solid #fcc;
@@ -196,7 +275,7 @@
       font-size: 14px;
       display: none;
     }
-    
+
     .success-message {
       background: #efe;
       border: 1px solid #cfc;
@@ -206,17 +285,394 @@
       font-size: 14px;
       display: none;
     }
-    
-    @media (max-width: 768px) {
-      .auth-container {
-        padding: 40px 30px;
-      }
-      
-      .auth-header h2 {
-        font-size: 28px;
-      }
+
+    /* Utility Classes */
+    .text-xs {
+      font-size: 12px;
     }
-  </style>
+
+    .mt-4 {
+      margin-top: 16px;
+    }
+
+    .text-gray-500 {
+      color: #6b7280;
+    }
+
+    .underline {
+      text-decoration: underline;
+    }
+
+    /* Header and Navigation */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    header {
+      background: var(--bg-color);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    header .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 24px;
+      padding-bottom: 24px;
+    }
+
+    .logo {
+      font-family: serif;
+      font-size: 24px;
+      font-weight: 400;
+      color: var(--text-color);
+      text-decoration: none;
+      letter-spacing: 0;
+      margin: 0;
+      flex-shrink: 0;
+      text-transform: lowercase;
+    }
+
+    .logo a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 40px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--text-color);
+      font-weight: 400;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: var(--transition-fast);
+      padding: 8px 0;
+      position: relative;
+    }
+
+    nav a:hover {
+      color: var(--text-light);
+    }
+
+    .cart-button {
+      flex-shrink: 0;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      position: relative;
+      transition: var(--transition-fast);
+    }
+
+    .cart-button svg {
+      width: 24px;
+      height: 24px;
+      stroke: var(--text-color);
+      stroke-width: 1.5;
+    }
+
+    .cart-button:hover svg {
+      stroke: var(--text-light);
+    }
+
+    .cart-count {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: var(--text-color);
+      color: white;
+      min-width: 18px;
+      height: 18px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 0 5px;
+    }
+
+    .cart-count.hidden {
+      display: none;
+    }
+
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 0;
+      background: var(--text-color);
+      color: white;
+      padding: 8px 16px;
+      text-decoration: none;
+      z-index: 100;
+    }
+
+    .skip-link:focus {
+      top: 0;
+    }
+
+    /* Cart Styles */
+    .floating-cart {
+      position: fixed;
+      top: 0;
+      right: -400px;
+      width: 400px;
+      height: 100vh;
+      background: white;
+      box-shadow: -2px 0 20px rgba(0, 0, 0, 0.1);
+      z-index: 100;
+      transition: right 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .floating-cart.active {
+      right: 0;
+    }
+
+    .cart-header {
+      background: var(--text-color);
+      color: white;
+      padding: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .cart-header h3 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 400;
+    }
+
+    .close-cart {
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 28px;
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+
+    .close-cart:hover {
+      opacity: 0.7;
+    }
+
+    .cart-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px;
+    }
+
+    .cart-items-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .empty-cart {
+      text-align: center;
+      color: var(--text-light);
+      padding: 40px 16px;
+      font-style: italic;
+      font-size: 14px;
+    }
+
+    .cart-footer {
+      border-top: 1px solid var(--border-color);
+      padding: 24px;
+      background: var(--bg-color);
+    }
+
+    .cart-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .total-price {
+      color: var(--text-color);
+    }
+
+    .cart-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 99;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+    }
+
+    .cart-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--bg-color);
+      padding: 60px 0;
+      text-align: center;
+      border-top: 1px solid var(--border-color);
+      margin-top: 100px;
+    }
+
+    footer p {
+      margin: 8px 0;
+      color: var(--text-color);
+      font-size: 14px;
+    }
+
+    footer a {
+      color: var(--text-color);
+      text-decoration: none;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+
+    footer a:hover {
+      color: var(--text-light);
+    }
+
+    .copyright {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-top: 16px;
+    }
+
+    /* Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      line-height: 1.6;
+      color: var(--text-color);
+      background-color: var(--bg-color);
+      font-weight: 400;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Improve overall page layout */
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%);
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    /* Better form styling */
+    .form-group input::placeholder {
+      color: #999;
+      opacity: 1;
+    }
+
+    /* Better button styling */
+    .btn {
+      font-family: inherit;
+      line-height: 1;
+    }
+
+    /* Improve social button icons */
+    .social-btn svg {
+      flex-shrink: 0;
+    }
+
+    /* Better auth container styling */
+    .auth-container {
+      box-shadow: 0 8px 32px rgba(173, 20, 87, 0.1);
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(248, 187, 217, 0.3);
+    }
+
+    /* Better tab styling */
+    .auth-tab {
+      font-weight: 600;
+      border-radius: 8px 8px 0 0;
+      margin: 0 2px;
+    }
+
+    .auth-tab:first-child {
+      margin-left: 0;
+    }
+
+    .auth-tab:last-child {
+      margin-right: 0;
+    }
+
+    /* Better social button styling */
+    .social-btn {
+      border-radius: 8px;
+      font-weight: 600;
+      border: 2px solid #f8bbd9;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+    }
+
+    .social-btn:hover {
+      background: rgba(173, 20, 87, 0.05);
+      border-color: #ad1457;
+      transform: translateY(-1px);
+    }
+
+    /* Better header styling */
+    header {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(248, 187, 217, 0.3);
+    }
+
+    /* Better footer styling */
+    footer {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(248, 187, 217, 0.3);
+    }
+</style>
 </head>
 <body>
   <a href="#main-content" class="skip-link">Saltar al contenido</a>
@@ -383,140 +839,169 @@
     </div>
   </footer>
   
-  <script src="js/script.js" defer></script>
   <script>
-    // Simple Firebase initialization and auth for login page
-    // Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyCPE5bk4zESRhzts3xod2YqrUE09j8RfBQ",
-      authDomain: "tartdesserts-3b414.firebaseapp.com",
-      projectId: "tartdesserts-3b414",
-      storageBucket: "tartdesserts-3b414.firebasestorage.app",
-      messagingSenderId: "534807668671",
-      appId: "1:534807668671:web:c2ad9d868c1a930f86e30a",
-      measurementId: "G-CWFFD5JD20"
-    };
+    // Wait for DOM to be fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      // Tab switching functionality
+      document.querySelectorAll('.auth-tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+          const targetTab = this.dataset.tab;
 
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
+          // Update active tab
+          document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+          this.classList.add('active');
 
-    // Make Firebase available globally
-    window.firebaseAuth = auth;
-    window.firebaseDb = db;
-
-    console.log('Firebase initialized for login page');
-
-    // Tab switching
-    document.querySelectorAll('.auth-tab').forEach(tab => {
-      tab.addEventListener('click', function() {
-        const targetTab = this.dataset.tab;
-
-        // Update active tab
-        document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
-        this.classList.add('active');
-
-        // Show corresponding form
-        document.querySelectorAll('.auth-form').forEach(form => form.classList.remove('active'));
-        document.getElementById(targetTab + '-form').classList.add('active');
+          // Show corresponding form
+          document.querySelectorAll('.auth-form').forEach(form => form.classList.remove('active'));
+          document.getElementById(targetTab + '-form').classList.add('active');
+        });
       });
-    });
 
-    // Login form submission
-    document.getElementById('login-form').addEventListener('submit', async function(e) {
-      e.preventDefault();
-
-      const email = document.getElementById('login-email').value;
-      const password = document.getElementById('login-password').value;
-      const errorDiv = document.getElementById('login-error');
-      const successDiv = document.getElementById('login-success');
-
-      // Clear previous messages
-      errorDiv.style.display = 'none';
-      successDiv.style.display = 'none';
-
-      // Show loading
-      successDiv.textContent = 'Iniciando sesión...';
-      successDiv.style.display = 'block';
-
-      try {
-        // Attempt login
-        await auth.signInWithEmailAndPassword(email, password);
-        console.log('Login successful');
-
-        // Redirect to account page
-        setTimeout(() => {
-          window.location.href = 'account.html';
-        }, 1000);
-      } catch (error) {
-        console.error('Login error:', error);
-        // Show error
-        errorDiv.textContent = getErrorMessage(error.code);
-        errorDiv.style.display = 'block';
-        successDiv.style.display = 'none';
-      }
-    });
-
-    // Register form submission
-    document.getElementById('register-form').addEventListener('submit', async function(e) {
-      e.preventDefault();
-
-      const name = document.getElementById('register-name').value;
-      const email = document.getElementById('register-email').value;
-      const password = document.getElementById('register-password').value;
-      const passwordConfirm = document.getElementById('register-password-confirm').value;
-      const errorDiv = document.getElementById('register-error');
-      const successDiv = document.getElementById('register-success');
-
-      // Clear previous messages
-      errorDiv.style.display = 'none';
-      successDiv.style.display = 'none';
-
-      // Validate passwords match
-      if (password !== passwordConfirm) {
-        errorDiv.textContent = 'Las contraseñas no coinciden';
-        errorDiv.style.display = 'block';
-        return;
-      }
-
-      // Show loading
-      successDiv.textContent = 'Creando cuenta...';
-      successDiv.style.display = 'block';
-
-      try {
-        // Attempt registration
-        await auth.createUserWithEmailAndPassword(email, password);
-        console.log('Registration successful');
-
-        // Redirect to account page
-        setTimeout(() => {
-          window.location.href = 'account.html';
-        }, 1500);
-      } catch (error) {
-        console.error('Registration error:', error);
-        // Show error
-        errorDiv.textContent = getErrorMessage(error.code);
-        errorDiv.style.display = 'block';
-        successDiv.style.display = 'none';
-      }
-    });
-
-    // Error message translations
-    function getErrorMessage(errorCode) {
-      const errorMessages = {
-        'auth/user-not-found': 'Usuario no encontrado',
-        'auth/wrong-password': 'Contraseña incorrecta',
-        'auth/email-already-in-use': 'El email ya está registrado',
-        'auth/weak-password': 'La contraseña debe tener al menos 6 caracteres',
-        'auth/invalid-email': 'Email inválido',
-        'auth/operation-not-allowed': 'Operación no permitida',
-        'auth/network-request-failed': 'Error de conexión',
-        'auth/too-many-requests': 'Demasiados intentos. Inténtalo más tarde'
+      // Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyCPE5bk4zESRhzts3xod2YqrUE09j8RfBQ",
+        authDomain: "tartdesserts-3b414.firebaseapp.com",
+        projectId: "tartdesserts-3b414",
+        storageBucket: "tartdesserts-3b414.appspot.com",
+        messagingSenderId: "534807668671",
+        appId: "1:534807668671:web:c2ad9d868c1a930f86e30a"
       };
 
-      return errorMessages[errorCode] || 'Error desconocido';
-    }
+      // Initialize Firebase
+      if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+      }
+
+      const auth = firebase.auth();
+      const db = firebase.firestore();
+
+      // Check if user is already logged in
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          // User is already logged in, redirect to account
+          window.location.href = 'account.html';
+        }
+      });
+
+      console.log('Firebase inicializado correctamente');
+
+      // Login form submission
+      document.getElementById('login-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const email = document.getElementById('login-email').value;
+        const password = document.getElementById('login-password').value;
+        const errorDiv = document.getElementById('login-error');
+        const successDiv = document.getElementById('login-success');
+
+        // Clear previous messages
+        errorDiv.style.display = 'none';
+        successDiv.style.display = 'none';
+
+        // Show loading
+        successDiv.textContent = 'Iniciando sesión...';
+        successDiv.style.display = 'block';
+
+        try {
+          // Sign in with Firebase Auth
+          const userCredential = await auth.signInWithEmailAndPassword(email, password);
+          const user = userCredential.user;
+
+          // Update last login in Firestore
+          await db.collection('users').doc(user.uid).update({
+            lastLogin: new Date().toISOString()
+          });
+
+          console.log('Inicio de sesión exitoso');
+          successDiv.textContent = 'Inicio de sesión exitoso. Redirigiendo...';
+          successDiv.style.display = 'block';
+
+          // Redirect after 1 second
+          setTimeout(() => {
+            window.location.href = 'account.html';
+          }, 1000);
+
+        } catch (error) {
+          console.error('Error en inicio de sesión:', error);
+          errorDiv.textContent = getErrorMessage(error.code);
+          errorDiv.style.display = 'block';
+          successDiv.style.display = 'none';
+        }
+      });
+
+      // Register form submission
+      document.getElementById('register-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const name = document.getElementById('register-name').value;
+        const email = document.getElementById('register-email').value;
+        const password = document.getElementById('register-password').value;
+        const passwordConfirm = document.getElementById('register-password-confirm').value;
+        const errorDiv = document.getElementById('register-error');
+        const successDiv = document.getElementById('register-success');
+
+        // Clear previous messages
+        errorDiv.style.display = 'none';
+        successDiv.style.display = 'none';
+
+        // Validate passwords match
+        if (password !== passwordConfirm) {
+          errorDiv.textContent = 'Las contraseñas no coinciden';
+          errorDiv.style.display = 'block';
+          return;
+        }
+
+        // Show loading
+        successDiv.textContent = 'Creando cuenta...';
+        successDiv.style.display = 'block';
+
+        try {
+          // 1. Create user in Firebase Auth
+          const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+          const user = userCredential.user;
+
+          // 2. Save additional user information in Firestore
+          await db.collection('users').doc(user.uid).set({
+            name: name,
+            email: email,
+            registrationDate: new Date().toISOString(),
+            subscription: null,
+            lastLogin: new Date().toISOString()
+          });
+
+          console.log('Usuario registrado correctamente');
+          successDiv.textContent = '¡Cuenta creada con éxito! Redirigiendo...';
+          successDiv.style.display = 'block';
+
+          // Redirect after 1.5 seconds
+          setTimeout(() => {
+            window.location.href = 'account.html';
+          }, 1500);
+
+        } catch (error) {
+          console.error('Error en registro:', error);
+          errorDiv.textContent = getErrorMessage(error.code);
+          errorDiv.style.display = 'block';
+          successDiv.style.display = 'none';
+        }
+      });
+
+      // Error message translations
+      function getErrorMessage(errorCode) {
+        const errorMessages = {
+          'auth/user-not-found': 'Usuario no encontrado',
+          'auth/wrong-password': 'Contraseña incorrecta',
+          'auth/email-already-in-use': 'El email ya está registrado',
+          'auth/weak-password': 'La contraseña debe tener al menos 6 caracteres',
+          'auth/invalid-email': 'Email inválido',
+          'auth/operation-not-allowed': 'Operación no permitida',
+          'auth/network-request-failed': 'Error de conexión',
+          'auth/too-many-requests': 'Demasiados intentos. Inténtalo más tarde'
+        };
+
+        return errorMessages[errorCode] || 'Error desconocido';
+      }
+    });
   </script>
 </body>
 </html>
