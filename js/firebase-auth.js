@@ -48,10 +48,15 @@ export async function loginWithEmail(email, password) {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
-    // Update last login
+    console.log('Login successful:', user.email);
+
+    // Temporarily remove Firestore update to test
+    // TODO: Add back after fixing Firestore rules
+    /*
     await updateDoc(doc(db, 'users', user.uid), {
       lastLogin: new Date()
     });
+    */
 
     return { success: true, user };
   } catch (error) {
@@ -66,6 +71,11 @@ export async function registerWithEmail(name, email, password) {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
+    console.log('Registration successful:', user.email);
+
+    // Temporarily remove Firestore profile creation to test
+    // TODO: Add back after fixing Firestore rules
+    /*
     // Create user profile in Firestore
     await setDoc(doc(db, 'users', user.uid), {
       name: name,
@@ -82,6 +92,7 @@ export async function registerWithEmail(name, email, password) {
         notifications: true
       }
     });
+    */
 
     return { success: true, user };
   } catch (error) {
@@ -97,6 +108,11 @@ export async function loginWithGoogle() {
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
 
+    console.log('Google login successful:', user.email);
+
+    // Temporarily remove Firestore operations to test
+    // TODO: Add back after fixing Firestore rules
+    /*
     // Check if user profile exists, create if not
     const userDoc = await getDoc(doc(db, 'users', user.uid));
     if (!userDoc.exists()) {
@@ -113,6 +129,7 @@ export async function loginWithGoogle() {
         }
       });
     }
+    */
 
     return { success: true, user };
   } catch (error) {
@@ -128,6 +145,11 @@ export async function loginWithFacebook() {
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
 
+    console.log('Facebook login successful:', user.email);
+
+    // Temporarily remove Firestore operations to test
+    // TODO: Add back after fixing Firestore rules
+    /*
     // Check if user profile exists, create if not
     const userDoc = await getDoc(doc(db, 'users', user.uid));
     if (!userDoc.exists()) {
@@ -144,6 +166,7 @@ export async function loginWithFacebook() {
         }
       });
     }
+    */
 
     return { success: true, user };
   } catch (error) {
@@ -168,6 +191,9 @@ export async function logout() {
 // Load user profile from Firestore
 export async function loadUserProfile(uid) {
   try {
+    // Temporarily simplified - return basic user info without Firestore
+    // TODO: Add back Firestore integration after fixing rules
+    /*
     const userDoc = await getDoc(doc(db, 'users', uid));
     if (userDoc.exists()) {
       const userData = userDoc.data();
@@ -182,6 +208,23 @@ export async function loadUserProfile(uid) {
       localStorage.setItem('user', JSON.stringify(userInfo));
       return userInfo;
     }
+    */
+
+    // Return basic user info for now
+    const userInfo = {
+      uid: uid,
+      subscription: {
+        type: 'free',
+        status: 'active'
+      },
+      preferences: {
+        newsletter: false,
+        notifications: true
+      }
+    };
+
+    localStorage.setItem('user', JSON.stringify(userInfo));
+    return userInfo;
   } catch (error) {
     console.error('Error cargando perfil:', error);
     return null;
@@ -191,10 +234,20 @@ export async function loadUserProfile(uid) {
 // Update user subscription
 export async function updateUserSubscription(uid, subscriptionData) {
   try {
+    // Temporarily simplified - just update localStorage
+    // TODO: Add back Firestore integration after fixing rules
+    /*
     await updateDoc(doc(db, 'users', uid), {
       subscription: subscriptionData,
       updatedAt: new Date()
     });
+    */
+
+    // Update localStorage for now
+    const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+    currentUser.subscription = subscriptionData;
+    localStorage.setItem('user', JSON.stringify(currentUser));
+
     return { success: true };
   } catch (error) {
     console.error('Error actualizando suscripción:', error);

@@ -4,8 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Iniciar Sesión - tartdesserts</title>
-  <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg" />
-  <link rel="stylesheet" href="css/style.css" />
+  <!-- Firebase SDK v8 -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <style>
     .auth-page {
       min-height: 80vh;
@@ -382,19 +384,29 @@
   </footer>
   
   <script src="js/script.js" defer></script>
-  <script type="module">
-    // Import Firebase Auth functions
-    import {
-      loginWithEmail,
-      registerWithEmail,
-      loginWithGoogle,
-      loginWithFacebook,
-      initAuth,
-      logout
-    } from './js/firebase-auth.js';
+  <script>
+    // Simple Firebase initialization and auth for login page
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCPE5bk4zESRhzts3xod2YqrUE09j8RfBQ",
+      authDomain: "tartdesserts-3b414.firebaseapp.com",
+      projectId: "tartdesserts-3b414",
+      storageBucket: "tartdesserts-3b414.firebasestorage.app",
+      messagingSenderId: "534807668671",
+      appId: "1:534807668671:web:c2ad9d868c1a930f86e30a",
+      measurementId: "G-CWFFD5JD20"
+    };
 
-    // Initialize Firebase Auth
-    initAuth();
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // Make Firebase available globally
+    window.firebaseAuth = auth;
+    window.firebaseDb = db;
+
+    console.log('Firebase initialized for login page');
 
     // Tab switching
     document.querySelectorAll('.auth-tab').forEach(tab => {
@@ -428,17 +440,19 @@
       successDiv.textContent = 'Iniciando sesión...';
       successDiv.style.display = 'block';
 
-      // Attempt login
-      const result = await loginWithEmail(email, password);
+      try {
+        // Attempt login
+        await auth.signInWithEmailAndPassword(email, password);
+        console.log('Login successful');
 
-      if (result.success) {
         // Redirect to account page
         setTimeout(() => {
           window.location.href = 'account.html';
         }, 1000);
-      } else {
+      } catch (error) {
+        console.error('Login error:', error);
         // Show error
-        errorDiv.textContent = result.error;
+        errorDiv.textContent = getErrorMessage(error.code);
         errorDiv.style.display = 'block';
         successDiv.style.display = 'none';
       }
@@ -470,68 +484,39 @@
       successDiv.textContent = 'Creando cuenta...';
       successDiv.style.display = 'block';
 
-      // Attempt registration
-      const result = await registerWithEmail(name, email, password);
+      try {
+        // Attempt registration
+        await auth.createUserWithEmailAndPassword(email, password);
+        console.log('Registration successful');
 
-      if (result.success) {
         // Redirect to account page
         setTimeout(() => {
           window.location.href = 'account.html';
         }, 1500);
-      } else {
+      } catch (error) {
+        console.error('Registration error:', error);
         // Show error
-        errorDiv.textContent = result.error;
+        errorDiv.textContent = getErrorMessage(error.code);
         errorDiv.style.display = 'block';
         successDiv.style.display = 'none';
       }
     });
 
-    // Social login buttons
-    document.getElementById('google-login').addEventListener('click', async function() {
-      const errorDiv = document.getElementById('login-error');
-      const successDiv = document.getElementById('login-success');
+    // Error message translations
+    function getErrorMessage(errorCode) {
+      const errorMessages = {
+        'auth/user-not-found': 'Usuario no encontrado',
+        'auth/wrong-password': 'Contraseña incorrecta',
+        'auth/email-already-in-use': 'El email ya está registrado',
+        'auth/weak-password': 'La contraseña debe tener al menos 6 caracteres',
+        'auth/invalid-email': 'Email inválido',
+        'auth/operation-not-allowed': 'Operación no permitida',
+        'auth/network-request-failed': 'Error de conexión',
+        'auth/too-many-requests': 'Demasiados intentos. Inténtalo más tarde'
+      };
 
-      errorDiv.style.display = 'none';
-      successDiv.style.display = 'none';
-
-      successDiv.textContent = 'Conectando con Google...';
-      successDiv.style.display = 'block';
-
-      const result = await loginWithGoogle();
-
-      if (result.success) {
-        setTimeout(() => {
-          window.location.href = 'account.html';
-        }, 1000);
-      } else {
-        errorDiv.textContent = result.error;
-        errorDiv.style.display = 'block';
-        successDiv.style.display = 'none';
-      }
-    });
-
-    document.getElementById('facebook-login').addEventListener('click', async function() {
-      const errorDiv = document.getElementById('login-error');
-      const successDiv = document.getElementById('login-success');
-
-      errorDiv.style.display = 'none';
-      successDiv.style.display = 'none';
-
-      successDiv.textContent = 'Conectando con Facebook...';
-      successDiv.style.display = 'block';
-
-      const result = await loginWithFacebook();
-
-      if (result.success) {
-        setTimeout(() => {
-          window.location.href = 'account.html';
-        }, 1000);
-      } else {
-        errorDiv.textContent = result.error;
-        errorDiv.style.display = 'block';
-        successDiv.style.display = 'none';
-      }
-    });
+      return errorMessages[errorCode] || 'Error desconocido';
+    }
   </script>
 </body>
 </html>
