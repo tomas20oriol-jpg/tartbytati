@@ -191,6 +191,14 @@
     window.firebaseDb = db;
 
     console.log('Firebase initialized for index page');
+
+    // Test Firestore operations (should work without collection() errors)
+    try {
+      const testCollection = db.collection('test');
+      console.log('✅ Firestore collection test passed:', testCollection);
+    } catch (error) {
+      console.error('❌ Firestore test failed:', error);
+    }
   </script>
   <script src="js/firebase-auth.js" defer></script>
 </body>

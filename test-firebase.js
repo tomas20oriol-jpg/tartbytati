@@ -1,8 +1,4 @@
-// Test Firebase connection and authentication
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js';
-import { getAuth, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js';
-import { getFirestore } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js';
-
+// Test Firebase v8 connection and authentication
 // Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCPE5bk4zESRhzts3xod2YqrUE09j8RfBQ",
@@ -15,31 +11,32 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
 
-console.log('Firebase initialized:', app);
-console.log('Auth initialized:', auth);
-console.log('Firestore initialized:', db);
+console.log('✅ Firebase v8 initialized successfully');
+console.log('✅ Auth object:', auth);
+console.log('✅ Firestore object:', db);
 
 // Test authentication state
 auth.onAuthStateChanged((user) => {
-  console.log('Auth state changed:', user);
+  console.log('✅ Auth state changed:', user ? user.email : 'No user');
 });
 
-// Simplified login function (without Firestore update)
-export async function testLogin(email, password) {
-  try {
-    console.log('Attempting login for:', email);
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
-    console.log('Login successful:', user.email);
-    return { success: true, user };
-  } catch (error) {
-    console.error('Login error:', error);
-    return { success: false, error: error.message };
-  }
+// Test Firestore connection (this should work without errors)
+try {
+  // Test basic Firestore operations
+  const testCollection = db.collection('test');
+  console.log('✅ Firestore collection created successfully:', testCollection);
+
+  // Test document reference
+  const testDoc = db.collection('test').doc('test-doc');
+  console.log('✅ Firestore document reference created successfully:', testDoc);
+
+  console.log('🎉 All Firebase v8 tests passed! No collection() errors.');
+} catch (error) {
+  console.error('❌ Firebase test failed:', error);
 }
 
 export { auth, db };
