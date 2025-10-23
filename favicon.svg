@@ -2,15 +2,9 @@
   <!-- Background circle -->
   <circle cx="50" cy="50" r="48" fill="white"/>
 
-  <!-- Decorative tart/pie shape -->
-  <path d="M30 45 Q50 35 70 45 L65 65 Q50 75 35 65 Z" fill="#e91e63" opacity="0.8"/>
-  <path d="M32 47 Q50 38 68 47 L63 63 Q50 72 37 63 Z" fill="#ad1457"/>
+  <!-- Main brand text "tart" -->
+  <text x="50" y="62" font-family="serif" font-size="28" font-weight="400" text-anchor="middle" fill="#ad1457">tart</text>
 
-  <!-- Text "tart" overlay -->
-  <text x="50" y="58" font-family="serif" font-size="18" font-weight="400" text-anchor="middle" fill="white">tart</text>
-
-  <!-- Small decorative elements -->
-  <circle cx="25" cy="30" r="1.5" fill="#f48fb1"/>
-  <circle cx="75" cy="30" r="1.5" fill="#f48fb1"/>
-  <circle cx="50" cy="25" r="1" fill="#f48fb1"/>
+  <!-- Simple underline -->
+  <line x1="25" y1="75" x2="75" y2="75" stroke="#e91e63" stroke-width="1.5" stroke-linecap="round"/>
 </svg>
