@@ -497,6 +497,25 @@
   
   <script src="js/script.js" defer></script>
   <script>
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCPE5bk4zESRhzts3xod2YqrUE09j8RfBQ",
+      authDomain: "tartdesserts-3b414.firebaseapp.com",
+      projectId: "tartdesserts-3b414",
+      storageBucket: "tartdesserts-3b414.appspot.com",
+      messagingSenderId: "534807668671",
+      appId: "1:534807668671:web:c2ad9d868c1a930f86e30a"
+    };
+
+    // Initialize Firebase
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    console.log('Firebase inicializado correctamente');
     // Get plan from URL
     const urlParams = new URLSearchParams(window.location.search);
     const plan = urlParams.get('plan') || 'monthly';
@@ -530,11 +549,20 @@
     }
     
     // Load user data if logged in
-    function loadUserData() {
-      const user = JSON.parse(localStorage.getItem('user'));
-      if (user) {
-        document.getElementById('full-name').value = user.name || '';
-        document.getElementById('email').value = user.email || '';
+    async function loadUserData() {
+      try {
+        const user = auth.currentUser;
+        if (user) {
+          // Get additional data from Firestore
+          const userDoc = await db.collection('users').doc(user.uid).get();
+          if (userDoc.exists) {
+            const userData = userDoc.data();
+            document.getElementById('full-name').value = userData.name || '';
+            document.getElementById('email').value = user.email || '';
+          }
+        }
+      } catch (error) {
+        console.error('Error loading user data:', error);
       }
     }
     
@@ -638,20 +666,32 @@
       btn.textContent = 'Procesando pago...';
       btn.disabled = true;
       
-      setTimeout(() => {
-        // Update user subscription status
-        const user = JSON.parse(localStorage.getItem('user')) || {};
-        user.subscribed = true;
-        user.subscriptionPlan = plan;
-        user.subscriptionDate = new Date().toISOString();
-        user.subscriptionEndDate = plan === 'annual' 
-          ? new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString()
-          : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
-        localStorage.setItem('user', JSON.stringify(user));
-        
-        // Redirect to success page or account
-        alert('¡Pago completado exitosamente! Bienvenida a la comunidad tartdesserts.');
-        window.location.href = 'account.html';
+      setTimeout(async () => {
+        try {
+          // Update user subscription status in Firestore
+          const user = auth.currentUser;
+          if (user) {
+            await db.collection('users').doc(user.uid).update({
+              subscribed: true,
+              subscriptionPlan: plan,
+              subscriptionDate: new Date().toISOString(),
+              subscriptionEndDate: plan === 'annual'
+                ? new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString()
+                : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
+            });
+
+            console.log('Suscripción actualizada en Firestore');
+          }
+
+          // Redirect to success page or account
+          alert('¡Pago completado exitosamente! Bienvenida a la comunidad tartdesserts.');
+          window.location.href = 'account.html';
+        } catch (error) {
+          console.error('Error updating subscription:', error);
+          alert('Error al procesar la suscripción. Por favor contacta con soporte.');
+          btn.textContent = originalText;
+          btn.disabled = false;
+        }
       }, 2000);
     });
     

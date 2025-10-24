@@ -7,6 +7,11 @@
   <link rel="icon" type="image/jpeg" href="assets/icons/logo.jpg" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/cookies.css" />
+
+  <!-- Firebase SDK v8 -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <style>
     .subscription-hero {
       background: var(--bg-color);
@@ -438,12 +443,37 @@
   <script src="js/script.js" defer></script>
   <script src="js/cookies.js" defer></script>
   <script>
-    // Check if user is logged in and update nav
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (user) {
-      document.getElementById('login-link').href = 'account.html';
-      document.getElementById('login-link').textContent = 'Mi Cuenta';
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCPE5bk4zESRhzts3xod2YqrUE09j8RfBQ",
+      authDomain: "tartdesserts-3b414.firebaseapp.com",
+      projectId: "tartdesserts-3b414",
+      storageBucket: "tartdesserts-3b414.appspot.com",
+      messagingSenderId: "534807668671",
+      appId: "1:534807668671:web:c2ad9d868c1a930f86e30a"
+    };
+
+    // Initialize Firebase
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
     }
+
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    console.log('Firebase inicializado correctamente');
+
+    // Check if user is logged in and update nav
+    auth.onAuthStateChanged((user) => {
+      const loginLink = document.getElementById('login-link');
+      if (user) {
+        loginLink.href = 'account.html';
+        loginLink.textContent = 'Mi Cuenta';
+      } else {
+        loginLink.href = 'login.html';
+        loginLink.textContent = 'Log In';
+      }
+    });
   </script>
 </body>
 </html>
