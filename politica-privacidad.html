@@ -4,8 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Política de Privacidad - tartdesserts</title>
-  <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg" />
+  <link rel="icon" type="image/jpeg" href="assets/icons/logo.jpg" />
   <link rel="stylesheet" href="css/style.css" />
+
+  <!-- Firebase SDK v8 -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <style>
     .legal-page { padding: 80px 0; min-height: 70vh; }
     .legal-container { max-width: 900px; margin: 0 auto; }
@@ -198,11 +203,36 @@
   
   <script src="js/script.js" defer></script>
   <script>
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (user) {
-      document.getElementById('login-link').href = 'account.html';
-      document.getElementById('login-link').textContent = 'Mi Cuenta';
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCPE5bk4zESRhzts3xod2YqrUE09j8RfBQ",
+      authDomain: "tartdesserts-3b414.firebaseapp.com",
+      projectId: "tartdesserts-3b414",
+      storageBucket: "tartdesserts-3b414.appspot.com",
+      messagingSenderId: "534807668671",
+      appId: "1:534807668671:web:c2ad9d868c1a930f86e30a"
+    };
+
+    // Initialize Firebase
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
     }
+
+    const auth = firebase.auth();
+
+    console.log('Firebase inicializado correctamente');
+
+    // Check if user is logged in and update nav
+    auth.onAuthStateChanged((user) => {
+      const loginLink = document.getElementById('login-link');
+      if (user) {
+        loginLink.href = 'account.html';
+        loginLink.textContent = 'Mi Cuenta';
+      } else {
+        loginLink.href = 'login.html';
+        loginLink.textContent = 'Log In';
+      }
+    });
   </script>
 </body>
 </html>
