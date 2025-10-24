@@ -62,8 +62,8 @@ Luego abre `http://localhost:8000` en tu navegador.
 
 ## 📱 Contacto
 
-- **Instagram**: [@tartdesserts](https://instagram.com/tartdesserts)
-- **WhatsApp**: [+34 697 389 33](https://wa.me/3469738933)
+- **Instagram**: [@tartbytati](https://instagram.com/tartbytati)
+- **WhatsApp**: [+34 691 73 89 33](https://wa.me/34691738933)
 
 ## 📝 Tareas Pendientes
 
