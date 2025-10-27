@@ -1,105 +1,104 @@
-# tartdesserts 🍰
+# tartdesserts - E-commerce Completo 🍰
 
-Sitio web oficial de **tartdesserts** - Dulces caseros hechos con amor.
+## 🚀 **¡Proyecto en Vivo!**
 
-## 📋 Descripción
-
-tartdesserts es un negocio de repostería artesanal que ofrece tartas, postres y dulces caseros elaborados con ingredientes frescos y de calidad. Este sitio web presenta nuestros servicios y permite a los clientes contactarnos fácilmente para hacer pedidos personalizados.
-
-## 🚀 Características
-
-- **Diseño Responsivo**: Optimizado para dispositivos móviles, tablets y escritorio
-- **Navegación Intuitiva**: Tres páginas principales (Inicio, Sobre Nosotros, Contacto)
-- **Accesibilidad**: Cumple con estándares WCAG (skip links, ARIA labels, focus visible)
-- **Animaciones Suaves**: Transiciones y efectos al hacer scroll
-- **SEO Optimizado**: Meta tags, estructura semántica HTML5
-- **Rendimiento**: CSS y JS minimalistas, carga rápida
-
-## 📁 Estructura del Proyecto
-
-```
-tartdesserts/
-├── index.html          # Página principal
-├── about.html          # Página sobre nosotros
-├── contact.html        # Página de contacto
-├── css/
-│   └── style.css       # Estilos principales
-├── js/
-│   └── script.js       # JavaScript para interactividad
-├── assets/             # Imágenes, favicon, etc.
-├── README.md           # Este archivo
-└── .gitignore          # Archivos ignorados por Git
-```
-
-## 🎨 Tecnologías Utilizadas
-
-- **HTML5**: Estructura semántica
-- **CSS3**: Estilos modernos con CSS Grid, Flexbox, y variables CSS
-- **JavaScript (Vanilla)**: Interactividad sin dependencias externas
-- **Git**: Control de versiones
-
-## 🛠️ Instalación y Uso
-
-### Opción 1: Abrir directamente en el navegador
-
-1. Clona o descarga este repositorio
-2. Abre `index.html` en tu navegador web favorito
-
-### Opción 2: Servidor local (recomendado)
-
-```bash
-# Con Python 3
-python -m http.server 8000
-
-# Con Node.js (npx http-server)
-npx http-server -p 8000
-
-# Con PHP
-php -S localhost:8000
-```
-
-Luego abre `http://localhost:8000` en tu navegador.
-
-## 📱 Contacto
-
-- **Instagram**: [@tartbytati](https://instagram.com/tartbytati)
-- **WhatsApp**: [+34 691 73 89 33](https://wa.me/34691738933)
-
-## 📝 Tareas Pendientes
-
-- [ ] Añadir favicon y logo en `/assets/`
-- [ ] Crear imagen Open Graph (`og-image.jpg`) para redes sociales
-- [ ] Añadir galería de productos con imágenes reales
-- [ ] Implementar formulario de contacto (opcional)
-- [ ] Crear `robots.txt` y `sitemap.xml` para SEO
-- [ ] Añadir página 404 personalizada
-- [ ] Optimizar imágenes (comprimir, WebP)
-- [ ] Configurar analytics (Google Analytics, Plausible, etc.)
-
-## 🚀 Despliegue
-
-Este sitio es estático y puede desplegarse fácilmente en:
-
-- **GitHub Pages**: Gratis, ideal para proyectos personales
-- **Netlify**: Despliegue automático desde Git
-- **Vercel**: Rápido y con preview automático
-- **Cloudflare Pages**: CDN global incluido
-
-### Ejemplo con GitHub Pages:
-
-1. Sube el proyecto a un repositorio de GitHub
-2. Ve a Settings → Pages
-3. Selecciona la rama `main` y carpeta `/root`
-4. Tu sitio estará disponible en `https://tuusuario.github.io/tartdesserts`
-
-## 📄 Licencia
-
-© 2025 tartdesserts. Todos los derechos reservados.
-
-## 🤝 Contribuciones
-
-Este es un proyecto privado. Para sugerencias o mejoras, contacta directamente con el propietario.
+**Ve el sitio funcionando**: [https://tomas20oriol-jpg.github.io/tartdesserts](https://tomas20oriol-jpg.github.io/tartdesserts)
 
 ---
 
-Hecho con ❤️ y mucho 🍰
+## 📚 **Documentación para Desarrolladores**
+
+Este proyecto es un **e-commerce completo** con carrito, autenticación Firebase y pagos Stripe.
+
+> **🔒 IMPORTANTE**: Lee [PORTFOLIO-README.md](PORTFOLIO-README.md) para ver la documentación completa de desarrollo, instalación y características técnicas.
+
+---
+
+## 🎯 **Resumen del Proyecto**
+
+**tartdesserts** es una plataforma de e-commerce para una pastelería artesanal que incluye:
+
+- ✅ **Frontend moderno** con HTML5, CSS3, JavaScript vanilla
+- ✅ **Sistema de autenticación** con Firebase Auth (Google, Email/Password)
+- ✅ **Carrito de compras** con localStorage y gestión de estado
+- ✅ **Integración con Stripe** para pagos y suscripciones
+- ✅ **Firebase Functions** para backend serverless
+- ✅ **Responsive design** para todos los dispositivos
+
+## 🛡️ **Seguridad y Portfolio**
+
+Este proyecto está configurado para ser **compartido de forma segura**:
+
+- ✅ **Información sensible protegida** con `.gitignore`
+- ✅ **Variables de entorno** para configuración
+- ✅ **Archivos de ejemplo** (`.env.example`) para otros desarrolladores
+- ✅ **Documentación completa** para setup y deployment
+
+## 🚀 **Inicio Rápido**
+
+Para desarrolladores que quieran explorar el código:
+
+```bash
+# 1. Clonar el repositorio
+git clone https://github.com/tomas20oriol-jpg/tartdesserts.git
+cd tartdesserts
+
+# 2. Configurar variables de entorno
+cp .env.example .env
+# Editar .env con tus propias claves
+
+# 3. Abrir en navegador
+# Simplemente abre index.html en tu navegador
+
+# 4. Para desarrollo completo con Firebase:
+# Lee PORTFOLIO-README.md para instrucciones detalladas
+```
+
+## 📋 **Características Técnicas**
+
+- **Frontend**: HTML5, CSS3, JavaScript ES6+
+- **Backend**: Firebase Functions (Node.js)
+- **Base de datos**: Firebase Firestore
+- **Autenticación**: Firebase Auth
+- **Pagos**: Stripe API
+- **Deployment**: GitHub Pages + Firebase Hosting
+
+## 📁 **Estructura del Proyecto**
+
+```
+tartdesserts/
+├── .env.example           # Variables de entorno de ejemplo
+├── .gitignore            # Archivos sensibles ignorados
+├── PORTFOLIO-README.md   # Documentación completa para devs
+├── firebase.json         # Configuración Firebase
+├── functions/            # Backend serverless
+├── js/                   # JavaScript del frontend
+├── css/                  # Estilos
+├── assets/               # Recursos estáticos
+└── *.html                # Páginas del sitio
+```
+
+---
+
+## 🤝 **Para Portfolio/CV**
+
+Este proyecto demuestra habilidades en:
+
+- **Desarrollo Full-Stack** con JavaScript moderno
+- **Integración de APIs** (Stripe, Firebase)
+- **Gestión de Estado** compleja
+- **Mejores prácticas** de seguridad
+- **UI/UX Design** responsive
+- **DevOps** y deployment
+
+> **📖 Documentación completa**: [PORTFOLIO-README.md](PORTFOLIO-README.md)
+
+---
+
+## 📄 **Licencia**
+
+Proyecto para fines de portfolio y demostración educativa.
+
+---
+
+**¡Gracias por revisar mi proyecto!** 🚀

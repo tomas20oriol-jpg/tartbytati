@@ -31,8 +31,9 @@
       </nav>
       <div style="display: flex; align-items: center; gap: 20px;">
         <a href="login.html" id="login-link" style="text-decoration: none; color: var(--text-color); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; font-weight: 500; transition: var(--transition);">
-          Log In
+          LOGIN
         </a>
+        <span id="user-name-display" style="color: var(--text-color); font-size: 14px; font-weight: 500; display: none;"></span>
         <button id="cart-toggle" class="cart-button">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
@@ -117,13 +118,5 @@
   </footer>
   
   <script src="js/script.js" defer></script>
-  <script>
-    // Check if user is logged in and update nav
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (user) {
-      document.getElementById('login-link').href = 'account.html';
-      document.getElementById('login-link').textContent = 'Mi Cuenta';
-    }
-  </script>
 </body>
 </html>

@@ -514,6 +514,7 @@
 
     const auth = firebase.auth();
     const db = firebase.firestore();
+    const functions = firebase.functions();
 
     console.log('Firebase inicializado correctamente');
     // Get plan from URL
@@ -596,104 +597,134 @@
       e.target.value = value;
     });
     
-    // Form submission with validation
-    document.getElementById('payment-form').addEventListener('submit', function(e) {
+    // Form submission with real payment processing
+    document.getElementById('payment-form').addEventListener('submit', async function(e) {
       e.preventDefault();
-      
+
       // Get selected payment method
       const selectedMethod = document.querySelector('.payment-method.active').dataset.method;
-      
+
       // Validate required fields
       const fullName = document.getElementById('full-name').value.trim();
       const email = document.getElementById('email').value.trim();
       const phone = document.getElementById('phone').value.trim();
       const termsAccepted = document.getElementById('accept-terms').checked;
-      
+
       if (!fullName || !email || !phone) {
         alert('Por favor completa todos los campos obligatorios.');
         return;
       }
-      
+
       if (!termsAccepted) {
         alert('Debes aceptar los términos y condiciones para continuar.');
         return;
       }
-      
+
       // Validate email format
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
         alert('Por favor introduce un email válido.');
         return;
       }
-      
+
+      // Check if user is authenticated
+      const user = auth.currentUser;
+      if (!user) {
+        alert('Debes iniciar sesión para completar la suscripción.');
+        window.location.href = 'login.html';
+        return;
+      }
+
       // Validate payment method specific fields
       if (selectedMethod === 'card') {
         const cardNumber = document.getElementById('card-number').value.replace(/\s/g, '');
         const expiry = document.getElementById('expiry').value;
         const cvv = document.getElementById('cvv').value;
         const cardholder = document.getElementById('cardholder').value.trim();
-        
+
         if (!cardNumber || cardNumber.length < 13) {
           alert('Por favor introduce un número de tarjeta válido.');
           return;
         }
-        
+
         if (!expiry || expiry.length !== 5) {
           alert('Por favor introduce una fecha de expiración válida (MM/AA).');
           return;
         }
-        
+
         if (!cvv || cvv.length < 3) {
           alert('Por favor introduce un CVV válido.');
           return;
         }
-        
+
         if (!cardholder) {
           alert('Por favor introduce el nombre del titular de la tarjeta.');
           return;
         }
+
+        // Process subscription with card
+        await processSubscriptionPayment(user, fullName, email, phone, plan);
+      } else if (selectedMethod === 'paypal') {
+        // Redirect to PayPal (implementación futura)
+        alert('PayPal estará disponible pronto. Por favor usa tarjeta de crédito por ahora.');
+        return;
       } else if (selectedMethod === 'bizum') {
         const bizumPhone = document.getElementById('bizum-phone').value.trim();
         if (!bizumPhone) {
           alert('Por favor introduce tu número de teléfono Bizum.');
           return;
         }
+
+        // Process subscription with Bizum (implementación futura)
+        alert('Bizum estará disponible pronto. Por favor usa tarjeta de crédito por ahora.');
+        return;
       }
-      
-      // All validations passed - process payment
-      const btn = this.querySelector('button[type="submit"]');
+    });
+
+    // Process subscription payment with Stripe
+    async function processSubscriptionPayment(user, fullName, email, phone, planType) {
+      const btn = document.querySelector('#payment-form button[type="submit"]');
       const originalText = btn.textContent;
       btn.textContent = 'Procesando pago...';
       btn.disabled = true;
-      
-      setTimeout(async () => {
-        try {
-          // Update user subscription status in Firestore
-          const user = auth.currentUser;
-          if (user) {
-            await db.collection('users').doc(user.uid).update({
-              subscribed: true,
-              subscriptionPlan: plan,
-              subscriptionDate: new Date().toISOString(),
-              subscriptionEndDate: plan === 'annual'
-                ? new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString()
-                : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
-            });
 
-            console.log('Suscripción actualizada en Firestore');
-          }
+      try {
+        // Update user data in Firestore first
+        await db.collection('users').doc(user.uid).update({
+          name: fullName,
+          email: email,
+          phone: phone,
+          updatedAt: new Date().toISOString()
+        });
 
-          // Redirect to success page or account
-          alert('¡Pago completado exitosamente! Bienvenida a la comunidad tartdesserts.');
-          window.location.href = 'account.html';
-        } catch (error) {
-          console.error('Error updating subscription:', error);
-          alert('Error al procesar la suscripción. Por favor contacta con soporte.');
-          btn.textContent = originalText;
-          btn.disabled = false;
+        // Get price ID based on plan
+        const priceId = planType === 'annual'
+          ? 'price_tu_id_anual_aqui'  // Reemplazar con el ID real
+          : 'price_tu_id_mensual_aqui'; // Reemplazar con el ID real
+
+        // Create Stripe Checkout session
+        const createSubscription = functions.httpsCallable('createSubscriptionCheckout');
+        const result = await createSubscription({
+          priceId: priceId,
+          planType: planType,
+          successUrl: 'https://tomas20oriol-jpg.github.io/tartdesserts/account.html?success=true',
+          cancelUrl: 'https://tomas20oriol-jpg.github.io/tartdesserts/subscription.html'
+        });
+
+        if (result.data.success) {
+          // Redirect to Stripe Checkout
+          window.location.href = result.data.url;
+        } else {
+          throw new Error('Error al crear la sesión de pago');
         }
-      }, 2000);
-    });
+
+      } catch (error) {
+        console.error('Error processing subscription:', error);
+        alert('Error al procesar la suscripción. Por favor contacta con soporte.');
+        btn.textContent = originalText;
+        btn.disabled = false;
+      }
+    }
     
     // Initialize
     updateSummary();

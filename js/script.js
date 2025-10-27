@@ -19,11 +19,8 @@ document.addEventListener('DOMContentLoaded', function() {
   // Add animation on scroll
   initScrollAnimations();
 
-  // Initialize unified cart
-  initUnifiedCart();
-
-  // Update auth UI
-  updateAuthUI();
+  // Initialize product detail page if applicable
+  initProductDetail();
 
   console.log('tartdesserts website loaded successfully!');
 });
@@ -50,18 +47,25 @@ function updateAuthUI() {
   const isLoggedIn = checkAuthStatus();
 
   if (isLoggedIn && loginLink) {
-    // Hide login link, show user menu
-    if (loginLink) loginLink.style.display = 'none';
+    // User is logged in - show "MI CUENTA"
+    loginLink.textContent = 'MI CUENTA';
+    loginLink.href = 'account.html';
 
     // Show user info if available
     const user = JSON.parse(localStorage.getItem('user'));
     if (user && userName) {
       userName.textContent = user.name || 'Usuario';
+      userName.style.display = 'inline';
     }
   } else {
-    // Show login link, hide user menu
-    if (loginLink) loginLink.style.display = 'inline';
-    if (userMenu) userMenu.style.display = 'none';
+    // User is not logged in - show "LOGIN"
+    if (loginLink) {
+      loginLink.textContent = 'LOGIN';
+      loginLink.href = 'login.html';
+    }
+    if (userName) {
+      userName.style.display = 'none';
+    }
   }
 }
 
@@ -490,6 +494,184 @@ function initUnifiedCart() {
     }
   };
   
-  // Initial display update
-  updateCartDisplay();
+// Product detail page functionality
+function initProductDetail() {
+  // Check if we're on product detail page
+  const productId = new URLSearchParams(window.location.search).get('product');
+  if (!productId) return;
+
+  // Products data
+  const products = {
+    'cookie-red-velvet': {
+      name: 'Cookie Red Velvet',
+      price: 3.00,
+      description: 'Nuestra Cookie Red Velvet es una delicia irresistible con su característico color rojo y su suave textura aterciopelada. Elaborada con cacao de calidad y generosos chips de chocolate blanco, cada bocado es una experiencia única.',
+      description2: 'Perfecta para acompañar tu café o como un capricho dulce en cualquier momento del día. Su textura es crujiente por fuera y suave por dentro, con el equilibrio perfecto entre el sabor del red velvet y el dulzor del chocolate blanco.',
+      features: [
+        'Peso aproximado: 80-90g por cookie',
+        'Ingredientes: Harina, mantequilla, azúcar, huevos, cacao, chips de chocolate blanco, colorante alimentario',
+        'Conservación: 5-7 días en recipiente hermético',
+        'Alérgenos: Gluten, lácteos, huevo'
+      ],
+      image: 'assets/images/cookie-red-velvet.jpg',
+      allergens: 'Gluten, lácteos, huevo'
+    },
+    'cookie-churro': {
+      name: 'Cookie de Churro',
+      price: 3.00,
+      description: 'Nuestra Cookie de Churro captura perfectamente el sabor auténtico de un churro tradicional en una textura crujiente por fuera y suave por dentro.',
+      description2: 'Elaborada con canela de calidad y azúcar glass, cada bocado te transportará a una churrería tradicional. Perfecta para los amantes de los sabores tradicionales con un toque innovador.',
+      features: [
+        'Peso aproximado: 80-90g por cookie',
+        'Ingredientes: Harina, mantequilla, azúcar, huevos, canela, azúcar glass',
+        'Conservación: 5-7 días en recipiente hermético',
+        'Alérgenos: Gluten, lácteos, huevo'
+      ],
+      image: 'assets/images/cookie-churro.jpg',
+      allergens: 'Gluten, lácteos, huevo'
+    },
+    'cookie-lotus': {
+      name: 'Cookie Lotus',
+      price: 3.00,
+      description: 'Una explosión de sabor caramelizado con galletas Lotus Biscoff trituradas que le dan un toque único y adictivo.',
+      description2: 'La combinación perfecta entre la suavidad de nuestra cookie base y el sabor característico de las galletas Lotus caramelizadas. Ideal para los amantes de los sabores intensos y dulces.',
+      features: [
+        'Peso aproximado: 80-90g por cookie',
+        'Ingredientes: Harina, mantequilla, azúcar, huevos, galletas Lotus Biscoff, especias',
+        'Conservación: 5-7 días en recipiente hermético',
+        'Alérgenos: Gluten, lácteos, huevo, soja'
+      ],
+      image: 'assets/images/cookie-lotus.jpg',
+      allergens: 'Gluten, lácteos, huevo, soja'
+    },
+    'brownie-clasico': {
+      name: 'Brownie Clásico',
+      price: 2.50,
+      description: 'El brownie perfecto: jugoso por dentro, crujiente por fuera, con un intenso sabor a chocolate que deleitará a los amantes del cacao.',
+      description2: 'Elaborado con chocolate de la mejor calidad, este brownie tiene la textura ideal que todos buscan. Ni muy seco ni muy húmedo, solo perfecto.',
+      features: [
+        'Peso aproximado: 100g por porción',
+        'Ingredientes: Chocolate negro, mantequilla, azúcar, huevos, harina, cacao',
+        'Conservación: 4-5 días en recipiente hermético',
+        'Alérgenos: Gluten, lácteos, huevo'
+      ],
+      image: 'assets/images/brownie-clasico.jpg',
+      allergens: 'Gluten, lácteos, huevo'
+    },
+    'brookie-clasico': {
+      name: 'Brookie Clásico',
+      price: 3.50,
+      description: 'La fusión perfecta entre dos mundos: la mitad superior es una cookie crujiente y la mitad inferior es un brownie jugoso.',
+      description2: 'Lo mejor de ambos mundos en un solo producto. La textura crujiente de la cookie se combina perfectamente con la jugosidad del brownie para crear una experiencia única.',
+      features: [
+        'Peso aproximado: 120g por pieza',
+        'Ingredientes: Harina, chocolate, mantequilla, azúcar, huevos, cacao',
+        'Conservación: 4-5 días en recipiente hermético',
+        'Alérgenos: Gluten, lácteos, huevo'
+      ],
+      image: 'assets/images/brookie-clasico.jpg',
+      allergens: 'Gluten, lácteos, huevo'
+    }
+  };
+
+  // Update page with product data
+  function updateProductPage() {
+    if (!products[productId]) {
+      // Redirect to products page if product not found
+      window.location.href = 'productos.html';
+      return;
+    }
+
+    const product = products[productId];
+
+    // Update title
+    document.title = `${product.name} - tartdesserts`;
+    const pageTitle = document.getElementById('page-title');
+    if (pageTitle) pageTitle.textContent = `${product.name} - tartdesserts`;
+
+    // Update content
+    const productTitle = document.getElementById('product-title');
+    const productPrice = document.getElementById('product-price');
+    const productImage = document.getElementById('product-image');
+
+    if (productTitle) productTitle.textContent = product.name;
+    if (productPrice) productPrice.textContent = `${product.price.toFixed(2)} €`;
+    if (productImage) {
+      productImage.src = product.image;
+      productImage.alt = product.name;
+    }
+
+    // Update descriptions
+    const descriptionDiv = document.getElementById('product-description');
+    if (descriptionDiv) {
+      descriptionDiv.innerHTML = `
+        <p>${product.description}</p>
+        <p>${product.description2}</p>
+      `;
+    }
+
+    // Update features
+    const featuresList = document.getElementById('product-features');
+    if (featuresList) {
+      featuresList.innerHTML = product.features.map(feature => `<li>${feature}</li>`).join('');
+    }
+
+    // Update add to cart button
+    const addToCartBtn = document.getElementById('add-to-cart-detail');
+    if (addToCartBtn) {
+      addToCartBtn.dataset.product = product.name;
+      addToCartBtn.dataset.price = product.price.toFixed(2);
+    }
+  }
+
+  // Initialize product page
+  updateProductPage();
+
+  // Quantity selector functionality
+  const decreaseQty = document.getElementById('decrease-qty');
+  const increaseQty = document.getElementById('increase-qty');
+  const quantityInput = document.getElementById('product-quantity');
+  const addToCartDetail = document.getElementById('add-to-cart-detail');
+
+  if (decreaseQty) {
+    decreaseQty.addEventListener('click', function() {
+      const currentValue = parseInt(quantityInput.value);
+      if (currentValue > 1) {
+        quantityInput.value = currentValue - 1;
+      }
+    });
+  }
+
+  if (increaseQty) {
+    increaseQty.addEventListener('click', function() {
+      const currentValue = parseInt(quantityInput.value);
+      if (currentValue < 50) {
+        quantityInput.value = currentValue + 1;
+      }
+    });
+  }
+
+  if (addToCartDetail) {
+    addToCartDetail.addEventListener('click', function() {
+      const quantity = parseInt(quantityInput.value);
+      const productName = this.dataset.product;
+      const productPrice = parseFloat(this.dataset.price);
+
+      // Add multiple items to cart
+      for (let i = 0; i < quantity; i++) {
+        // Trigger the existing add to cart functionality
+        const event = new CustomEvent('addToCart', {
+          detail: { name: productName, price: productPrice }
+        });
+        document.dispatchEvent(event);
+      }
+
+      // Show feedback
+      const originalText = this.textContent;
+      this.textContent = '✓ Añadido a la cesta';
+      setTimeout(() => {
+        this.textContent = originalText;
+      }, 2000);
+    });
+  }
 }

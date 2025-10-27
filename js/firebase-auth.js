@@ -269,6 +269,11 @@ function initAuth() {
         console.log('Usuario no autenticado');
         localStorage.removeItem('user');
       }
+
+      // Update UI after auth state change
+      if (typeof updateAuthUI === 'function') {
+        updateAuthUI();
+      }
     });
   }
 }

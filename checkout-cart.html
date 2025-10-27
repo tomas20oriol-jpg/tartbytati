@@ -383,7 +383,31 @@
   </footer>
   
   <script src="js/script.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-functions-compat.js"></script>
   <script>
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCPE5bk4zESRhzts3xod2YqrUE09j8RfBQ",
+      authDomain: "tartdesserts-3b414.firebaseapp.com",
+      projectId: "tartdesserts-3b414",
+      storageBucket: "tartdesserts-3b414.appspot.com",
+      messagingSenderId: "534807668671",
+      appId: "1:534807668671:web:c2ad9d868c1a930f86e30a"
+    };
+
+    // Initialize Firebase
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+    const functions = firebase.functions();
+
+    console.log('Firebase inicializado correctamente');
     // Check if user is logged in
     const user = JSON.parse(localStorage.getItem('user'));
     if (user) {
@@ -472,48 +496,123 @@
     minDate.setDate(minDate.getDate() + 2);
     deliveryDateInput.min = minDate.toISOString().split('T')[0];
     
-    // Form submission
-    document.getElementById('order-form').addEventListener('submit', function(e) {
+    // Form submission with real payment processing
+    document.getElementById('order-form').addEventListener('submit', async function(e) {
       e.preventDefault();
-      
-      const formData = {
-        customer: {
-          name: document.getElementById('full-name').value,
-          email: document.getElementById('email').value,
-          phone: document.getElementById('phone').value
-        },
-        deliveryMethod: deliveryMethod,
-        deliveryDate: document.getElementById('delivery-date').value,
-        notes: document.getElementById('notes').value,
+
+      // Validate required fields
+      const fullName = document.getElementById('full-name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const deliveryDate = document.getElementById('delivery-date').value;
+
+      if (!fullName || !email || !phone || !deliveryDate) {
+        alert('Por favor completa todos los campos obligatorios.');
+        return;
+      }
+
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        alert('Por favor introduce un email válido.');
+        return;
+      }
+
+      // Check if user is authenticated
+      const user = auth.currentUser;
+      if (!user) {
+        alert('Debes iniciar sesión para completar el pedido.');
+        window.location.href = 'login.html';
+        return;
+      }
+
+      // Calculate order total
+      const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      const tax = subtotal * 0.10; // 10% IVA
+      const total = subtotal + shippingCost + tax;
+
+      // Process order payment
+      await processOrderPayment(user, {
+        customer: { name: fullName, email, phone },
+        deliveryMethod,
+        deliveryDate,
         items: cart,
-        pricing: {
-          subtotal: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0),
-          shipping: shippingCost,
-          tax: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) * 0.10,
-          total: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) + shippingCost + (cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) * 0.10)
-        }
-      };
-      
-      if (deliveryMethod === 'delivery') {
-        formData.address = {
+        pricing: { subtotal, shipping: shippingCost, tax, total },
+        address: deliveryMethod === 'delivery' ? {
           street: document.getElementById('address').value,
           city: document.getElementById('city').value,
           postalCode: document.getElementById('postal-code').value
-        };
-      }
-      
-      // Save order
-      localStorage.setItem('pendingOrder', JSON.stringify(formData));
-      
-      // Show confirmation
-      alert('¡Pedido confirmado! Te contactaremos pronto para confirmar el pago y los detalles.');
-      
-      // Clear cart
-      localStorage.removeItem('cart');
-      
-      // Redirect to home
-      window.location.href = 'index.html';
+        } : null,
+        notes: document.getElementById('notes').value
+      });
     });
+
+    // Process order payment with Stripe
+    async function processOrderPayment(user, orderData) {
+      const btn = document.querySelector('#order-form button[type="submit"]');
+      const originalText = btn.textContent;
+      btn.textContent = 'Procesando pago...';
+      btn.disabled = true;
+
+      try {
+        // Update user data in Firestore first
+        await db.collection('users').doc(user.uid).update({
+          name: orderData.customer.name,
+          email: orderData.customer.email,
+          phone: orderData.customer.phone,
+          updatedAt: new Date().toISOString()
+        });
+
+        // Create Payment Intent for the order
+        const createPaymentIntent = functions.httpsCallable('createPaymentIntent');
+        const result = await createPaymentIntent({
+          amount: orderData.pricing.total,
+          currency: 'eur',
+          metadata: {
+            userId: user.uid,
+            orderType: 'individual',
+            itemCount: orderData.items.length
+          }
+        });
+
+        if (result.data.success) {
+          // Save order to Firestore
+          await db.collection('orders').add({
+            userId: user.uid,
+            customer: orderData.customer,
+            deliveryMethod: orderData.deliveryMethod,
+            deliveryDate: orderData.deliveryDate,
+            address: orderData.address,
+            notes: orderData.notes,
+            items: orderData.items,
+            pricing: orderData.pricing,
+            paymentIntentId: result.data.paymentIntentId,
+            status: 'pending_payment',
+            createdAt: new Date().toISOString()
+          });
+
+          // Here you would typically integrate with Stripe Elements for card collection
+          // or redirect to a payment page
+          alert('¡Pedido creado! Redirigiendo al pago...');
+
+          // For now, mark as completed (you'll need to integrate with Stripe Elements)
+          // In a real implementation, you'd collect payment details and confirm the PaymentIntent
+
+          // Clear cart and redirect
+          localStorage.removeItem('cart');
+          window.location.href = 'account.html?order=success';
+
+        } else {
+          throw new Error('Error al crear el pago');
+        }
+
+      } catch (error) {
+        console.error('Error processing order:', error);
+        alert('Error al procesar el pedido. Por favor contacta con soporte.');
+        btn.textContent = originalText;
+        btn.disabled = false;
+      }
+    }
   </script>
 </body>
 </html>

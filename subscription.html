@@ -262,8 +262,9 @@
       </nav>
       <div style="display: flex; align-items: center; gap: 20px;">
         <a href="login.html" id="login-link" style="text-decoration: none; color: var(--text-color); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; font-weight: 500; transition: var(--transition);">
-          Log In
+          LOGIN
         </a>
+        <span id="user-name-display" style="color: var(--text-color); font-size: 14px; font-weight: 500; display: none;"></span>
         <button id="cart-toggle" class="cart-button">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
@@ -442,38 +443,5 @@
   
   <script src="js/script.js" defer></script>
   <script src="js/cookies.js" defer></script>
-  <script>
-    // Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyCPE5bk4zESRhzts3xod2YqrUE09j8RfBQ",
-      authDomain: "tartdesserts-3b414.firebaseapp.com",
-      projectId: "tartdesserts-3b414",
-      storageBucket: "tartdesserts-3b414.appspot.com",
-      messagingSenderId: "534807668671",
-      appId: "1:534807668671:web:c2ad9d868c1a930f86e30a"
-    };
-
-    // Initialize Firebase
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-    }
-
-    const auth = firebase.auth();
-    const db = firebase.firestore();
-
-    console.log('Firebase inicializado correctamente');
-
-    // Check if user is logged in and update nav
-    auth.onAuthStateChanged((user) => {
-      const loginLink = document.getElementById('login-link');
-      if (user) {
-        loginLink.href = 'account.html';
-        loginLink.textContent = 'Mi Cuenta';
-      } else {
-        loginLink.href = 'login.html';
-        loginLink.textContent = 'Log In';
-      }
-    });
-  </script>
 </body>
 </html>
