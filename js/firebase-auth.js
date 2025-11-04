@@ -1,37 +1,34 @@
-// Firebase Authentication Functions - Simplified for v8 compatibility
-// This file provides simple authentication functions without ES6 modules
-
-// Firebase will be initialized in each HTML file
-// Functions will use the global firebase object
+// Firebase Authentication Functions - Modular (v9+)
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  FacebookAuthProvider,
+  signInWithPopup,
+  signOut,
+  updateProfile,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {
+  doc,
+  getDoc,
+  setDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { setUser, clearUser } from './store.js';
 
 // Login with email and password
-async function loginWithEmail(email, password) {
+export async function loginWithEmail(auth, email, password) {
   try {
-    if (!window.firebaseAuth) {
+    if (!auth) {
       throw new Error('Firebase Auth not initialized');
     }
 
-    await window.firebaseAuth.signInWithEmailAndPassword(email, password);
-    const user = window.firebaseAuth.currentUser;
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
 
     console.log('Login successful:', user.email);
 
-    // Update localStorage with user info
-    const userInfo = {
-      uid: user.uid,
-      name: user.displayName || email.split('@')[0],
-      email: user.email,
-      subscription: {
-        type: 'free',
-        status: 'active'
-      },
-      preferences: {
-        newsletter: false,
-        notifications: true
-      }
-    };
-
-    localStorage.setItem('user', JSON.stringify(userInfo));
+    // The onAuthStateChanged listener will handle setting the user state.
 
     return { success: true, user };
   } catch (error) {
@@ -41,38 +38,31 @@ async function loginWithEmail(email, password) {
 }
 
 // Register new user
-async function registerWithEmail(name, email, password) {
+export async function registerWithEmail(auth, db, name, email, password) {
   try {
-    if (!window.firebaseAuth) {
+    if (!auth) {
       throw new Error('Firebase Auth not initialized');
     }
 
-    await window.firebaseAuth.createUserWithEmailAndPassword(email, password);
-    const user = window.firebaseAuth.currentUser;
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
 
     console.log('Registration successful:', user.email);
 
     // Update profile with display name
-    await user.updateProfile({
+    await updateProfile(user, {
       displayName: name
     });
 
-    // Save user info to localStorage
+    // Create user document in Firestore
     const userInfo = {
       uid: user.uid,
       name: name,
       email: email,
-      subscription: {
-        type: 'free',
-        status: 'active'
-      },
-      preferences: {
-        newsletter: false,
-        notifications: true
-      }
+      // ... other default fields
     };
-
-    localStorage.setItem('user', JSON.stringify(userInfo));
+    const userDocRef = doc(db, "users", user.uid);
+    await setDoc(userDocRef, userInfo);
 
     return { success: true, user };
   } catch (error) {
@@ -82,35 +72,19 @@ async function registerWithEmail(name, email, password) {
 }
 
 // Login with Google
-async function loginWithGoogle() {
+export async function loginWithGoogle(auth) {
   try {
-    if (!window.firebaseAuth) {
+    if (!auth) {
       throw new Error('Firebase Auth not initialized');
     }
 
-    const provider = new firebase.auth.GoogleAuthProvider();
-    await window.firebaseAuth.signInWithPopup(provider);
-    const user = window.firebaseAuth.currentUser;
+    const provider = new GoogleAuthProvider();
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
 
     console.log('Google login successful:', user.email);
 
-    // Save user info to localStorage
-    const userInfo = {
-      uid: user.uid,
-      name: user.displayName,
-      email: user.email,
-      photoURL: user.photoURL,
-      subscription: {
-        type: 'free',
-        status: 'active'
-      },
-      preferences: {
-        newsletter: false,
-        notifications: true
-      }
-    };
-
-    localStorage.setItem('user', JSON.stringify(userInfo));
+    // The onAuthStateChanged listener will handle setting the user state.
 
     return { success: true, user };
   } catch (error) {
@@ -120,35 +94,19 @@ async function loginWithGoogle() {
 }
 
 // Login with Facebook
-async function loginWithFacebook() {
+export async function loginWithFacebook(auth) {
   try {
-    if (!window.firebaseAuth) {
+    if (!auth) {
       throw new Error('Firebase Auth not initialized');
     }
 
-    const provider = new firebase.auth.FacebookAuthProvider();
-    await window.firebaseAuth.signInWithPopup(provider);
-    const user = window.firebaseAuth.currentUser;
+    const provider = new FacebookAuthProvider();
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
 
     console.log('Facebook login successful:', user.email);
 
-    // Save user info to localStorage
-    const userInfo = {
-      uid: user.uid,
-      name: user.displayName,
-      email: user.email,
-      photoURL: user.photoURL,
-      subscription: {
-        type: 'free',
-        status: 'active'
-      },
-      preferences: {
-        newsletter: false,
-        notifications: true
-      }
-    };
-
-    localStorage.setItem('user', JSON.stringify(userInfo));
+    // The onAuthStateChanged listener will handle setting the user state.
 
     return { success: true, user };
   } catch (error) {
@@ -158,15 +116,14 @@ async function loginWithFacebook() {
 }
 
 // Logout
-async function logout() {
+export async function logout(auth) {
   try {
-    if (!window.firebaseAuth) {
+    if (!auth) {
       throw new Error('Firebase Auth not initialized');
     }
 
-    await window.firebaseAuth.signOut();
-    localStorage.removeItem('user');
-    localStorage.removeItem('rememberMe');
+    await signOut(auth);
+    // The onAuthStateChanged listener will clear the user state.
     return { success: true };
   } catch (error) {
     console.error('Error en logout:', error);
@@ -175,15 +132,15 @@ async function logout() {
 }
 
 // Load user profile (simplified)
-async function loadUserProfile(uid) {
+export async function loadUserProfile(db, uid) {
   try {
-    // Return user info from localStorage for now
-    const userData = JSON.parse(localStorage.getItem('user') || '{}');
+    const userDocRef = doc(db, "users", uid);
+    const userDocSnap = await getDoc(userDocRef);
 
-    if (userData.uid === uid) {
-      return userData;
+    if (userDocSnap.exists()) {
+      return userDocSnap.data();
     }
-
+    
     // Fallback
     return {
       uid: uid,
@@ -203,83 +160,69 @@ async function loadUserProfile(uid) {
 }
 
 // Update user subscription
-async function updateUserSubscription(uid, subscriptionData) {
-  try {
-    // Update localStorage for now
-    const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
-    currentUser.subscription = subscriptionData;
-    localStorage.setItem('user', JSON.stringify(currentUser));
-
-    return { success: true };
-  } catch (error) {
-    console.error('Error actualizando suscripción:', error);
-    return { success: false, error: error.message };
-  }
+export async function updateUserSubscription(uid, subscriptionData) {
+  // This should now be a Firebase Function that updates Firestore,
+  // and the change will be reflected automatically on the client.
 }
 
 // Get current user
-function getCurrentUser() {
-  if (window.firebaseAuth) {
-    return window.firebaseAuth.currentUser;
-  }
-  return null;
+export function getCurrentUser(auth) {
+  return auth ? auth.currentUser : null;
 }
 
 // Check if user is authenticated
-function isAuthenticated() {
-  if (window.firebaseAuth) {
-    return window.firebaseAuth.currentUser !== null;
-  }
-  return false;
+export function isAuthenticated(auth) {
+  return auth ? auth.currentUser !== null : false;
 }
 
 // Get user subscription status
-function getUserSubscription() {
-  if (window.firebaseAuth && window.firebaseAuth.currentUser && localStorage.getItem('user')) {
-    const userData = JSON.parse(localStorage.getItem('user'));
-    return userData.subscription;
+export function getUserSubscription(state) {
+  return state.user ? state.user.subscription : null;
+}
+
+// This function now lives in the store and is called by the listener
+export function updateAuthUI(state) {
+  const loginLink = document.getElementById('login-link');
+  const userNameDisplay = document.getElementById('user-name-display');
+  const user = state.user;
+
+  if (loginLink) {
+    if (user) {
+      loginLink.textContent = 'MI CUENTA';
+      loginLink.href = 'account.html';
+      if (userNameDisplay) {
+        userNameDisplay.textContent = user.name || user.email.split('@')[0];
+        userNameDisplay.style.display = 'inline';
+      }
+    } else {
+      loginLink.textContent = 'LOGIN';
+      loginLink.href = 'login.html';
+      if (userNameDisplay) {
+        userNameDisplay.style.display = 'none';
+      }
+    }
   }
-  return null;
 }
 
 // Initialize auth state listener
-function initAuth() {
-  if (window.firebaseAuth) {
-    window.firebaseAuth.onAuthStateChanged((user) => {
+export function initAuth(auth, db) {
+  if (auth) {
+    onAuthStateChanged(auth, async (user) => {
       if (user) {
-        console.log('Usuario autenticado:', user.email);
-        // Load user profile into localStorage if not exists
-        if (!localStorage.getItem('user')) {
-          const userInfo = {
-            uid: user.uid,
-            name: user.displayName || user.email.split('@')[0],
-            email: user.email,
-            subscription: {
-              type: 'free',
-              status: 'active'
-            },
-            preferences: {
-              newsletter: false,
-              notifications: true
-            }
-          };
-          localStorage.setItem('user', JSON.stringify(userInfo));
-        }
+        // When auth state changes, get the full profile from Firestore
+        const profile = await loadUserProfile(db, user.uid);
+        // And update our global state store
+        setUser(profile || { uid: user.uid, email: user.email, name: user.displayName });
       } else {
-        console.log('Usuario no autenticado');
-        localStorage.removeItem('user');
-      }
-
-      // Update UI after auth state change
-      if (typeof updateAuthUI === 'function') {
-        updateAuthUI();
+        // If user logs out, clear the user from our global state
+        clearUser();
       }
     });
   }
 }
 
 // Error message translations
-function getErrorMessage(errorCode) {
+export function getErrorMessage(errorCode) {
   const errorMessages = {
     'auth/user-not-found': 'Usuario no encontrado',
     'auth/wrong-password': 'Contraseña incorrecta',
@@ -294,19 +237,3 @@ function getErrorMessage(errorCode) {
 
   return errorMessages[errorCode] || 'Error desconocido';
 }
-
-// Make functions globally available
-window.loginWithEmail = loginWithEmail;
-window.registerWithEmail = registerWithEmail;
-window.loginWithGoogle = loginWithGoogle;
-window.loginWithFacebook = loginWithFacebook;
-window.logout = logout;
-window.loadUserProfile = loadUserProfile;
-window.updateUserSubscription = updateUserSubscription;
-window.getCurrentUser = getCurrentUser;
-window.isAuthenticated = isAuthenticated;
-window.getUserSubscription = getUserSubscription;
-window.initAuth = initAuth;
-window.getErrorMessage = getErrorMessage;
-
-console.log('Firebase Auth functions loaded globally');

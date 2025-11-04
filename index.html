@@ -15,10 +15,10 @@
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/cookies.css" />
 
-  <!-- Firebase SDK v8 -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <!-- Firebase SDK v10+ (modular) -->
+  <script type="module" src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
+  <script type="module" src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
+  <script type="module" src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
 </head>
 <body>
   <a href="#main-content" class="skip-link">Saltar al contenido</a>
@@ -170,42 +170,28 @@
   <footer id="contacto">
     <div class="container">
       <p>Síguenos en <a href="https://instagram.com/tartbytati" target="_blank" rel="noopener noreferrer">Instagram</a> · Contáctanos por <a href="https://wa.me/34691738933" target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
-      <p class="copyright">&copy; 2025 tartdesserts. Todos los derechos reservados.</p>
+      <p class="copyright" id="copyright-year">&copy; 2024 tartdesserts. Todos los derechos reservados.</p>
     </div>
   </footer>
   
-  <script src="js/script.js" defer></script>
+  <script type="module" src="js/script.js" defer></script>
   <script src="js/cookies.js" defer></script>
-  <script>
-    // Firebase configuration and initialization for index page
-    const firebaseConfig = {
-      apiKey: "AIzaSyCPE5bk4zESRhzts3xod2YqrUE09j8RfBQ",
-      authDomain: "tartdesserts-3b414.firebaseapp.com",
-      projectId: "tartdesserts-3b414",
-      storageBucket: "tartdesserts-3b414.firebasestorage.app",
-      messagingSenderId: "534807668671",
-      appId: "1:534807668671:web:c2ad9d868c1a930f86e30a",
-      measurementId: "G-CWFFD5JD20"
-    };
+  <script src="js/config.js"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
     // Make Firebase available globally
     window.firebaseAuth = auth;
     window.firebaseDb = db;
 
     console.log('Firebase initialized for index page');
-
-    // Test Firestore operations (should work without collection() errors)
-    try {
-      const testCollection = db.collection('test');
-      console.log('✅ Firestore collection test passed:', testCollection);
-    } catch (error) {
-      console.error('❌ Firestore test failed:', error);
-    }
   </script>
   <script src="js/firebase-auth.js" defer></script>
 </body>

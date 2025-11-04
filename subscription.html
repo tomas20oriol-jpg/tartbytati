@@ -8,10 +8,10 @@
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/cookies.css" />
 
-  <!-- Firebase SDK v8 -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <!-- Firebase SDK v10+ (modular) -->
+  <script type="module" src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
+  <script type="module" src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
+  <script type="module" src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
   <style>
     .subscription-hero {
       background: var(--bg-color);
@@ -437,11 +437,12 @@
   <footer id="contacto">
     <div class="container">
       <p>Síguenos en <a href="https://instagram.com/tartbytati" target="_blank" rel="noopener noreferrer">Instagram</a> · Contáctanos por <a href="https://wa.me/34691738933" target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
-      <p class="copyright">&copy; 2025 tartdesserts. Todos los derechos reservados.</p>
+      <p class="copyright" id="copyright-year">&copy; 2024 tartdesserts. Todos los derechos reservados.</p>
     </div>
   </footer>
   
-  <script src="js/script.js" defer></script>
+  <script type="module" src="js/script.js" defer></script>
   <script src="js/cookies.js" defer></script>
+  <script src="js/config.js"></script>
 </body>
 </html>

@@ -7,10 +7,10 @@
   <link rel="icon" type="image/jpeg" href="assets/icons/logo.jpg" />
   <link rel="stylesheet" href="css/style.css" />
 
-  <!-- Firebase SDK v8 -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <!-- Firebase SDK v10+ (modular) -->
+  <script type="module" src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
+  <script type="module" src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
+  <script type="module" src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
   <style>
     .legal-page { padding: 80px 0; min-height: 70vh; }
     .legal-container { max-width: 900px; margin: 0 auto; }
@@ -58,7 +58,6 @@
         <div class="legal-container">
           <div class="legal-header">
             <h1>Política de Privacidad</h1>
-            <p>Última actualización: 14 de octubre de 2025</p>
           </div>
           
           <div class="legal-content">
@@ -201,29 +200,19 @@
     </div>
   </footer>
   
-  <script src="js/script.js" defer></script>
-  <script>
-    // Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyCPE5bk4zESRhzts3xod2YqrUE09j8RfBQ",
-      authDomain: "tartdesserts-3b414.firebaseapp.com",
-      projectId: "tartdesserts-3b414",
-      storageBucket: "tartdesserts-3b414.appspot.com",
-      messagingSenderId: "534807668671",
-      appId: "1:534807668671:web:c2ad9d868c1a930f86e30a"
-    };
+  <script src="js/config.js"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
     // Initialize Firebase
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-    }
-
-    const auth = firebase.auth();
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
     console.log('Firebase inicializado correctamente');
 
     // Check if user is logged in and update nav
-    auth.onAuthStateChanged((user) => {
+    onAuthStateChanged(auth, (user) => {
       const loginLink = document.getElementById('login-link');
       if (user) {
         loginLink.href = 'account.html';

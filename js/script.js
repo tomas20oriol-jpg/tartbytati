@@ -1,73 +1,79 @@
 // ===========================
 // tartdesserts - Main JavaScript
 // ===========================
+import store, { addToCart, updateCartItemQuantity, clearCart, toggleCart } from './store.js';
+import { initAuth, updateAuthUI } from './firebase-auth.js';
 
-// Wait for DOM to be fully loaded
+
+// Initialize the application when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', function() {
-
-  // Initialize Firebase Auth (if available)
-  if (typeof window.firebaseAuth !== 'undefined') {
-    initFirebaseAuth();
-  }
-
-  // Smooth scrolling for anchor links
+  console.log('DOM fully loaded, initializing application...');
+  
+  // 1. Initialize core functionality
   initSmoothScroll();
-
-  // Add active state to navigation
   highlightActiveNav();
-
-  // Add animation on scroll
   initScrollAnimations();
-
-  // Initialize product detail page if applicable
+  setCopyrightYear();
+  handleExternalLinks();
   initProductDetail();
+
+  // 2. Initialize state-dependent UI
+  initUnifiedCart();
+  
+  // Subscribe to store changes
+  store.subscribe(renderCart);
+  store.subscribe(updateAuthUI);
+  
+  // Add global error handler for cart operations
+  window.handleCartError = function(error) {
+    console.error('Cart operation failed:', error);
+    // You could show a user-friendly notification here
+    alert('Hubo un error al actualizar el carrito. Por favor, inténtalo de nuevo.');
+  };
+
+  // 3. Initial render based on the current state
+  console.log('Performing initial render...');
+  renderCart(store.getState());
+  updateAuthUI(store.getState());
+
+  // 4. Initialize Firebase Auth logic (if available on the page)
+  if (typeof initAuth === 'function') {
+    console.log('Initializing Firebase Auth...');
+    initAuth();
+  }
+  
+  console.log('Application initialization complete');
+
+  // 3.5 Re-attach event listeners for any dynamically added 'Add to Cart' buttons
+  document.addEventListener('click', function(event) {
+    const addToCartBtn = event.target.closest('.add-to-cart');
+    if (addToCartBtn) {
+      const productName = addToCartBtn.getAttribute('data-product');
+      const productPrice = parseFloat(addToCartBtn.getAttribute('data-price'));
+      const type = addToCartBtn.getAttribute('data-type') || 'product';
+      const quantity = parseInt(addToCartBtn.getAttribute('data-quantity') || '1');
+      
+      addToCart(productName, productPrice, type, quantity);
+      
+      // Visual feedback
+      const originalText = addToCartBtn.textContent;
+      addToCartBtn.textContent = '¡Añadido!';
+      addToCartBtn.classList.add('added');
+      
+      setTimeout(() => {
+        addToCartBtn.textContent = originalText;
+        addToCartBtn.classList.remove('added');
+      }, 2000);
+    }
+  });
+
+  // 4. Initialize Firebase Auth logic (if available on the page)
+  if (typeof initAuth === 'function') {
+    initAuth();
+  }
 
   console.log('tartdesserts website loaded successfully!');
 });
-
-// Initialize Firebase Auth
-function initFirebaseAuth() {
-  // Import auth functions if available
-  if (window.firebaseAuth && window.firebaseDb) {
-    import('./firebase-auth.js').then(({ initAuth }) => {
-      initAuth();
-    }).catch(err => {
-      console.log('Firebase Auth not available on this page');
-    });
-  }
-}
-
-// Update authentication UI elements
-function updateAuthUI() {
-  const loginLink = document.getElementById('login-link');
-  const userMenu = document.getElementById('user-menu');
-  const userName = document.getElementById('user-name-display');
-
-  // Check if user is authenticated
-  const isLoggedIn = checkAuthStatus();
-
-  if (isLoggedIn && loginLink) {
-    // User is logged in - show "MI CUENTA"
-    loginLink.textContent = 'MI CUENTA';
-    loginLink.href = 'account.html';
-
-    // Show user info if available
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (user && userName) {
-      userName.textContent = user.name || 'Usuario';
-      userName.style.display = 'inline';
-    }
-  } else {
-    // User is not logged in - show "LOGIN"
-    if (loginLink) {
-      loginLink.textContent = 'LOGIN';
-      loginLink.href = 'login.html';
-    }
-    if (userName) {
-      userName.style.display = 'none';
-    }
-  }
-}
 
 // Check authentication status
 function checkAuthStatus() {
@@ -169,6 +175,17 @@ function initScrollAnimations() {
 }
 
 // ===========================
+// Dynamic Copyright Year
+// ===========================
+function setCopyrightYear() {
+  const copyrightElement = document.getElementById('copyright-year');
+  if (copyrightElement) {
+    const currentYear = new Date().getFullYear();
+    copyrightElement.innerHTML = `&copy; ${currentYear} tartdesserts. Todos los derechos reservados.`;
+  }
+}
+
+// ===========================
 // Handle External Links
 // ===========================
 // Add visual indicator for external links
@@ -199,69 +216,87 @@ document.addEventListener('keydown', function(e) {
 // Unified Cart System (with localStorage)
 // ===========================
 function initUnifiedCart() {
-  // Check if cart elements exist
-  const floatingCart = document.getElementById('floating-cart');
-  if (!floatingCart) return;
+  console.log('Initializing unified cart...');
   
-  // Initialize cart from localStorage
-  let cart = JSON.parse(localStorage.getItem('tartdessertsCart')) || [];
-  
-  // Get DOM elements
+  // Cart UI elements
   const cartToggle = document.getElementById('cart-toggle');
   const closeCart = document.getElementById('close-cart');
   const cartOverlay = document.getElementById('cart-overlay');
-  const cartItemsContainer = document.getElementById('cart-items');
-  const cartCountBadge = document.getElementById('cart-count');
-  const totalItemsSpan = document.getElementById('cart-total-items');
-  const totalPriceSpan = document.getElementById('cart-total-price');
   const clearCartBtn = document.getElementById('clear-cart');
   const orderCartBtn = document.getElementById('order-cart');
   
-  // Toggle cart visibility
-  function toggleCart() {
-    floatingCart.classList.toggle('active');
-    cartOverlay.classList.toggle('active');
-    document.body.style.overflow = floatingCart.classList.contains('active') ? 'hidden' : '';
+  // Cart toggle functionality
+  if (cartToggle) {
+    cartToggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      toggleCart(true);
+    });
   }
   
-  // Event listeners for cart toggle
-  if (cartToggle) cartToggle.addEventListener('click', toggleCart);
-  if (closeCart) closeCart.addEventListener('click', toggleCart);
-  if (cartOverlay) cartOverlay.addEventListener('click', toggleCart);
-  
-  // Save cart to localStorage
-  function saveCart() {
-    localStorage.setItem('tartdessertsCart', JSON.stringify(cart));
+  if (closeCart) {
+    closeCart.addEventListener('click', (e) => {
+      e.preventDefault();
+      toggleCart(false);
+    });
   }
   
-  // Add product buttons (productos.html)
-  const productButtons = document.querySelectorAll('.btn-add-to-box');
-  productButtons.forEach(btn => {
-    btn.addEventListener('click', function() {
-      const productName = this.getAttribute('data-product');
-      const productPrice = parseFloat(this.getAttribute('data-price'));
-      addToCart(productName, productPrice, 'product');
-    });
-  });
+  if (cartOverlay) {
+    cartOverlay.addEventListener('click', () => toggleCart(false));
+  }
   
-  // Add recipe buttons (recetas.html)
-  const recipeButtons = document.querySelectorAll('.btn-add-recipe');
-  recipeButtons.forEach(btn => {
-    btn.addEventListener('click', function() {
-      const recipeName = this.getAttribute('data-recipe');
-      const recipePrice = parseFloat(this.getAttribute('data-price'));
-      addToCart(recipeName, recipePrice, 'recipe');
-    });
+  // Handle all add to cart buttons with event delegation
+  document.addEventListener('click', (e) => {
+    // Handle product add to cart
+    const addToCartBtn = e.target.closest('.btn-add-to-box, .btn-add-recipe, .add-to-cart');
+    if (addToCartBtn) {
+      e.preventDefault();
+      
+      const isRecipe = addToCartBtn.classList.contains('btn-add-recipe');
+      const productName = addToCartBtn.getAttribute('data-product') || 
+                         addToCartBtn.getAttribute('data-recipe');
+      const productPrice = parseFloat(
+        addToCartBtn.getAttribute('data-price') || '0'
+      );
+      const quantity = parseInt(
+        addToCartBtn.getAttribute('data-quantity') || '1'
+      );
+      
+      if (!productName || isNaN(productPrice)) {
+        console.error('Invalid product data:', { productName, productPrice });
+        return;
+      }
+      
+      // Add to cart
+      const success = addToCart(
+        productName, 
+        productPrice, 
+        isRecipe ? 'recipe' : 'product', 
+        quantity
+      );
+      
+      if (success) {
+        // Visual feedback
+        const originalText = addToCartBtn.textContent;
+        const originalHTML = addToCartBtn.innerHTML;
+        
+        addToCartBtn.textContent = '¡Añadido!';
+        addToCartBtn.classList.add('added');
+        
+        setTimeout(() => {
+          addToCartBtn.innerHTML = originalHTML; // Preserve any HTML in the button
+          addToCartBtn.classList.remove('added');
+        }, 2000);
+      }
+    }
   });
   
   // Clear cart button
   if (clearCartBtn) {
-    clearCartBtn.addEventListener('click', function() {
-      if (cart.length > 0) {
+    clearCartBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (store.getState().cart.length > 0) {
         if (confirm('¿Estás seguro de que quieres vaciar la cesta?')) {
-          cart = [];
-          saveCart();
-          updateCartDisplay();
+          clearCart();
         }
       }
     });
@@ -269,230 +304,258 @@ function initUnifiedCart() {
   
   // Order button - Redirect to checkout
   if (orderCartBtn) {
-    orderCartBtn.addEventListener('click', function(e) {
+    orderCartBtn.addEventListener('click', (e) => {
       e.preventDefault();
+      const { cart } = store.getState();
       
       if (cart.length === 0) {
         alert('Tu cesta está vacía. Añade productos antes de hacer el pedido.');
         return;
       }
       
-      // Save cart with new key for checkout page
-      localStorage.setItem('cart', JSON.stringify(cart));
+      // Optional: Validate cart before proceeding
+      const isValid = cart.every(item => 
+        item.name && item.price > 0 && item.quantity > 0
+      );
       
-      // Redirect to checkout
+      if (!isValid) {
+        console.error('Invalid cart items detected:', cart);
+        alert('Hay un problema con los productos en tu cesta. Por favor, inténtalo de nuevo.');
+        return;
+      }
+      
+      // Proceed to checkout
       window.location.href = 'checkout-cart.html';
     });
   }
-  
-  // Add item to cart
-  function addToCart(name, price, type) {
-    // Find existing item by BOTH name AND type
-    const existingItem = cart.find(item => item.name === name && item.type === type);
-    
-    if (type === 'recipe' && existingItem) {
-      // Recipes can't be duplicated, just show cart
-      toggleCart();
-      return;
-    }
-    
-    if (existingItem && type === 'product') {
-      existingItem.quantity++;
-    } else {
-      cart.push({
-        name: name,
-        price: price,
-        type: type,
-        quantity: type === 'recipe' ? 1 : 1
-      });
-    }
-    
-    saveCart();
-    updateCartDisplay();
-    
-    // Visual feedback
-    const btn = event.target;
-    const originalText = btn.textContent;
-    btn.textContent = 'Añadido';
-    btn.style.background = '#27ae60';
-    if (type === 'recipe') btn.disabled = true;
-    
-    // Auto-open cart
-    setTimeout(() => {
-      toggleCart();
-    }, 500);
-    
-    setTimeout(() => {
-      btn.textContent = originalText;
-      btn.style.background = '';
-    }, 1000);
+}
+
+// UI update function for the cart
+// Helper function to escape HTML to prevent XSS
+function escapeHtml(unsafe) {
+  if (typeof unsafe !== 'string') return '';
+  return unsafe
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+// Format price with error handling
+function formatPrice(price) {
+  const num = parseFloat(price);
+  if (isNaN(num)) return '0,00 €';
+  return num.toFixed(2).replace('.', ',') + ' €';
+}
+
+// Cache DOM elements for better performance
+const cartElements = {
+  floatingCart: null,
+  cartOverlay: null,
+  cartItemsContainer: null,
+  cartCountBadge: null,
+  totalItemsSpan: null,
+  totalPriceSpan: null,
+  initialized: false
+};
+
+function getCartElements() {
+  if (!cartElements.initialized) {
+    cartElements.floatingCart = document.getElementById('floating-cart');
+    cartElements.cartOverlay = document.getElementById('cart-overlay');
+    cartElements.cartItemsContainer = document.getElementById('cart-items');
+    cartElements.cartCountBadge = document.getElementById('cart-count');
+    cartElements.totalItemsSpan = document.getElementById('cart-total-items');
+    cartElements.totalPriceSpan = document.getElementById('cart-total-price');
+    cartElements.initialized = true;
   }
+  return cartElements;
+}
+
+function renderCart(state) {
+  const { cart, isCartOpen, isLoading = false } = state;
+  const {
+    floatingCart,
+    cartOverlay,
+    cartItemsContainer,
+    cartCountBadge,
+    totalItemsSpan,
+    totalPriceSpan
+  } = getCartElements();
   
-  // Update cart display
-  function updateCartDisplay() {
-    const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+  // Debug log in development only
+  if (process.env.NODE_ENV !== 'production') {
+    console.log('Updating cart UI', { cart, isCartOpen, isLoading });
+  }
+
+  // Toggle cart visibility with ARIA attributes
+  if (floatingCart) {
+    floatingCart.classList.toggle('active', isCartOpen);
+    floatingCart.setAttribute('aria-hidden', !isCartOpen);
     
-    // Update cart count badge
-    if (cartCountBadge) {
-      cartCountBadge.textContent = totalItems;
-      if (totalItems === 0) {
-        cartCountBadge.classList.add('hidden');
-      } else {
-        cartCountBadge.classList.remove('hidden');
-      }
+    if (cartOverlay) {
+      cartOverlay.classList.toggle('active', isCartOpen);
+      cartOverlay.setAttribute('aria-hidden', !isCartOpen);
     }
     
+    document.body.style.overflow = isCartOpen ? 'hidden' : '';
+    
+    // Set focus to cart when opened for better keyboard navigation
+    if (isCartOpen) {
+      setTimeout(() => {
+        const focusable = floatingCart.querySelector('button, [href], [tabindex]');
+        if (focusable) focusable.focus();
+      }, 100);
+    }
+  }
+
+  // Show loading state
+  if (cartItemsContainer) {
+    cartItemsContainer.setAttribute('aria-busy', isLoading);
+    if (isLoading) {
+      cartItemsContainer.innerHTML = '<div class="cart-loading">Actualizando carrito...</div>';
+      return; // Don't update the rest while loading
+    }
+  }
+
+  // Update cart count badge with proper ARIA label
+  const totalItems = cart.reduce((sum, item) => sum + (parseInt(item.quantity, 10) || 0), 0);
+  if (cartCountBadge) {
+    cartCountBadge.textContent = totalItems;
+    cartCountBadge.classList.toggle('hidden', totalItems === 0);
+    cartCountBadge.setAttribute('aria-label', `${totalItems} artículos en el carrito`);
+  }
+
+  // Render cart items with proper accessibility
+  if (cartItemsContainer) {
     if (cart.length === 0) {
-      if (cartItemsContainer) cartItemsContainer.innerHTML = '<p class="empty-cart">Tu cesta está vacía</p>';
-      if (totalItemsSpan) totalItemsSpan.textContent = '0';
-      if (totalPriceSpan) totalPriceSpan.textContent = '0,00 €';
+      cartItemsContainer.innerHTML = `
+        <div class="empty-cart" role="status" aria-live="polite">
+          <p>Tu cesta está vacía</p>
+        </div>`;
+    } else {
+      // Use DocumentFragment for better performance
+      const fragment = document.createDocumentFragment();
       
-      // Re-enable recipe buttons
-      const recipeButtons = document.querySelectorAll('.btn-add-recipe');
-      recipeButtons.forEach(btn => btn.disabled = false);
-      return;
-    }
-    
-    // Build items HTML
-    let itemsHTML = '';
-    let totalPrice = 0;
-    let needsSave = false;
-    
-    cart.forEach((item, index) => {
-      const itemTotal = item.price * (item.quantity || 1);
-      totalPrice += itemTotal;
-      
-      // Ensure item has a type (for backwards compatibility)
-      if (!item.type) {
-        // If item has quantity property and it's a number, it's a product
-        // Otherwise it's a recipe
-        if (item.quantity !== undefined && typeof item.quantity === 'number') {
-          item.type = 'product';
-        } else {
-          item.type = 'recipe';
-          item.quantity = 1; // Ensure recipes have quantity 1
-        }
-        needsSave = true;
-      }
-      
-      if (item.type === 'product') {
-        itemsHTML += `
-          <div class="cart-item">
-            <div class="cart-item-info">
-              <div class="cart-item-name">${item.name} <span class="item-type-badge">Producto</span></div>
-              <div class="cart-item-price">${item.price.toFixed(2)} € × ${item.quantity}</div>
-            </div>
-            <div class="box-item-quantity">
-              <button class="quantity-btn" onclick="decreaseQuantity(${index})">−</button>
-              <span class="quantity-number">${item.quantity}</span>
-              <button class="quantity-btn" onclick="increaseQuantity(${index})">+</button>
-            </div>
-            <button class="remove-cart-item" onclick="removeCartItem(${index})">✕</button>
+      cart.forEach((item, index) => {
+        const itemElement = document.createElement('div');
+        itemElement.className = 'cart-item';
+        itemElement.setAttribute('role', 'listitem');
+        
+        const price = parseFloat(item.price) || 0;
+        const quantity = parseInt(item.quantity, 10) || 1;
+        const itemTotal = (price * quantity).toFixed(2);
+        
+        itemElement.innerHTML = `
+          <div class="cart-item-info">
+            <div class="cart-item-name">${escapeHtml(item.name)}</div>
+            <div class="cart-item-price">${formatPrice(price)}</div>
+          </div>
+          <div class="box-item-quantity" role="group" aria-label="Cantidad">
+            <button 
+              class="quantity-btn" 
+              onclick="window.decreaseQuantity(${index})"
+              aria-label="Reducir cantidad"
+              ${quantity <= 1 ? 'disabled' : ''}
+            >−</button>
+            <span class="quantity-number" aria-live="polite">${quantity}</span>
+            <button 
+              class="quantity-btn" 
+              onclick="window.increaseQuantity(${index})"
+              aria-label="Aumentar cantidad"
+            >+</button>
+          </div>
+          <button 
+            class="remove-cart-item" 
+            onclick="window.removeCartItem(${index})"
+            aria-label="Eliminar artículo"
+          >✕</button>
+          <div class="cart-item-total" aria-hidden="true">
+            Total: ${formatPrice(itemTotal)}
           </div>
         `;
-      } else {
-        itemsHTML += `
-          <div class="cart-item">
-            <div class="cart-item-info">
-              <div class="cart-item-name">${item.name} <span class="item-type-badge recipe-badge">Receta</span></div>
-              <div class="cart-item-price">${item.price.toFixed(2)} €</div>
-            </div>
-            <button class="remove-cart-item" onclick="removeCartItem(${index})">✕</button>
-          </div>
-        `;
-      }
-    });
-    
-    if (cartItemsContainer) cartItemsContainer.innerHTML = itemsHTML;
-    if (totalItemsSpan) totalItemsSpan.textContent = totalItems;
-    if (totalPriceSpan) totalPriceSpan.textContent = totalPrice.toFixed(2).replace('.', ',') + ' €';
-    
-    // Save if we updated any item types
-    if (needsSave) {
-      saveCart();
+        
+        fragment.appendChild(itemElement);
+      });
+      
+      // Clear and append new items in one operation
+      cartItemsContainer.innerHTML = '';
+      cartItemsContainer.appendChild(fragment);
+      
+      // Add ARIA live region for screen readers
+      const status = document.createElement('div');
+      status.className = 'sr-only';
+      status.setAttribute('role', 'status');
+      status.setAttribute('aria-live', 'polite');
+      status.textContent = `Carrito actualizado: ${totalItems} artículos`;
+      cartItemsContainer.appendChild(status);
     }
   }
+
+  // Update totals with proper formatting
+  const totalPrice = cart.reduce((sum, item) => {
+    const price = parseFloat(item.price) || 0;
+    const quantity = parseInt(item.quantity, 10) || 0;
+    return sum + (price * quantity);
+  }, 0);
   
-  // Create order message
-  function createOrderMessage() {
-    let message = '¡Hola! Me gustaría hacer un pedido:\n\n';
-    
-    const products = cart.filter(item => item.type === 'product');
-    const recipes = cart.filter(item => item.type === 'recipe');
-    
-    if (products.length > 0) {
-      message += 'PRODUCTOS:\n';
-      products.forEach(item => {
-        message += `• ${item.quantity}x ${item.name} (${(item.price * item.quantity).toFixed(2)}€)\n`;
-      });
-      message += '\n';
-    }
-    
-    if (recipes.length > 0) {
-      message += 'RECETAS:\n';
-      recipes.forEach(item => {
-        message += `• ${item.name} - ${item.price.toFixed(2)}€\n`;
-      });
-      message += '\n';
-    }
-    
-    const totalPrice = cart.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
-    message += `Total: ${totalPrice.toFixed(2)}€\n\n`;
-    
-    // Ask for additional information
-    message += '--- POR FAVOR, COMPLETA ESTA INFORMACIÓN ---\n\n';
-    
-    message += 'Nombre completo: \n';
-    message += 'Teléfono: \n';
-    
-    if (recipes.length > 0) {
-      message += 'Email (para enviar las recetas): \n';
-    }
-    
-    if (products.length > 0) {
-      message += 'Método de entrega (Recogida en tienda / Envío): \n';
-      message += 'Dirección de entrega (si aplica): \n';
-      message += 'Fecha deseada de entrega: \n';
-    }
-    
-    message += '\n¡Gracias!';
-    
-    return message;
+  if (totalItemsSpan) {
+    totalItemsSpan.textContent = totalItems;
+    totalItemsSpan.setAttribute('aria-label', `${totalItems} artículos`);
   }
   
-  // Global functions for onclick handlers
-  window.increaseQuantity = function(index) {
-    if (cart[index] && cart[index].type === 'product') {
-      cart[index].quantity++;
-      saveCart();
-      updateCartDisplay();
-    }
-  };
-  
-  window.decreaseQuantity = function(index) {
-    if (cart[index] && cart[index].type === 'product' && cart[index].quantity > 1) {
-      cart[index].quantity--;
-      saveCart();
-      updateCartDisplay();
-    }
-  };
-  
-  window.removeCartItem = function(index) {
-    const removedItem = cart[index];
-    cart.splice(index, 1);
-    saveCart();
-    updateCartDisplay();
-    
-    // Re-enable recipe button if it was a recipe
-    if (removedItem.type === 'recipe') {
-      const recipeButtons = document.querySelectorAll('.btn-add-recipe');
-      recipeButtons.forEach(btn => {
-        if (btn.getAttribute('data-recipe') === removedItem.name) {
-          btn.disabled = false;
+  if (totalPriceSpan) {
+    totalPriceSpan.textContent = formatPrice(totalPrice);
+    totalPriceSpan.setAttribute('aria-label', `Total: ${formatPrice(totalPrice)}`);
+  }
+}
+
+  // Global functions for cart operations
+window.increaseQuantity = function(index) {
+    try {
+        const currentState = store.getState();
+        if (!currentState.cart[index]) {
+            console.error('Cannot increase quantity: item not found at index', index);
+            return;
         }
-      });
+        const currentQuantity = currentState.cart[index].quantity;
+        if (!updateCartItemQuantity(index, currentQuantity + 1)) {
+            throw new Error('Failed to update cart item quantity');
+        }
+    } catch (error) {
+        console.error('Error in increaseQuantity:', error);
+        window.handleCartError?.(error);
     }
-  };
+};
+
+window.decreaseQuantity = function(index) {
+    try {
+        const currentState = store.getState();
+        if (!currentState.cart[index]) {
+            console.error('Cannot decrease quantity: item not found at index', index);
+            return;
+        }
+        const currentQuantity = currentState.cart[index].quantity;
+        if (!updateCartItemQuantity(index, currentQuantity - 1)) {
+            throw new Error('Failed to update cart item quantity');
+        }
+    } catch (error) {
+        console.error('Error in decreaseQuantity:', error);
+        window.handleCartError?.(error);
+    }
+};
+
+window.removeCartItem = function(index) {
+    try {
+        if (!updateCartItemQuantity(index, 0)) {
+            throw new Error('Failed to remove item from cart');
+        }
+    } catch (error) {
+        console.error('Error in removeCartItem:', error);
+        window.handleCartError?.(error);
+    }
+};
   
 // Product detail page functionality
 function initProductDetail() {
@@ -657,14 +720,8 @@ function initProductDetail() {
       const productName = this.dataset.product;
       const productPrice = parseFloat(this.dataset.price);
 
-      // Add multiple items to cart
-      for (let i = 0; i < quantity; i++) {
-        // Trigger the existing add to cart functionality
-        const event = new CustomEvent('addToCart', {
-          detail: { name: productName, price: productPrice }
-        });
-        document.dispatchEvent(event);
-      }
+      // Add the product with the selected quantity
+      addToCart(productName, productPrice, 'product', quantity);
 
       // Show feedback
       const originalText = this.textContent;

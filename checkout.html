@@ -491,32 +491,25 @@
   <footer id="contacto">
     <div class="container">
       <p>Síguenos en <a href="https://instagram.com/tartbytati" target="_blank" rel="noopener noreferrer">Instagram</a> · Contáctanos por <a href="https://wa.me/34691738933" target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
-      <p class="copyright">&copy; 2025 tartdesserts. Todos los derechos reservados.</p>
+      <p class="copyright" id="copyright-year">&copy; 2024 tartdesserts. Todos los derechos reservados.</p>
     </div>
   </footer>
   
-  <script src="js/script.js" defer></script>
-  <script>
-    // Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyCPE5bk4zESRhzts3xod2YqrUE09j8RfBQ",
-      authDomain: "tartdesserts-3b414.firebaseapp.com",
-      projectId: "tartdesserts-3b414",
-      storageBucket: "tartdesserts-3b414.appspot.com",
-      messagingSenderId: "534807668671",
-      appId: "1:534807668671:web:c2ad9d868c1a930f86e30a"
-    };
+  <script src="js/config.js"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-functions.js";
 
     // Initialize Firebase
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-    }
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const functions = getFunctions(app);
 
-    const auth = firebase.auth();
-    const db = firebase.firestore();
-    const functions = firebase.functions();
+    console.log('Firebase initialized for checkout page');
 
-    console.log('Firebase inicializado correctamente');
     // Get plan from URL
     const urlParams = new URLSearchParams(window.location.search);
     const plan = urlParams.get('plan') || 'monthly';
@@ -555,9 +548,10 @@
         const user = auth.currentUser;
         if (user) {
           // Get additional data from Firestore
-          const userDoc = await db.collection('users').doc(user.uid).get();
-          if (userDoc.exists) {
-            const userData = userDoc.data();
+          const userDocRef = doc(db, 'users', user.uid);
+          const userDocSnap = await getDoc(userDocRef);
+          if (userDocSnap.exists()) {
+            const userData = userDocSnap.data();
             document.getElementById('full-name').value = userData.name || '';
             document.getElementById('email').value = user.email || '';
           }
@@ -689,8 +683,8 @@
       btn.disabled = true;
 
       try {
-        // Update user data in Firestore first
-        await db.collection('users').doc(user.uid).update({
+        const userDocRef = doc(db, 'users', user.uid);
+        await updateDoc(userDocRef, {
           name: fullName,
           email: email,
           phone: phone,
@@ -703,7 +697,7 @@
           : 'price_tu_id_mensual_aqui'; // Reemplazar con el ID real
 
         // Create Stripe Checkout session
-        const createSubscription = functions.httpsCallable('createSubscriptionCheckout');
+        const createSubscription = httpsCallable(functions, 'createSubscriptionCheckout');
         const result = await createSubscription({
           priceId: priceId,
           planType: planType,
@@ -730,5 +724,6 @@
     updateSummary();
     loadUserData();
   </script>
+  <script src="js/script.js" defer></script>
 </body>
 </html>
