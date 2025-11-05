@@ -1,8 +1,11 @@
 // ===========================
 // tartdesserts - Main JavaScript
 // ===========================
-import store, { addToCart, updateCartItemQuantity, clearCart, toggleCart } from './store.js';
+import store, { addToCart, updateCartItemQuantity, clearCart } from './store.js';
 import { initAuth, updateAuthUI } from './firebase-auth.js';
+
+// Re-export toggleCart for direct access in event listeners
+const { toggleCart } = store;
 
 
 // Initialize the application when the DOM is fully loaded
@@ -17,12 +20,12 @@ document.addEventListener('DOMContentLoaded', function() {
   handleExternalLinks();
   initProductDetail();
 
-  // 2. Initialize state-dependent UI
-  initUnifiedCart();
-  
-  // Subscribe to store changes
+  // 2. Subscribe to store changes first
   store.subscribe(renderCart);
   store.subscribe(updateAuthUI);
+  
+  // 3. Initialize state-dependent UI after subscriptions
+  initUnifiedCart();
   
   // Add global error handler for cart operations
   window.handleCartError = function(error) {
@@ -229,25 +232,30 @@ function initUnifiedCart() {
   if (cartToggle) {
     cartToggle.addEventListener('click', (e) => {
       e.preventDefault();
-      toggleCart(true);
+      e.stopPropagation();
+      store.setState({ isCartOpen: true });
     });
   }
   
   if (closeCart) {
     closeCart.addEventListener('click', (e) => {
       e.preventDefault();
-      toggleCart(false);
+      e.stopPropagation();
+      store.setState({ isCartOpen: false });
     });
   }
   
   if (cartOverlay) {
-    cartOverlay.addEventListener('click', () => toggleCart(false));
+    cartOverlay.addEventListener('click', (e) => {
+      e.stopPropagation();
+      store.setState({ isCartOpen: false });
+    });
   }
   
   // Handle all add to cart buttons with event delegation
-  document.addEventListener('click', (e) => {
+  document.body.addEventListener('click', (e) => {
     // Handle product add to cart
-    const addToCartBtn = e.target.closest('.btn-add-to-box, .btn-add-recipe, .add-to-cart');
+    const addToCartBtn = e.target.closest('.btn-add-to-box, .btn-add-recipe, .add-to-cart, .add-to-cart-btn');
     if (addToCartBtn) {
       e.preventDefault();
       
