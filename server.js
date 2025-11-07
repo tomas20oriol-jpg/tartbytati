@@ -46,18 +46,17 @@ app.use(limiter);
 // Rutas de la API
 app.use('/api/auth', authRoutes);
 
-// Servir archivos estáticos en producción
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '/')));
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+// Servir archivos estáticos (tanto en desarrollo como en producción)
+app.use(express.static(path.join(__dirname, '/')));
+
+// Ruta de prueba para la API
+app.get('/api', (req, res) => {
+  res.json({ 
+    success: true,
+    message: 'API de Tart by Tati funcionando correctamente',
+    environment: process.env.NODE_ENV || 'development'
   });
-} else {
-  // Ruta de prueba para desarrollo
-  app.get('/', (req, res) => {
-    res.send('API de Tart by Tati funcionando correctamente');
-  });
-}
+});
 
 // Manejador de errores
 app.use((err, req, res, next) => {

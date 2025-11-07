@@ -2,7 +2,24 @@
 // tartdesserts - Main JavaScript
 // ===========================
 import store, { addToCart, updateCartItemQuantity, clearCart } from './store.js';
-import { initAuth, updateAuthUI } from './firebase-auth.js';
+
+// Simple updateAuthUI function
+function updateAuthUI(state) {
+  const loginLink = document.getElementById('login-link');
+  const userNameDisplay = document.getElementById('user-name-display');
+  const user = state.user;
+  
+  if (loginLink && userNameDisplay) {
+    if (user) {
+      loginLink.style.display = 'none';
+      userNameDisplay.style.display = 'block';
+      userNameDisplay.textContent = user.name || user.email || 'Usuario';
+    } else {
+      loginLink.style.display = 'block';
+      userNameDisplay.style.display = 'none';
+    }
+  }
+}
 
 // Re-export toggleCart for direct access in event listeners
 const { toggleCart } = store;
@@ -10,72 +27,23 @@ const { toggleCart } = store;
 
 // Initialize the application when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('DOM fully loaded, initializing application...');
-  
   // 1. Initialize core functionality
   initSmoothScroll();
   highlightActiveNav();
   initScrollAnimations();
   setCopyrightYear();
-  handleExternalLinks();
   initProductDetail();
 
-  // 2. Subscribe to store changes first
+  // 2. Subscribe to store changes
   store.subscribe(renderCart);
   store.subscribe(updateAuthUI);
   
-  // 3. Initialize state-dependent UI after subscriptions
+  // 3. Initialize cart
   initUnifiedCart();
-  
-  // Add global error handler for cart operations
-  window.handleCartError = function(error) {
-    console.error('Cart operation failed:', error);
-    // You could show a user-friendly notification here
-    alert('Hubo un error al actualizar el carrito. Por favor, inténtalo de nuevo.');
-  };
 
-  // 3. Initial render based on the current state
-  console.log('Performing initial render...');
+  // 4. Initial render
   renderCart(store.getState());
   updateAuthUI(store.getState());
-
-  // 4. Initialize Firebase Auth logic (if available on the page)
-  if (typeof initAuth === 'function') {
-    console.log('Initializing Firebase Auth...');
-    initAuth();
-  }
-  
-  console.log('Application initialization complete');
-
-  // 3.5 Re-attach event listeners for any dynamically added 'Add to Cart' buttons
-  document.addEventListener('click', function(event) {
-    const addToCartBtn = event.target.closest('.add-to-cart');
-    if (addToCartBtn) {
-      const productName = addToCartBtn.getAttribute('data-product');
-      const productPrice = parseFloat(addToCartBtn.getAttribute('data-price'));
-      const type = addToCartBtn.getAttribute('data-type') || 'product';
-      const quantity = parseInt(addToCartBtn.getAttribute('data-quantity') || '1');
-      
-      addToCart(productName, productPrice, type, quantity);
-      
-      // Visual feedback
-      const originalText = addToCartBtn.textContent;
-      addToCartBtn.textContent = '¡Añadido!';
-      addToCartBtn.classList.add('added');
-      
-      setTimeout(() => {
-        addToCartBtn.textContent = originalText;
-        addToCartBtn.classList.remove('added');
-      }, 2000);
-    }
-  });
-
-  // 4. Initialize Firebase Auth logic (if available on the page)
-  if (typeof initAuth === 'function') {
-    initAuth();
-  }
-
-  console.log('tartdesserts website loaded successfully!');
 });
 
 // Check authentication status
@@ -254,10 +222,10 @@ function initUnifiedCart() {
   
   // Handle all add to cart buttons with event delegation
   document.addEventListener('click', (e) => {
-    // Handle product add to cart
     const addToCartBtn = e.target.closest('.btn-add-to-box, .btn-add-recipe, .add-to-cart, .add-to-cart-btn, .btn-add-to-cart');
     if (addToCartBtn) {
       e.preventDefault();
+      e.stopPropagation();
       
       const isRecipe = addToCartBtn.classList.contains('btn-add-recipe');
       const productName = addToCartBtn.getAttribute('data-product') || 
@@ -274,35 +242,27 @@ function initUnifiedCart() {
         return;
       }
       
-      try {
-        // Add to cart
-        const success = addToCart(
-          productName, 
-          productPrice, 
-          isRecipe ? 'recipe' : 'product', 
-          quantity
-        );
+      // Add to cart
+      const success = addToCart(
+        productName, 
+        productPrice, 
+        isRecipe ? 'recipe' : 'product', 
+        quantity
+      );
+      
+      if (success) {
+        // Visual feedback
+        const originalHTML = addToCartBtn.innerHTML;
+        addToCartBtn.textContent = '¡Añadido!';
+        addToCartBtn.classList.add('added');
         
-        if (success) {
-          // Visual feedback
-          const originalText = addToCartBtn.textContent;
-          const originalHTML = addToCartBtn.innerHTML;
-          
-          addToCartBtn.textContent = '¡Añadido!';
-          addToCartBtn.classList.add('added');
-          
-          // Show cart after adding item
-          store.setState({ isCartOpen: true });
-          
-          setTimeout(() => {
-            addToCartBtn.innerHTML = originalHTML; // Preserve any HTML in the button
-            addToCartBtn.classList.remove('added');
-          }, 2000);
-        } else {
-          console.error('Failed to add item to cart');
-        }
-      } catch (error) {
-        console.error('Error adding to cart:', error);
+        // Show cart after adding item
+        store.setState({ isCartOpen: true });
+        
+        setTimeout(() => {
+          addToCartBtn.innerHTML = originalHTML;
+          addToCartBtn.classList.remove('added');
+        }, 2000);
       }
     }
   });
@@ -401,10 +361,6 @@ function renderCart(state) {
     totalPriceSpan
   } = getCartElements();
   
-  // Debug log in development only
-  if (process.env.NODE_ENV !== 'production') {
-    console.log('Updating cart UI', { cart, isCartOpen, isLoading });
-  }
 
   // Toggle cart visibility with ARIA attributes
   if (floatingCart) {
