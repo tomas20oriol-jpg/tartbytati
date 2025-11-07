@@ -253,9 +253,9 @@ function initUnifiedCart() {
   }
   
   // Handle all add to cart buttons with event delegation
-  document.body.addEventListener('click', (e) => {
+  document.addEventListener('click', (e) => {
     // Handle product add to cart
-    const addToCartBtn = e.target.closest('.btn-add-to-box, .btn-add-recipe, .add-to-cart, .add-to-cart-btn');
+    const addToCartBtn = e.target.closest('.btn-add-to-box, .btn-add-recipe, .add-to-cart, .add-to-cart-btn, .btn-add-to-cart');
     if (addToCartBtn) {
       e.preventDefault();
       
@@ -274,26 +274,35 @@ function initUnifiedCart() {
         return;
       }
       
-      // Add to cart
-      const success = addToCart(
-        productName, 
-        productPrice, 
-        isRecipe ? 'recipe' : 'product', 
-        quantity
-      );
-      
-      if (success) {
-        // Visual feedback
-        const originalText = addToCartBtn.textContent;
-        const originalHTML = addToCartBtn.innerHTML;
+      try {
+        // Add to cart
+        const success = addToCart(
+          productName, 
+          productPrice, 
+          isRecipe ? 'recipe' : 'product', 
+          quantity
+        );
         
-        addToCartBtn.textContent = '¡Añadido!';
-        addToCartBtn.classList.add('added');
-        
-        setTimeout(() => {
-          addToCartBtn.innerHTML = originalHTML; // Preserve any HTML in the button
-          addToCartBtn.classList.remove('added');
-        }, 2000);
+        if (success) {
+          // Visual feedback
+          const originalText = addToCartBtn.textContent;
+          const originalHTML = addToCartBtn.innerHTML;
+          
+          addToCartBtn.textContent = '¡Añadido!';
+          addToCartBtn.classList.add('added');
+          
+          // Show cart after adding item
+          store.setState({ isCartOpen: true });
+          
+          setTimeout(() => {
+            addToCartBtn.innerHTML = originalHTML; // Preserve any HTML in the button
+            addToCartBtn.classList.remove('added');
+          }, 2000);
+        } else {
+          console.error('Failed to add item to cart');
+        }
+      } catch (error) {
+        console.error('Error adding to cart:', error);
       }
     }
   });
