@@ -1,6 +1,6 @@
-// Firebase public web configuration for tartdesserts.
-// Estas claves son identificadores públicos del SDK web; no incluyas llaves privadas de servidor aquí.
-export const firebaseConfig = {
+// Firebase public web configuration (client-side only; no server secrets here).
+// Estas claves son identificadores públicos para el SDK web.
+const firebaseConfig = {
   apiKey: "AIzaSyCPE5bk4zESRhzts3xod2YqrUE09j8RfBQ",
   authDomain: "tartdesserts-3b414.firebaseapp.com",
   projectId: "tartdesserts-3b414",
@@ -10,9 +10,44 @@ export const firebaseConfig = {
   measurementId: "G-CWFFD5JD20",
 };
 
-// Expose globally for inline scripts that expect `window.firebaseConfig`.
+// Haz la configuración visible globalmente para scripts tradicionales y módulos.
 if (typeof window !== "undefined") {
   window.firebaseConfig = firebaseConfig;
 }
 
-export default firebaseConfig;
+// Inicialización ligera: usa Firebase compat si ya está cargado (v8),
+// o importa dinámicamente el SDK modular para habilitar Analytics en páginas simples.
+(async () => {
+  try {
+    if (typeof firebase !== "undefined" && firebase?.apps) {
+      if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+      }
+      if (firebase.analytics) {
+        firebase.analytics();
+      }
+      return;
+    }
+
+    const { initializeApp, getApps } = await import(
+      "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js"
+    );
+    const { getAnalytics, isSupported } = await import(
+      "https://www.gstatic.com/firebasejs/11.0.1/firebase-analytics.js"
+    );
+
+    const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+    if (typeof window !== "undefined") {
+      window.firebaseApp = app;
+    }
+
+    if (await isSupported()) {
+      const analytics = getAnalytics(app);
+      if (typeof window !== "undefined") {
+        window.firebaseAnalytics = analytics;
+      }
+    }
+  } catch (error) {
+    console.warn("Firebase bootstrap skipped", error);
+  }
+})();
