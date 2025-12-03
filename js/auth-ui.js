@@ -12,22 +12,23 @@ function updateAuthUI() {
   // Check if user is logged in (using localStorage token)
   const token = localStorage.getItem('token');
   const user = JSON.parse(localStorage.getItem('user') || '{}');
-  
-  if (token && user.name) {
+  const userLabel = user.name || user.email;
+
+  if (token && userLabel) {
     // User is logged in
     loginLink.textContent = 'MI CUENTA';
     loginLink.href = 'account.html';
-    
+
     // Optionally display user name
     if (userNameDisplay) {
-      userNameDisplay.textContent = user.name;
+      userNameDisplay.textContent = userLabel;
       userNameDisplay.style.display = 'inline';
     }
   } else {
     // User is not logged in
     loginLink.textContent = 'Login';
-    loginLink.href = 'account.html';
-    
+    loginLink.href = 'login.html';
+
     // Hide user name display
     if (userNameDisplay) {
       userNameDisplay.style.display = 'none';
