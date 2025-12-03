@@ -128,7 +128,11 @@ export function clearCart() {
 
 export function toggleCart(isOpen) {
     const currentState = store.getState();
-    store.setState({ isCartOpen: isOpen !== undefined ? isOpen : !currentState.isCartOpen });
+    const newState = {
+        isCartOpen: isOpen !== undefined ? isOpen : !currentState.isCartOpen
+    };
+    store.setState(newState);
+    return newState.isCartOpen;
 }
 
 export function setUser(user) {

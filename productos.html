@@ -13,189 +13,374 @@
 
   <title>Productos - tartdesserts</title>
   <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/cookies.css" />
 </head>
-<body>
-  <a href="#main-content" class="skip-link">Saltar al contenido</a>
+<body class="products-page">
   
-  <header>
+  <header class="site-header">
     <div class="container">
       <h1 class="logo">tartdesserts</h1>
-      <nav>
+      <nav class="desktop-nav">
         <ul>
           <li><a href="index.html">Inicio</a></li>
-          <li><a href="productos.html" class="active" aria-current="page">Productos</a></li>
+          <li><a href="productos.html" class="active">Productos</a></li>
+          <li><a href="catering.html">Catering</a></li>
+          <li><a href="recetas.html">Recetas</a></li>
           <li><a href="subscription.html">Suscripción</a></li>
-          <li><a href="about.html">Sobre Nosotros</a></li>
+          <li><a href="about.html">Sobre mí</a></li>
           <li><a href="contact.html">Contacto</a></li>
         </ul>
       </nav>
-      <div style="display: flex; align-items: center; gap: 20px;">
-        <a href="login.html" id="login-link" style="text-decoration: none; color: var(--text-color); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; font-weight: 500; transition: var(--transition);">
-          LOGIN
-        </a>
-        <span id="user-name-display" style="color: var(--text-color); font-size: 14px; font-weight: 500; display: none;"></span>
-        <button id="cart-toggle" class="cart-button">
+      <div class="header-actions">
+        <a href="account.html" class="header-link" id="login-link">Login</a>
+        <span id="user-name-display"></span>
+        <button id="cart-toggle" class="cart-button" aria-label="Abrir carrito">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
             <line x1="3" y1="6" x2="21" y2="6"></line>
             <path d="M16 10a4 4 0 0 1-8 0"></path>
           </svg>
-          <span id="cart-count" class="cart-count">0</span>
+          <span id="cart-count" class="cart-count hidden">0</span>
         </button>
       </div>
     </div>
   </header>
   
-  <!-- Floating Cart -->
-  <div id="floating-cart" class="floating-cart">
-    <div class="cart-header">
-      <h3>Tu Cesta</h3>
-      <button id="close-cart" class="close-cart">✕</button>
-    </div>
-    <div class="cart-body">
-      <div id="cart-items" class="cart-items-list">
-        <p class="empty-cart">Tu cesta está vacía</p>
-      </div>
-    </div>
-    <div class="cart-footer">
-      <div class="cart-total">
-        <span>Total:</span>
-        <span id="cart-total-price" class="total-price">0,00 €</span>
-      </div>
-      <button id="clear-cart" class="btn btn-secondary btn-full">Vaciar cesta</button>
-      <a href="#contacto" id="order-cart" class="btn btn-primary btn-full">Hacer pedido (<span id="cart-total-items">0</span>)</a>
-    </div>
-  </div>
-  
-  <!-- Cart Overlay -->
-  <div id="cart-overlay" class="cart-overlay"></div>
-  
   <main id="main-content">
-    <section class="products-hero">
+    <section class="page-hero">
       <div class="container">
-        <h2>productos</h2>
-        <p class="lead">Dulces artesanales hechos con amor</p>
+        <p class="hero-eyebrow">Colección permanente</p>
+        <h2>Nuestros productos</h2>
+        <p class="lead">Dulces artesanales hechos con ingredientes de la mejor calidad.</p>
       </div>
     </section>
-    
-    <section class="products-section">
+
+    <center><section class="products-filter">
       <div class="container">
-        
-        <!-- Cookies Section -->
-        <div class="product-category">
-          <h3 class="category-title">Cookies</h3>
-          <p class="category-description">Cookies caseras crujientes por fuera y suaves por dentro</p>
-          
-          <div class="products-grid">
-            <div class="product-card">
-              <a href="producto-detalle.html?product=cookie-red-velvet" style="text-decoration: none; color: inherit;">
-                <div class="product-image">
-                  <img src="assets/images/cookie-red-velvet.jpg" alt="Cookie Red Velvet" />
-                </div>
-                <div class="product-info">
-                  <h4>Cookie Red Velvet</h4>
-                  <p class="product-description">Suave textura con chips de chocolate blanco</p>
-                  <p class="product-price">3,00 €</p>
-                </div>
+        <div class="filter-chips">
+          <button class="filter-btn active" data-filter="all">Todos</button>
+          <button class="filter-btn" data-filter="cookies">Cookies</button>
+          <button class="filter-btn" data-filter="brownies">Brownies</button>
+          <button class="filter-btn" data-filter="postres">Postres</button>
+        </div>
+      </div>
+    </section></center>
+
+    <section class="products-gallery">
+      <div class="container">
+        <div class="products-grid">
+        <!-- Cookie Red Velvet -->
+        <article class="product-card" data-category="cookies">
+          <div class="product-card-inner">
+            <div class="product-image-container">
+              <a href="producto-detalle.html?product=cookie-red-velvet" class="product-image-link">
+                <img 
+                  src="assets/images/cookie-red-velvet.jpg" 
+                  alt="Cookie Red Velvet con trozos de chocolate blanco" 
+                  class="product-image" 
+                  loading="lazy"
+                />
               </a>
-              <div style="padding: 0 32px 32px;">
-                <button class="btn btn-small btn-add-to-box btn-full" data-product="Cookie Red Velvet" data-price="3.00">Añadir al carrito</button>
-              </div>
             </div>
-            
-            <div class="product-card">
-              <a href="producto-detalle.html?product=cookie-churro" style="text-decoration: none; color: inherit;">
-                <div class="product-image">
-                  <img src="assets/images/cookie-churro.jpg" alt="Cookie de Churro" />
+            <div class="product-content">
+              <h3 class="product-title">COOKIE RED VELVET</h3>
+              <p class="product-ingredients">Chocolate blanco, colorante rojo natural, vainilla</p>
+              <div class="product-footer">
+                <span class="product-price">3,00 €</span>
+                <div class="quantity-selector" data-product="Cookie Red Velvet" data-price="3.00" data-type="cookie">
+                  <button type="button" class="quantity-btn" data-action="decrease" aria-label="Reducir cantidad">-</button>
+                  <input 
+                    type="number" 
+                    class="quantity-input" 
+                    value="1" 
+                    min="1" 
+                    max="99" 
+                    readonly
+                    aria-label="Cantidad"
+                  >
+                  <button type="button" class="quantity-btn" data-action="increase" aria-label="Aumentar cantidad">+</button>
                 </div>
-                <div class="product-info">
-                  <h4>Cookie de Churro</h4>
-                  <p class="product-description">Con canela y azúcar, sabor a churro</p>
-                  <p class="product-price">3,00 €</p>
-                </div>
-              </a>
-              <div style="padding: 0 32px 32px;">
-                <button class="btn btn-small btn-add-to-box btn-full" data-product="Cookie de Churro" data-price="3.00">Añadir al carrito</button>
-              </div>
-            </div>
-            
-            <div class="product-card">
-              <a href="producto-detalle.html?product=cookie-lotus" style="text-decoration: none; color: inherit;">
-                <div class="product-image">
-                  <img src="assets/images/cookie-lotus.jpg" alt="Cookie Lotus" />
-                </div>
-                <div class="product-info">
-                  <h4>Cookie Lotus</h4>
-                  <p class="product-description">Con galletas Lotus Biscoff caramelizadas</p>
-                  <p class="product-price">3,00 €</p>
-                </div>
-              </a>
-              <div style="padding: 0 32px 32px;">
-                <button class="btn btn-small btn-add-to-box btn-full" data-product="Cookie Lotus" data-price="3.00">Añadir al carrito</button>
               </div>
             </div>
           </div>
-        </div>
+        </article>
         
-        <!-- Brownies & Brookies Section -->
-        <div class="product-category">
-          <h3 class="category-title">Brownies & Brookies</h3>
-          <p class="category-description">Brownies jugosos y brookies (brownie + cookie)</p>
-          
-          <div class="products-grid">
-            <div class="product-card">
-              <a href="producto-detalle.html?product=brownie-clasico" style="text-decoration: none; color: inherit;">
-                <div class="product-image">
-                  <img src="assets/images/brownie-clasico.jpg" alt="Brownie Clásico" />
-                </div>
-                <div class="product-info">
-                  <h4>Brownie Clásico</h4>
-                  <p class="product-description">Chocolate intenso y jugoso</p>
-                  <p class="product-price">2,50 €</p>
-                </div>
+        <!-- Cookie Lotus -->
+        <article class="product-card" data-category="cookies">
+          <div class="product-card-inner">
+            <div class="product-image-container">
+              <a href="producto-detalle.html?product=cookie-lotus" class="product-image-link">
+                <img src="assets/images/cookie-lotus-1.jpeg" alt="Cookie Lotus" class="product-image product-image-main" loading="lazy" />
+                <img src="assets/images/cookie-lotus-2.jpeg" alt="Cookie Lotus con relleno" class="product-image product-image-hover" loading="lazy" />
               </a>
-              <div style="padding: 0 32px 32px;">
-                <button class="btn btn-small btn-add-to-box btn-full" data-product="Brownie Clásico" data-price="2.50">Añadir al carrito</button>
-              </div>
             </div>
-            
-            <div class="product-card">
-              <a href="producto-detalle.html?product=brookie-clasico" style="text-decoration: none; color: inherit;">
-                <div class="product-image">
-                  <img src="assets/images/brookie-clasico.jpg" alt="Brookie Clásico" />
+            <div class="product-content">
+              <h3 class="product-title">COOKIE LOTUS</h3>
+              <p class="product-ingredients">Galletas Lotus Biscoff, caramelo, mantequilla</p>
+              <div class="product-footer">
+                <span class="product-price">3,00 €</span>
+                <div class="quantity-selector" data-product="Cookie Lotus" data-price="3.00" data-type="cookie">
+                  <button type="button" class="quantity-btn" data-action="decrease" aria-label="Reducir cantidad">-</button>
+                  <input 
+                    type="number" 
+                    class="quantity-input" 
+                    value="1" 
+                    min="1" 
+                    max="99" 
+                    readonly
+                    aria-label="Cantidad"
+                  >
+                  <button type="button" class="quantity-btn" data-action="increase" aria-label="Aumentar cantidad">+</button>
                 </div>
-                <div class="product-info">
-                  <h4>Brookie Clásico</h4>
-                  <p class="product-description">Mitad brownie, mitad cookie - lo mejor de ambos mundos</p>
-                  <p class="product-price">3,50 €</p>
-                </div>
-              </a>
-              <div style="padding: 0 32px 32px;">
-                <button class="btn btn-small btn-add-to-box btn-full" data-product="Brookie Clásico" data-price="3.50">Añadir al carrito</button>
               </div>
             </div>
           </div>
-        </div>
+        </article>
         
-        <div class="order-note">
-          <p><strong>Tiempo de preparación:</strong> 48 horas de antelación</p>
-          <p><strong>Entrega:</strong> Recogida en tienda o envío local</p>
-        </div>
+        <!-- Brownie Clásico -->
+        <article class="product-card" data-category="brownies">
+          <div class="product-card-inner">
+            <div class="product-image-container">
+              <a href="producto-detalle.html?product=brownie-clasico" class="product-image-link">
+                <img src="assets/images/brownie-clasico.jpg" alt="Brownie Clásico" class="product-image" />
+              </a>
+            </div>
+            <div class="product-content">
+              <h3 class="product-title">BROWNIE CLÁSICO</h3>
+              <p class="product-ingredients">Chocolate negro 70%, nueces, mantequilla, huevos</p>
+              <div class="product-footer">
+                <span class="product-price">2,50 €</span>
+                <div class="quantity-selector" data-product="Brownie Clásico" data-price="2.50" data-type="brownie">
+                  <button type="button" class="quantity-btn" data-action="decrease" aria-label="Reducir cantidad">-</button>
+                  <input 
+                    type="number" 
+                    class="quantity-input" 
+                    value="1" 
+                    min="1" 
+                    max="99" 
+                    readonly
+                    aria-label="Cantidad"
+                  >
+                  <button type="button" class="quantity-btn" data-action="increase" aria-label="Aumentar cantidad">+</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
         
+        <!-- Brookie Clásico -->
+        <article class="product-card" data-category="brownies">
+          <div class="product-card-inner">
+            <div class="product-image-container">
+              <a href="producto-detalle.html?product=brookie-clasico" class="product-image-link">
+                <img src="assets/images/brookie-1.jpg" alt="Brookie Clásico" class="product-image product-image-main" loading="lazy" />
+                <img src="assets/images/brookie-2.jpeg" alt="Brookie Clásico con relleno" class="product-image product-image-hover" loading="lazy" />
+              </a>
+            </div>
+            <div class="product-content">
+              <h3 class="product-title">BROOKIE CLÁSICO</h3>
+              <p class="product-ingredients">Mitad brownie de chocolate, mitad cookie con chips</p>
+              <div class="product-footer">
+                <span class="product-price">3,50 €</span>
+                <div class="quantity-selector" data-product="Brookie Clásico" data-price="3.50" data-type="brownie">
+                  <button type="button" class="quantity-btn" data-action="decrease" aria-label="Reducir cantidad">-</button>
+                  <input 
+                    type="number" 
+                    class="quantity-input" 
+                    value="1" 
+                    min="1" 
+                    max="99" 
+                    readonly
+                    aria-label="Cantidad"
+                  >
+                  <button type="button" class="quantity-btn" data-action="increase" aria-label="Aumentar cantidad">+</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Banana Bread -->
+        <article class="product-card" data-category="postres">
+          <div class="product-card-inner">
+            <div class="product-image-container">
+              <a href="producto-detalle.html?product=banana-bread" class="product-image-link">
+                <img src="assets/images/banana-bread-1.jpeg" alt="Banana bread glaseado" class="product-image product-image-main" loading="lazy" />
+                <img src="assets/images/banana-bread-2.jpeg" alt="Banana bread con nueces" class="product-image product-image-hover" loading="lazy" />
+              </a>
+            </div>
+            <div class="product-content">
+              <h3 class="product-title">BANANA BREAD</h3>
+              <p class="product-ingredients">Plátano maduro, nueces tostadas, glaseado de vainilla</p>
+              <div class="product-footer">
+                <span class="product-price">4,50 €</span>
+                <div class="quantity-selector" data-product="Banana Bread" data-price="4.50" data-type="postre">
+                  <button type="button" class="quantity-btn" data-action="decrease" aria-label="Reducir cantidad">-</button>
+                  <input 
+                    type="number" 
+                    class="quantity-input" 
+                    value="1" 
+                    min="1" 
+                    max="99" 
+                    readonly
+                    aria-label="Cantidad"
+                  >
+                  <button type="button" class="quantity-btn" data-action="increase" aria-label="Aumentar cantidad">+</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+        
+        <!-- Torta de Chocolate -->
+        <article class="product-card" data-category="postres">
+          <div class="product-card-inner">
+            <div class="product-image-container">
+              <a href="producto-detalle.html?product=torta-chocolate" class="product-image-link">
+                <img src="assets/images/tarta-chocolate-1.jpeg" alt="Torta de chocolate con ganache" class="product-image product-image-main" loading="lazy" />
+                <img src="assets/images/tarta-chocolate-2.jpeg" alt="Detalle de la torta de chocolate" class="product-image product-image-hover" loading="lazy" />
+              </a>
+            </div>
+            <div class="product-content">
+              <h3 class="product-title">TORTA CHOCOLATE</h3>
+              <p class="product-ingredients">Bizcocho húmedo, ganache intenso, ralladura de cacao</p>
+              <div class="product-footer">
+                <span class="product-price">5,00 €</span>
+                <div class="quantity-selector" data-product="Torta Chocolate" data-price="5.00" data-type="postre">
+                  <button type="button" class="quantity-btn" data-action="decrease" aria-label="Reducir cantidad">-</button>
+                  <input 
+                    type="number" 
+                    class="quantity-input" 
+                    value="1" 
+                    min="1" 
+                    max="99" 
+                    readonly
+                    aria-label="Cantidad"
+                  >
+                  <button type="button" class="quantity-btn" data-action="increase" aria-label="Aumentar cantidad">+</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Torta de Vainilla -->
+        <article class="product-card" data-category="postres">
+          <div class="product-card-inner">
+            <div class="product-image-container">
+              <a href="producto-detalle.html?product=torta-vainilla" class="product-image-link">
+                <img src="assets/images/tarta-vainilla-chocolate-blanco-con-ganache-de-chocolate-blanco-y-mermelada-arándanos.jpeg" alt="Torta de vainilla con ganache" class="product-image" loading="lazy" />
+              </a>
+            </div>
+            <div class="product-content">
+              <h3 class="product-title">TORTA VAINILLA</h3>
+              <p class="product-ingredients">Bizcocho esponjoso, ganache de chocolate blanco y compota de frutos rojos</p>
+              <div class="product-footer">
+                <span class="product-price">4,80 €</span>
+                <div class="quantity-selector" data-product="Torta Vainilla" data-price="4.80" data-type="postre">
+                  <button type="button" class="quantity-btn" data-action="decrease" aria-label="Reducir cantidad">-</button>
+                  <input 
+                    type="number" 
+                    class="quantity-input" 
+                    value="1" 
+                    min="1" 
+                    max="99" 
+                    readonly
+                    aria-label="Cantidad"
+                  >
+                  <button type="button" class="quantity-btn" data-action="increase" aria-label="Aumentar cantidad">+</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Cookie Manzana & Caramelo Salado -->
+        <article class="product-card" data-category="cookies">
+  <div class="product-card-inner">
+    <div class="product-image-container">
+      <a href="producto-detalle.html?product=manzana-caramelo" class="product-image-link">
+        <img src="assets/images/cookie-manzana-caramelo-salado.jpeg" alt="Cookie de manzana y caramelo salado" class="product-image" loading="lazy">
+      </a>
+    </div>
+
+    <div class="product-content">
+      <h3 class="product-title">COOKIE DE MANZANA Y CARAMELO SALADO</h3>
+      <p class="product-ingredients">Base de cookie suave, manzana caramelizada y salsa de caramelo salado</p>
+
+      <div class="product-footer">
+        <span class="product-price">4,70 €</span>
+
+        <div class="quantity-selector" 
+             data-product="cookie-manzana-caramelo-salado" 
+             data-price="4.70" 
+             data-type="cookie">
+          <button type="button" class="quantity-btn" data-action="decrease" aria-label="Reducir cantidad">-</button>
+          
+          <input 
+            type="number" 
+            class="quantity-input" 
+            value="1" 
+            min="1" 
+            max="99"
+            aria-label="Cantidad"
+          >
+
+          <button type="button" class="quantity-btn" data-action="increase" aria-label="Aumentar cantidad">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+        </div>
+      </div>
+    </section>
+      
+    <section class="order-note soft">
+      <div class="container">
+        <p><strong>Tiempo de preparación:</strong> 48 horas de antelación</p>
+        <p><strong>Entrega:</strong> Recogida en tienda o envío local</p>
       </div>
     </section>
   </main>
   
-  <footer id="contacto">
+  <center><footer id="contacto">
     <div class="container">
       <p>Síguenos en <a href="https://instagram.com/tartbytati" target="_blank" rel="noopener noreferrer">Instagram</a> · Contáctanos por <a href="https://wa.me/34691738933" target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
       <p class="copyright" id="copyright-year">&copy; 2024 tartdesserts. Todos los derechos reservados.</p>
     </div>
-  </footer>
+  </footer></center>
   
-  <script type="module" src="js/script.js"></script>
-  <script src="js/cookies.js" defer></script>
+  <!-- Load config first -->
   <script src="js/config.js"></script>
+  <!-- Load store module first -->
+  <script type="module" src="js/store.js"></script>
+  <!-- Load products module -->
+  <script type="module" src="js/products.js"></script>
+  <!-- Filter interactions -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const filterButtons = document.querySelectorAll('.filter-btn');
+      const cards = document.querySelectorAll('.product-card');
+
+      const applyFilter = (filter) => {
+        cards.forEach(card => {
+          const matches = filter === 'all' || card.dataset.category === filter;
+          card.style.display = matches ? '' : 'none';
+        });
+      };
+
+      filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          filterButtons.forEach(btn => btn.classList.remove('active'));
+          button.classList.add('active');
+          applyFilter(button.dataset.filter);
+        });
+      });
+    });
+  </script>
+  <!-- Then load the main script -->
+  <script type="module" src="js/script.js"></script>
+  <!-- Auth UI script -->
+  <script src="js/auth-ui.js" defer></script>
 </body>
 </html>

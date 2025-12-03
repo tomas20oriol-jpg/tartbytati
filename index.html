@@ -2,10 +2,15 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="tartdesserts - Postres y tartas artesanales hechos con amor" />
-  <meta name="keywords" content="postres, tartas, dulces, artesanal, casero, tartdesserts" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="description" content="tartdesserts - Postres y tartas artesanales hechos con amor. Descubre nuestros dulces caseros y deliciosas recetas." />
+  <meta name="keywords" content="postres, tartas, dulces, artesanal, casero, tartdesserts, repostería, pastelería, postres caseros" />
   <meta name="author" content="tartdesserts" />
+  <meta name="theme-color" content="#F7CADA" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
   <!-- Favicon -->
   <link rel="icon" type="image/jpeg" href="assets/icons/logo.jpg" />
@@ -13,7 +18,7 @@
 
   <title>tartdesserts - Postres artesanales</title>
   <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/cookies.css" />
+  
 
   <!-- Firebase SDK v10+ (modular) -->
   <script type="module" src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
@@ -21,26 +26,24 @@
   <script type="module" src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
 </head>
 <body>
-  <a href="#main-content" class="skip-link">Saltar al contenido</a>
-  
-  <header>
+  <header class="site-header">
     <div class="container">
       <h1 class="logo">tartdesserts</h1>
-      <nav>
+      <nav class="desktop-nav">
         <ul>
-          <li><a href="index.html" class="active" aria-current="page">Inicio</a></li>
+          <li><a href="index.html" class="active">Inicio</a></li>
           <li><a href="productos.html">Productos</a></li>
+          <li><a href="catering.html">Catering</a></li>
+          <li><a href="recetas.html">Recetas</a></li>
           <li><a href="subscription.html">Suscripción</a></li>
-          <li><a href="about.html">Sobre Nosotros</a></li>
+          <li><a href="about.html">Sobre mí</a></li>
           <li><a href="contact.html">Contacto</a></li>
         </ul>
       </nav>
-      <div style="display: flex; align-items: center; gap: 20px;">
-        <a href="account.html" id="login-link" style="text-decoration: none; color: var(--text-color); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; font-weight: 500; transition: var(--transition);">
-          LOGIN
-        </a>
-        <span id="user-name-display" style="color: var(--text-color); font-size: 14px; font-weight: 500; display: none;"></span>
-        <button id="cart-toggle" class="cart-button">
+      <div class="header-actions">
+        <a href="account.html" class="header-link" id="login-link">Login</a>
+        <span id="user-name-display"></span>
+        <button id="cart-toggle" class="cart-button" aria-label="Abrir carrito">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
             <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -52,40 +55,22 @@
     </div>
   </header>
   
-  <!-- Floating Cart -->
-  <div id="floating-cart" class="floating-cart">
-    <div class="cart-header">
-      <h3>Tu Cesta</h3>
-      <button id="close-cart" class="close-cart">✕</button>
-    </div>
-    <div class="cart-body">
-      <div id="cart-items" class="cart-items-list">
-        <p class="empty-cart">Tu cesta está vacía</p>
-      </div>
-    </div>
-    <div class="cart-footer">
-      <div class="cart-total">
-        <span>Total:</span>
-        <span id="cart-total-price" class="total-price">0,00 €</span>
-      </div>
-      <button id="clear-cart" class="btn btn-secondary btn-full">Vaciar cesta</button>
-      <a href="#contacto" id="order-cart" class="btn btn-primary btn-full">Hacer pedido (<span id="cart-total-items">0</span>)</a>
-    </div>
-  </div>
-  
-  <!-- Cart Overlay -->
-  <div id="cart-overlay" class="cart-overlay"></div>
-  
   <main id="main-content">
     <section class="hero">
-      <div class="container hero-container">
-        <div class="hero-content">
-          <h2>dulces caseros, con amor</h2>
-          <p>Tartas y postres artesanales para tus momentos especiales</p>
-          <a href="productos.html" class="btn btn-primary">Ver productos</a>
-        </div>
-        <div class="hero-image">
-          <img src="assets/images/tarto.png" alt="Tarto - Mascota de tartdesserts" />
+      <div class="container">
+        <div class="hero-grid">
+          <div class="hero-content">
+            <p class="hero-eyebrow">dulces artesanales</p>
+            <h2>Tartas y cookies hechas a mano</h2>
+            <p class="lead">Recetas en tonos rosa pastel, con ingredientes honestos y procesos cuidados. Listas para disfrutar en casa.</p>
+            <div class="hero-cta">
+              <a href="productos.html" class="btn btn-primary">Ver productos</a>
+              <a href="recetas.html" class="btn btn-secondary">Aprende las recetas</a>
+            </div>
+          </div>
+          <div class="hero-card">
+            <img src="assets/images/cookies-general.jpeg" alt="Variedad de cookies artesanales" />
+          </div>
         </div>
       </div>
     </section>
@@ -93,29 +78,31 @@
     <section class="features">
       <div class="container">
         <div class="feature-grid">
-          <div class="feature">
-            <h3>Recetas Caseras</h3>
-            <p>Elaboradas con ingredientes frescos y de calidad</p>
-          </div>
-          <div class="feature">
-            <h3>Hecho con Amor</h3>
-            <p>Cada dulce es único y preparado con dedicación</p>
-          </div>
-          <div class="feature">
-            <h3>Personalizado</h3>
-            <p>Adaptamos nuestros productos a tus necesidades</p>
-          </div>
+          <article class="feature">
+            <h3>Recetas caseras</h3>
+            <p>Ingredientes frescos y procesos lentos para sabores reales.</p>
+          </article>
+          <article class="feature">
+            <h3>Ediciones limitadas</h3>
+            <p>Producción pequeña para asegurar calidad en cada bocado.</p>
+          </article>
+          <article class="feature">
+            <h3>Suscripción dulce</h3>
+            <p>Recibe un box mensual o accede a todas las recetas premium.</p>
+          </article>
         </div>
       </div>
     </section>
     
-    <!-- Featured Products Section -->
-    <section class="products-section" style="padding-top: 60px; padding-bottom: 60px; background: var(--bg-light);">
+    <section class="products-section">
       <div class="container">
-        <h2 style="font-size: 32px; text-align: center; margin-bottom: 16px; font-weight: 400;">nuestros productos</h2>
-        <p style="text-align: center; color: var(--text-light); font-size: 15px; margin-bottom: 60px;">Dulces artesanales hechos con amor</p>
+        <div class="section-header">
+          <h2 class="section-title">Nuestros favoritos</h2>
+          <a href="productos.html" class="header-link">Ver todo</a>
+        </div>
+        <p class="section-subtitle">Cookies de temporada y brownies clásicos con nuestra firma.</p>
         
-        <div class="products-grid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 40px; max-width: 900px; margin: 0 auto 40px;">
+        <div class="products-grid featured-products-grid">
           <a href="producto-detalle.html?product=cookie-red-velvet" style="text-decoration: none; color: inherit;">
             <div class="product-card">
               <div class="product-image">
@@ -129,15 +116,15 @@
             </div>
           </a>
           
-          <a href="producto-detalle.html?product=cookie-churro" style="text-decoration: none; color: inherit;">
+          <a href="producto-detalle.html?product=manzana-caramelo" style="text-decoration: none; color: inherit;">
             <div class="product-card">
               <div class="product-image">
-                <img src="assets/images/cookie-churro.jpg" alt="Cookie de Churro" />
+                <img src="assets/images/cookie-manzana-caramelo-salado.jpeg" alt="Cookie de manzana y caramelo salado" />
               </div>
               <div class="product-info">
-                <h4>Cookie de Churro</h4>
-                <p class="product-description">Con canela y azúcar, sabor a churro</p>
-                <p class="product-price">3,00 €</p>
+                <h4>Manzana & Caramelo Salado</h4>
+                <p class="product-description">Deliciosa combinación de manzana con toques de caramelo salado</p>
+                <p class="product-price">4,70 €</p>
               </div>
             </div>
           </a>
@@ -155,49 +142,34 @@
             </div>
           </a>
         </div>
-        
-        <div style="text-align: center;">
-          <a href="productos.html" class="btn btn-secondary">Ver todos los productos</a>
-        </div>
       </div>
     </section>
     
-    <!-- Subscription CTA Section -->
-    <section style="padding: 80px 0; text-align: center;">
+    <section class="highlight">
       <div class="container">
-        <h2 style="font-size: 32px; margin-bottom: 16px; font-weight: 400;">aprende a hacerlos tú misma</h2>
-        <p style="color: var(--text-light); font-size: 15px; margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto;">Accede a todas nuestras recetas probadas con una suscripción mensual o anual. Nuevas recetas cada mes.</p>
+        <h2 class="section-title">aprende a hacerlos tú misma</h2>
+        <p class="section-subtitle">Accede a todas nuestras recetas probadas con una suscripción mensual o anual. Nuevas recetas cada mes.</p>
         <a href="subscription.html" class="btn btn-primary">Ver suscripción</a>
       </div>
     </section>
   </main>
   
-  <footer id="contacto">
+  <center><footer id="contacto">
     <div class="container">
       <p>Síguenos en <a href="https://instagram.com/tartbytati" target="_blank" rel="noopener noreferrer">Instagram</a> · Contáctanos por <a href="https://wa.me/34691738933" target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
       <p class="copyright" id="copyright-year">&copy; 2024 tartdesserts. Todos los derechos reservados.</p>
     </div>
-  </footer>
+  </footer></center>
   
+  <!-- Firebase Configuration -->
+  <script type="module" src="js/config.js"></script>
+  
+  <!-- App Scripts -->
   <script type="module" src="js/script.js" defer></script>
-  <script src="js/cookies.js" defer></script>
-  <script src="js/config.js"></script>
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-
-    // Make Firebase available globally
-    window.firebaseAuth = auth;
-    window.firebaseDb = db;
-
-    console.log('Firebase initialized for index page');
-  </script>
   <script src="js/firebase-auth.js" defer></script>
+  <script src="js/auth-ui.js" defer></script>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </body>
 </html>

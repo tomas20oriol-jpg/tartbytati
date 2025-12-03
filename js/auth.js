@@ -74,6 +74,8 @@ async function initRegisterForm() {
         if (data.user) {
           localStorage.setItem('user', JSON.stringify(data.user));
         }
+        // Dispatch auth state change event
+        window.dispatchEvent(new CustomEvent('authStateChanged', { detail: { user: data.user } }));
         showNotification('¡Cuenta creada con éxito!', 'success');
         setTimeout(() => window.location.href = 'account.html', 1500);
       } else {
@@ -138,6 +140,8 @@ async function initLoginForm() {
         if (data.user) {
           localStorage.setItem('user', JSON.stringify(data.user));
         }
+        // Dispatch auth state change event
+        window.dispatchEvent(new CustomEvent('authStateChanged', { detail: { user: data.user } }));
         
         // Si marcó "Recordarme", guardar refresh token en cookie segura
         if (credentials.remember && data.refreshToken) {
@@ -291,6 +295,9 @@ async function logout() {
     // Limpiar almacenamiento local
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    
+    // Dispatch auth state change event
+    window.dispatchEvent(new CustomEvent('authStateChanged', { detail: { user: null } }));
     
     // Eliminar cookies de sesión
     document.cookie = 'refreshToken=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';

@@ -106,29 +106,111 @@
     .quantity-input {
       display: flex;
       align-items: center;
-      border: 1px solid var(--border-color);
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      overflow: hidden;
+      max-width: 150px;
+      background: #fff;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .quantity-input:focus-within {
+      border-color: var(--primary-color, #333);
+      box-shadow: 0 0 0 1px var(--primary-color, #333);
     }
     
     .quantity-input button {
       background: transparent;
       border: none;
-      padding: 12px 16px;
+      padding: 0;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
       font-size: 16px;
-      transition: var(--transition);
+      color: #555;
+      transition: all 0.2s ease;
+      position: relative;
     }
     
     .quantity-input button:hover {
-      background: var(--bg-light);
+      background: rgba(0, 0, 0, 0.03);
+      color: var(--primary-color, #333);
+    }
+    
+    .quantity-input button:active {
+      background: rgba(0, 0, 0, 0.05);
+    }
+    
+    .quantity-input button::before,
+    .quantity-input button::after {
+      content: '';
+      position: absolute;
+      background: currentColor;
+      transition: transform 0.2s ease;
+    }
+    
+    #decrease-qty::before {
+      width: 10px;
+      height: 2px;
+    }
+    
+    #increase-qty::before,
+    #increase-qty::after {
+      width: 10px;
+      height: 2px;
+    }
+    
+    #increase-qty::after {
+      transform: rotate(90deg);
     }
     
     .quantity-input input {
       border: none;
-      width: 60px;
+      border-left: 1px solid #eee;
+      border-right: 1px solid #eee;
+      width: 40px;
       text-align: center;
-      font-size: 16px;
-      font-weight: 600;
-      padding: 12px 0;
+      font-size: 15px;
+      font-weight: 500;
+      padding: 8px 0;
+      appearance: textfield;
+      -moz-appearance: textfield;
+      color: #333;
+      background: transparent;
+    }
+    
+    .quantity-input input:focus {
+      outline: none;
+    }
+    
+    .quantity-input input::-webkit-outer-spin-button,
+    .quantity-input input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    
+    @media (max-width: 480px) {
+      .quantity-input {
+        max-width: 130px;
+      }
+      
+      .quantity-input button {
+        width: 32px;
+        height: 32px;
+      }
+      
+      .quantity-input input {
+        width: 36px;
+        font-size: 14px;
+      }
+    }
+    
+    .btn-primary.added-to-cart {
+      background-color: #28a745 !important;
+      border-color: #28a745 !important;
     }
     
     .back-link {
@@ -276,6 +358,8 @@
   </footer>
   
   <script type="module" src="js/script.js" defer></script>
+  <script type="module" src="js/product-detail.js" defer></script>
   <script src="js/config.js"></script>
+  <script src="js/auth-ui.js" defer></script>
 </body>
 </html>

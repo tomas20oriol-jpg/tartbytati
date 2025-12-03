@@ -7,29 +7,34 @@
   <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
-<body>
-  <a href="#main-content" class="skip-link">Saltar al contenido</a>
+<body class="recipes-page">
   
-  <header>
+  <header class="site-header">
     <div class="container">
       <h1 class="logo">tartdesserts</h1>
-      <nav>
+      <nav class="desktop-nav">
         <ul>
           <li><a href="index.html">Inicio</a></li>
           <li><a href="productos.html">Productos</a></li>
+          <li><a href="catering.html">Catering</a></li>
           <li><a href="recetas.html" class="active" aria-current="page">Recetas</a></li>
-          <li><a href="about.html">Sobre Nosotros</a></li>
+          <li><a href="subscription.html">Suscripción</a></li>
+          <li><a href="about.html">Sobre mí</a></li>
           <li><a href="contact.html">Contacto</a></li>
         </ul>
       </nav>
-      <button id="cart-toggle" class="cart-button">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-          <line x1="3" y1="6" x2="21" y2="6"></line>
-          <path d="M16 10a4 4 0 0 1-8 0"></path>
-        </svg>
-        <span id="cart-count" class="cart-count">0</span>
-      </button>
+      <div class="header-actions">
+        <a href="account.html" class="header-link" id="login-link">Login</a>
+        <span id="user-name-display"></span>
+        <button id="cart-toggle" class="cart-button" aria-label="Abrir carrito">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <span id="cart-count" class="cart-count hidden">0</span>
+        </button>
+      </div>
     </div>
   </header>
   
@@ -58,147 +63,381 @@
   <div id="cart-overlay" class="cart-overlay"></div>
   
   <main id="main-content">
-    <section class="recipes-hero">
+    <section class="page-hero">
       <div class="container">
-        <h2>recetas</h2>
-        <p class="lead">Aprende a hacer mis dulces favoritos en casa</p>
+        <p class="hero-eyebrow">Sweet journal</p>
+        <h2>RECETAS</h2>
+        <p class="lead">Colección curada de postres para recrear en casa, con instrucciones claras y toques profesionales.</p>
       </div>
     </section>
-    
-    <section class="recipes-section">
+
+    <center><section class="products-filter">
       <div class="container">
-        
-        <div class="recipes-intro">
-          <p>¿Quieres aprender a hacer mis dulces en casa? Comparto mis recetas con instrucciones detalladas, tips profesionales y todo lo que necesitas saber para conseguir resultados perfectos.</p>
+        <div class="filter-chips">
+          <button class="filter-btn active" data-filter="all">Todos</button>
+          <button class="filter-btn" data-filter="cookies">Cookies</button>
+          <button class="filter-btn" data-filter="brownies">Brownies</button>
         </div>
-        
-        <!-- Cookies Recipes -->
-        <div class="recipe-category">
-          <h3 class="category-title">Recetas de Cookies</h3>
-          
-          <div class="recipes-grid">
-            <div class="recipe-card">
-              <div class="recipe-image">
-                <img src="assets/images/cookie-red-velvet.jpg" alt="Receta Cookie Red Velvet" />
-                <span class="recipe-badge">Digital</span>
+      </div>
+    </section></center>
+
+    <section class="products-gallery">
+      <div class="container">
+        <div class="products-grid">
+          <!-- Cookie Red Velvet -->
+          <article class="product-card" data-category="cookies">
+            <div class="product-card-inner">
+              <div class="product-image-container">
+                <a href="#" class="product-image-link">
+                  <img src="assets/images/cookie-red-velvet.jpg" alt="Receta Cookie Red Velvet" class="product-image" loading="lazy" />
+                </a>
+                <button class="wishlist-btn" aria-label="Añadir a favoritos">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                  </svg>
+                </button>
+                <span class="product-badge">Nuevo</span>
               </div>
-              <div class="recipe-info">
-                <h4>Cookie Red Velvet</h4>
-                <p class="recipe-description">Receta completa con ingredientes, paso a paso y secretos para conseguir la textura perfecta</p>
-                <ul class="recipe-includes">
-                  <li>Lista de ingredientes</li>
-                  <li>Instrucciones detalladas</li>
-                  <li>Tips profesionales</li>
-                  <li>Fotos del proceso</li>
-                </ul>
-                <p class="recipe-price">5,00 €</p>
-                <button class="btn btn-small btn-add-recipe" data-recipe="Cookie Red Velvet" data-price="5.00">Añadir al carrito</button>
-              </div>
-            </div>
-            
-            <div class="recipe-card">
-              <div class="recipe-image">
-                <img src="assets/images/cookie-churro.jpg" alt="Receta Cookie de Churro" />
-                <span class="recipe-badge">Digital</span>
-              </div>
-              <div class="recipe-info">
-                <h4>Cookie de Churro</h4>
-                <p class="recipe-description">El sabor auténtico de churro en una cookie crujiente con el toque perfecto de canela</p>
-                <ul class="recipe-includes">
-                  <li>Lista de ingredientes</li>
-                  <li>Instrucciones detalladas</li>
-                  <li>Tips profesionales</li>
-                  <li>Fotos del proceso</li>
-                </ul>
-                <p class="recipe-price">5,00 €</p>
-                <button class="btn btn-small btn-add-recipe" data-recipe="Cookie de Churro" data-price="5.00">Añadir al carrito</button>
+              <div class="product-content">
+                <h3 class="product-title">COOKIE RED VELVET</h3>
+                <p class="product-ingredients">Receta completa con ingredientes, paso a paso y secretos profesionales</p>
+                <div class="product-footer">
+                  <span class="product-price">5,00 €</span>
+                  <button class="btn btn-small btn-primary" data-recipe="Cookie Red Velvet" data-price="5.00">Añadir</button>
+                </div>
               </div>
             </div>
-            
-            <div class="recipe-card">
-              <div class="recipe-image">
-                <img src="assets/images/cookie-lotus.jpg" alt="Receta Cookie Lotus" />
-                <span class="recipe-badge">Digital</span>
+          </article>
+
+          <!-- Cookie Lotus -->
+          <article class="product-card" data-category="cookies">
+            <div class="product-card-inner">
+              <div class="product-image-container">
+                <a href="#" class="product-image-link">
+                  <img src="assets/images/cookie-lotus-1.jpeg" alt="Receta Cookie Lotus" class="product-image" loading="lazy" />
+                </a>
+                <button class="wishlist-btn" aria-label="Añadir a favoritos">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                  </svg>
+                </button>
               </div>
-              <div class="recipe-info">
-                <h4>Cookie Lotus</h4>
-                <p class="recipe-description">Cookie con galletas Lotus Biscoff caramelizadas, una combinación irresistible</p>
-                <ul class="recipe-includes">
-                  <li>Lista de ingredientes</li>
-                  <li>Instrucciones detalladas</li>
-                  <li>Tips profesionales</li>
-                  <li>Fotos del proceso</li>
-                </ul>
-                <p class="recipe-price">5,00 €</p>
-                <button class="btn btn-small btn-add-recipe" data-recipe="Cookie Lotus" data-price="5.00">Añadir al carrito</button>
+              <div class="product-content">
+                <h3 class="product-title">COOKIE LOTUS</h3>
+                <p class="product-ingredients">Galletas Lotus Biscoff caramelizadas, una combinación irresistible</p>
+                <div class="product-footer">
+                  <span class="product-price">5,00 €</span>
+                  <button class="btn btn-small btn-primary" data-recipe="Cookie Lotus" data-price="5.00">Añadir</button>
+                </div>
               </div>
             </div>
+          </article>
+
+          <!-- Manzana y Caramelo Salado -->
+          <article class="product-card" data-category="cookies">
+            <div class="product-card-inner">
+              <div class="product-image-container">
+                <a href="#" class="product-image-link">
+                  <img src="assets/images/cookie-manzana-caramelo-salado.jpeg" alt="Receta Cookie Manzana y Caramelo Salado" class="product-image" loading="lazy" />
+                </a>
+                <button class="wishlist-btn" aria-label="Añadir a favoritos">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                  </svg>
+                </button>
+                <span class="product-badge">Nuevo</span>
+              </div>
+              <div class="product-content">
+                <h3 class="product-title">MANZANA & CARAMELO SALADO</h3>
+                <p class="product-ingredients">Deliciosa combinación de manzana con toques de caramelo salado</p>
+                <div class="product-footer">
+                  <span class="product-price">5,00 €</span>
+                  <button class="btn btn-small btn-primary" data-recipe="Manzana y Caramelo Salado" data-price="5.00">Añadir</button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Brownie Clásico -->
+          <article class="product-card" data-category="brownies">
+            <div class="product-card-inner">
+              <div class="product-image-container">
+                <a href="#" class="product-image-link">
+                  <img src="assets/images/brownie-clasico.jpg" alt="Receta Brownie Clásico" class="product-image" loading="lazy" />
+                </a>
+                <button class="wishlist-btn" aria-label="Añadir a favoritos">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                  </svg>
+                </button>
+              </div>
+              <div class="product-content">
+                <h3 class="product-title">BROWNIE CLÁSICO</h3>
+                <p class="product-ingredients">El brownie perfecto: jugoso por dentro, crujiente por fuera, intenso sabor a chocolate</p>
+                <div class="product-footer">
+                  <span class="product-price">5,00 €</span>
+                  <button class="btn btn-small btn-primary" data-recipe="Brownie Clásico" data-price="5.00">Añadir</button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Brookie Clásico -->
+          <article class="product-card" data-category="brownies">
+            <div class="product-card-inner">
+              <div class="product-image-container">
+                <a href="#" class="product-image-link">
+                  <img src="assets/images/brookie-clasico.jpg" alt="Receta Brookie Clásico" class="product-image" loading="lazy" />
+                </a>
+                <button class="wishlist-btn" aria-label="Añadir a favoritos">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                  </svg>
+                </button>
+              </div>
+              <div class="product-content">
+                <h3 class="product-title">BROOKIE CLÁSICO</h3>
+                <p class="product-ingredients">La fusión perfecta entre brownie y cookie, con trozos de chocolate</p>
+                <div class="product-footer">
+                  <span class="product-price">5,00 €</span>
+                  <button class="btn btn-small btn-primary" data-recipe="Brookie Clásico" data-price="5.00">Añadir</button>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <h2>tartdesserts</h2>
+          <p>Dulces artesanales hechos con amor</p>
+        </div>
+        <div class="footer-links">
+          <h3>Enlaces rápidos</h3>
+          <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="productos.html">Productos</a></li>
+            <li><a href="catering.html">Catering</a></li>
+            <li><a href="recetas.html">Recetas</a></li>
+            <li><a href="subscription.html">Suscripción</a></li>
+            <li><a href="about.html">Sobre mí</a></li>
+            <li><a href="contact.html">Contacto</a></li>
+          </ul>
+        </div>
+        <div class="footer-contact">
+          <h3>Contacto</h3>
+          <p>Email: info@tartdesserts.com</p>
+          <div class="social-links">
+            <a href="#" aria-label="Instagram">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+            </a>
+            <a href="#" aria-label="Facebook">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+              </svg>
+            </a>
           </div>
         </div>
-        
-        <!-- Brownies & Brookies Recipes -->
-        <div class="recipe-category">
-          <h3 class="category-title">Recetas de Brownies & Brookies</h3>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2023 tartdesserts. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    // Filter functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const filterBtns = document.querySelectorAll('.filter-btn');
+      const productCards = document.querySelectorAll('.product-card');
+
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          // Remove active class from all buttons
+          filterBtns.forEach(b => b.classList.remove('active'));
+          // Add active class to clicked button
+          btn.classList.add('active');
           
-          <div class="recipes-grid">
-            <div class="recipe-card">
-              <div class="recipe-image">
-                <img src="assets/images/brownie-clasico.jpg" alt="Receta Brownie Clásico" />
-                <span class="recipe-badge">Digital</span>
-              </div>
-              <div class="recipe-info">
-                <h4>Brownie Clásico</h4>
-                <p class="recipe-description">El brownie perfecto: jugoso por dentro, crujiente por fuera, con intenso sabor a chocolate</p>
-                <ul class="recipe-includes">
-                  <li>Lista de ingredientes</li>
-                  <li>Instrucciones detalladas</li>
-                  <li>Tips profesionales</li>
-                  <li>Fotos del proceso</li>
-                </ul>
-                <p class="recipe-price">5,00 €</p>
-                <button class="btn btn-small btn-add-recipe" data-recipe="Brownie Clásico" data-price="5.00">Añadir al carrito</button>
-              </div>
-            </div>
-            
-            <div class="recipe-card">
-              <div class="recipe-image">
-                <img src="assets/images/brookie-clasico.jpg" alt="Receta Brookie Clásico" />
-                <span class="recipe-badge">Digital</span>
-              </div>
-              <div class="recipe-info">
-                <h4>Brookie Clásico</h4>
-                <p class="recipe-description">La fusión perfecta: mitad brownie jugoso, mitad cookie crujiente. Lo mejor de ambos mundos</p>
-                <ul class="recipe-includes">
-                  <li>Lista de ingredientes</li>
-                  <li>Instrucciones detalladas</li>
-                  <li>Tips profesionales</li>
-                  <li>Fotos del proceso</li>
-                </ul>
-                <p class="recipe-price">5,00 €</p>
-                <button class="btn btn-small btn-add-recipe" data-recipe="Brookie Clásico" data-price="5.00">Añadir al carrito</button>
-              </div>
-            </div>
-          </div>
-        </div>
+          const filter = btn.getAttribute('data-filter');
+          
+          productCards.forEach(card => {
+            if (filter === 'all' || card.getAttribute('data-category') === filter) {
+              card.style.display = 'block';
+            } else {
+              card.style.display = 'none';
+            }
+          });
+        });
+      });
+
+      // Cart functionality
+      const cart = [];
+      const cartCount = document.getElementById('cart-count');
+      const cartItems = document.getElementById('cart-items');
+      const cartTotal = document.getElementById('cart-total-price');
+      const cartTotalItems = document.getElementById('cart-total-items');
+      const cartToggle = document.getElementById('cart-toggle');
+      const cartOverlay = document.getElementById('cart-overlay');
+      const closeCart = document.getElementById('close-cart');
+      const clearCart = document.getElementById('clear-cart');
+      const orderCart = document.getElementById('order-cart');
+      const floatingCart = document.getElementById('floating-cart');
+
+      // Toggle cart
+      function toggleCart() {
+        floatingCart.classList.toggle('active');
+        cartOverlay.classList.toggle('active');
+        document.body.classList.toggle('no-scroll');
+      }
+
+      cartToggle.addEventListener('click', toggleCart);
+      cartOverlay.addEventListener('click', toggleCart);
+      closeCart.addEventListener('click', toggleCart);
+
+      // Add to cart
+      document.querySelectorAll('[data-recipe]').forEach(button => {
+        button.addEventListener('click', () => {
+          const recipe = button.getAttribute('data-recipe');
+          const price = parseFloat(button.getAttribute('data-price'));
+          
+          // Add to cart
+          cart.push({ recipe, price });
+          updateCart();
+          
+          // Show success message
+          alert(`¡${recipe} añadida al carrito!`);
+        });
+      });
+
+      // Update cart
+      function updateCart() {
+        // Update count
+        cartCount.textContent = cart.length;
+        cartCount.classList.remove('hidden');
         
-        <div class="recipe-note">
-          <h3>Entrega Digital</h3>
-          <p>Las recetas se envían en formato PDF a tu correo electrónico en un plazo máximo de 24 horas tras la confirmación del pago.</p>
-          <p><strong>Métodos de pago:</strong> Transferencia bancaria o Bizum</p>
-        </div>
+        // Update items list
+        cartItems.innerHTML = '';
         
+        if (cart.length === 0) {
+          cartItems.innerHTML = '<p class="empty-cart">Tu cesta está vacía</p>';
+          cartItems.classList.add('empty');
+          clearCart.style.display = 'none';
+          orderCart.style.display = 'none';
+        } else {
+          cartItems.classList.remove('empty');
+          clearCart.style.display = 'block';
+          orderCart.style.display = 'block';
+          
+          // Group items by recipe
+          const items = {};
+          cart.forEach(item => {
+            if (!items[item.recipe]) {
+              items[item.recipe] = { ...item, quantity: 0 };
+            }
+            items[item.recipe].quantity++;
+          });
+          
+          // Add items to cart
+          Object.values(items).forEach(item => {
+            const li = document.createElement('li');
+            li.className = 'cart-item';
+            li.innerHTML = `
+              <div class="cart-item-details">
+                <span class="cart-item-name">${item.recipe}</span>
+                <span class="cart-item-price">${item.price.toFixed(2)} €</span>
+              </div>
+              <div class="cart-item-quantity">
+                <button class="quantity-btn" data-recipe="${item.recipe}">-</button>
+                <span>${item.quantity}</span>
+                <button class="quantity-btn" data-recipe="${item.recipe}">+</button>
+              </div>
+              <button class="remove-item" data-recipe="${item.recipe}">×</button>
+            `;
+            cartItems.appendChild(li);
+          });
+          
+          // Add event listeners to quantity buttons
+          document.querySelectorAll('.cart-item-quantity .quantity-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+              const recipe = e.target.getAttribute('data-recipe');
+              const index = cart.findIndex(item => item.recipe === recipe);
+              
+              if (index > -1) {
+                if (e.target.textContent === '+') {
+                  cart.push(cart[index]);
+                } else {
+                  cart.splice(index, 1);
+                }
+                updateCart();
+              }
+            });
+          });
+          
+          // Add event listeners to remove buttons
+          document.querySelectorAll('.remove-item').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+              const recipe = e.target.getAttribute('data-recipe');
+              const index = cart.findIndex(item => item.recipe === recipe);
+              
+              while (index > -1) {
+                cart.splice(index, 1);
+              }
+              updateCart();
+            });
+          });
+        }
+        
+        // Update total
+        const total = cart.reduce((sum, item) => sum + item.price, 0);
+        cartTotal.textContent = `${total.toFixed(2)} €`;
+        cartTotalItems.textContent = cart.length;
+      }
+
+      // Clear cart
+      clearCart.addEventListener('click', () => {
+        if (confirm('¿Estás seguro de que quieres vaciar el carrito?')) {
+          cart.length = 0;
+          updateCart();
+        }
+      });
+
+      // Order cart
+      orderCart.addEventListener('click', (e) => {
+        if (cart.length === 0) {
+          e.preventDefault();
+          alert('Tu carrito está vacío');
+        }
+      });
+
+      // Initialize cart
+      updateCart();
+    });
+  </script>
+</body>
+</html>
       </div>
     </section>
   </main>
   
-  <footer id="contacto">
+  <center><footer id="contacto">
     <div class="container">
       <p>Síguenos en <a href="https://instagram.com/tartbytati" target="_blank" rel="noopener noreferrer">Instagram</a> · Contáctanos por <a href="https://wa.me/34691738933" target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
       <p class="copyright" id="copyright-year">&copy; 2024 tartdesserts. Todos los derechos reservados.</p>
     </div>
-  </footer>
+  </footer></center>
   
   <script type="module" src="js/script.js" defer></script>
   <script src="js/config.js"></script>
+  <script src="js/auth-ui.js" defer></script>
 </body>
 </html>

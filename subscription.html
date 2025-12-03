@@ -246,26 +246,25 @@
   </style>
 </head>
 <body>
-  <a href="#main-content" class="skip-link">Saltar al contenido</a>
   
-  <header>
+  <header class="site-header">
     <div class="container">
       <h1 class="logo">tartdesserts</h1>
-      <nav>
+      <nav class="desktop-nav">
         <ul>
           <li><a href="index.html">Inicio</a></li>
           <li><a href="productos.html">Productos</a></li>
+          <li><a href="catering.html">Catering</a></li>
+          <li><a href="recetas.html">Recetas</a></li>
           <li><a href="subscription.html" class="active" aria-current="page">Suscripción</a></li>
-          <li><a href="about.html">Sobre Nosotros</a></li>
+          <li><a href="about.html">Sobre mí</a></li>
           <li><a href="contact.html">Contacto</a></li>
         </ul>
       </nav>
-      <div style="display: flex; align-items: center; gap: 20px;">
-        <a href="login.html" id="login-link" style="text-decoration: none; color: var(--text-color); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; font-weight: 500; transition: var(--transition);">
-          LOGIN
-        </a>
-        <span id="user-name-display" style="color: var(--text-color); font-size: 14px; font-weight: 500; display: none;"></span>
-        <button id="cart-toggle" class="cart-button">
+      <div class="header-actions">
+        <a href="account.html" class="header-link" id="login-link">Login</a>
+        <span id="user-name-display"></span>
+        <button id="cart-toggle" class="cart-button" aria-label="Abrir carrito">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
             <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -302,7 +301,7 @@
   <div id="cart-overlay" class="cart-overlay"></div>
   
   <main id="main-content">
-    <section class="subscription-hero">
+    <section class="subscription-hero page-hero">
       <div class="container">
         <h2>subscription</h2>
         <p class="lead">Acceso ilimitado a todas nuestras recetas probadas</p>
@@ -373,7 +372,7 @@
               
               <div class="recipe-preview-card">
                 <div class="recipe-preview-image">
-                  <img src="assets/images/cookie-lotus.jpg" alt="Cookie Lotus" />
+                  <img src="assets/images/cookie-lotus-1.jpeg" alt="Cookie Lotus" />
                 </div>
                 <h4>Cookie Lotus</h4>
               </div>
@@ -434,15 +433,16 @@
     </section>
   </main>
   
-  <footer id="contacto">
+  <center><footer id="contacto">
     <div class="container">
       <p>Síguenos en <a href="https://instagram.com/tartbytati" target="_blank" rel="noopener noreferrer">Instagram</a> · Contáctanos por <a href="https://wa.me/34691738933" target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
       <p class="copyright" id="copyright-year">&copy; 2024 tartdesserts. Todos los derechos reservados.</p>
     </div>
-  </footer>
+  </footer></center>
   
   <script type="module" src="js/script.js" defer></script>
   <script src="js/cookies.js" defer></script>
   <script src="js/config.js"></script>
+  <script src="js/auth-ui.js" defer></script>
 </body>
 </html>

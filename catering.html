@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Servicio de catering para eventos especiales. Ofrecemos postres artesanales para bodas, cumpleaños y eventos corporativos." />
+  <meta name="keywords" content="catering, eventos, bodas, postres, tartas, dulces, tartdesserts" />
+  <meta name="author" content="tartdesserts" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="assets/icons/logo.jpg" />
+  <link rel="apple-touch-icon" href="assets/icons/logo.jpg" />
+
+  <title>Catering para Eventos | tartdesserts</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/catering.css" />
+  
+  <!-- Firebase SDK v10+ (modular) -->
+  <script type="module" src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
+  <script type="module" src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
+  <script type="module" src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
+  <script type="module" src="js/script.js" defer></script>
+  <script src="js/config.js"></script>
+  <script src="js/auth-ui.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <h1 class="logo">tartdesserts</h1>
+      <nav class="desktop-nav">
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="productos.html">Productos</a></li>
+          <li><a href="catering.html" class="active" aria-current="page">Catering</a></li>
+          <li><a href="recetas.html">Recetas</a></li>
+          <li><a href="subscription.html">Suscripción</a></li>
+          <li><a href="about.html">Sobre mí</a></li>
+          <li><a href="contact.html">Contacto</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <a href="account.html" class="header-link" id="login-link">Login</a>
+        <span id="user-name-display"></span>
+        <button id="cart-toggle" class="cart-button" aria-label="Abrir carrito">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <span id="cart-count" class="cart-count hidden">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="page-hero catering-hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1>Catering para Eventos Especiales</h1>
+        <p>Dulces momentos hechos a medida para tu celebración</p>
+        <a href="#contacto" class="btn btn-primary">Solicitar Presupuesto</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section class="services-section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Nuestros Servicios de Catering</h2>
+        <p>Ofrecemos soluciones personalizadas para cada tipo de evento, con la máxima calidad y atención al detalle</p>
+      </div>
+      
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-image">
+            <img src="assets/images/tarta-eventos.jpeg" alt="Tarta personalizada para bodas" loading="lazy">
+          </div>
+          <div class="service-content">
+            <h3>Bodas</h3>
+            <p>Hacemos realidad el pastel de tus sueños con diseños personalizados que se adaptan a tu boda. Desde tartas nupciales elegantes hasta mesas dulces temáticas que dejarán a tus invitados sin palabras.</p>
+            <div class="service-meta">
+              <a href="#contacto" class="btn">Solicitar Información</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="service-card">
+          <div class="service-image">
+            <img src="assets/images/mesa-eventos.jpeg" alt="Mesa de postres para eventos corporativos" loading="lazy">
+          </div>
+          <div class="service-content">
+            <h3>Eventos Corporativos</h3>
+            <p>Impresiona a tus clientes y empleados con nuestros servicios de catering corporativo. Desde desayunos ejecutivos hasta cócteles de gala, creamos experiencias gastronómicas inolvidables.</p>
+            <div class="service-meta">
+              <a href="#contacto" class="btn">Solicitar Presupuesto</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="service-card">
+          <div class="service-image">
+            <img src="assets/images/cookie-eventos.jpeg" alt="Cookies decoradas para cumpleaños" loading="lazy">
+          </div>
+          <div class="service-content">
+            <h3>Cumpleaños y Celebraciones</h3>
+            <p>Haz que cada celebración sea especial con nuestros postres personalizados. Desde tartas temáticas hasta mesas dulces completas, creamos momentos dulces que perdurarán en la memoria.</p>
+            <div class="service-meta">
+              <a href="#contacto" class="btn">Ver Opciones</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery Section -->
+  <section class="section bg-light">
+    <div class="container">
+      <div class="section-header">
+        <h2>Nuestros Trabajos</h2>
+        <p>Algunos de nuestros eventos más recientes</p>
+      </div>
+      
+      <div class="gallery-grid">
+        <div class="gallery-item">
+          <img src="assets/images/tarta-eventos-2.jpeg" alt="Tarta de boda personalizada" loading="lazy">
+          <div class="gallery-overlay">
+            <h4>Boda de Ana y Carlos</h4>
+            <p>Tarta de 3 pisos con flores naturales</p>
+          </div>
+        </div>
+        
+        <div class="gallery-item">
+          <img src="assets/images/decoracion-eventos.jpeg" alt="Mesa de postres para evento corporativo" loading="lazy">
+          <div class="gallery-overlay">
+            <h4>Lanzamiento de Producto</h4>
+            <p>Mesa dulce para 100 personas</p>
+          </div>
+        </div>
+        
+        <div class="gallery-item">
+          <img src="assets/images/cookie-eventos.jpeg" alt="Cookies personalizadas para cumpleaños" loading="lazy">
+          <div class="gallery-overlay">
+            <h4>Cumpleaños Infantil</h4>
+            <p>Cookies personalizadas con diseño de unicornio</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Form Section -->
+  <section class="section" id="contacto">
+    <div class="container">
+      <div class="contact-wrapper">
+        <div class="contact-info">
+          <h2>¿Listo para endulzar tu evento?</h2>
+          <p>Cuéntanos sobre tu evento y crearemos una propuesta personalizada para ti.</p>
+          
+          <div class="contact-details">
+            <div class="contact-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              <div>
+                <h4>Ubicación</h4>
+                <p>Barcelona, España</p>
+              </div>
+            </div>
+            
+            <div class="contact-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+              </svg>
+              <div>
+                <h4>Teléfono</h4>
+                <p><a href="tel:+34123456789">+34 123 456 789</a></p>
+              </div>
+            </div>
+            
+            <div class="contact-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+              <div>
+                <h4>Email</h4>
+                <p><a href="mailto:info@tartdesserts.com">info@tartdesserts.com</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <form class="contact-form" id="catering-form">
+          <h3>Solicitar Presupuesto</h3>
+          
+          <div class="form-group">
+            <label for="name">Nombre completo *</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="email">Email *</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="phone">Teléfono</label>
+            <input type="tel" id="phone" name="phone">
+          </div>
+          
+          <div class="form-group">
+            <label for="event-type">Tipo de evento *</label>
+            <select id="event-type" name="event-type" required>
+              <option value="" disabled selected>Selecciona una opción</option>
+              <option value="boda">Boda</option>
+              <option value="comunion">Comunión</option>
+              <option value="bautizo">Bautizo</option>
+              <option value="cumpleanos">Cumpleaños</option>
+              <option value="empresa">Evento Corporativo</option>
+              <option value="otro">Otro</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="event-date">Fecha del evento *</label>
+            <input type="date" id="event-date" name="event-date" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="guests">Número aproximado de invitados *</label>
+            <input type="number" id="guests" name="guests" min="1" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="message">Cuéntanos más sobre tu evento *</label>
+            <textarea id="message" name="message" rows="5" required></textarea>
+          </div>
+          
+          <button type="submit" class="btn btn-primary">Enviar Solicitud</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="section bg-light">
+    <div class="container">
+      <div class="section-header">
+        <h2>Preguntas Frecuentes</h2>
+        <p>Todo lo que necesitas saber sobre nuestro servicio de catering</p>
+      </div>
+      
+      <div class="faq-container">
+        <div class="faq-item">
+          <button class="faq-question">
+            ¿Con cuánta antelación debo hacer mi pedido?
+            <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <div class="faq-answer">
+            <p>Recomendamos realizar tu pedido con al menos 2 semanas de antelación para eventos pequeños y con 1-2 meses de anticipación para bodas y eventos grandes. Sin embargo, siempre intentamos adaptarnos a tus necesidades, así que no dudes en consultarnos incluso si tu evento es pronto.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <button class="faq-question">
+            ¿Hacen envíos a domicilio?
+            <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <div class="faq-answer">
+            <p>Sí, ofrecemos servicio de entrega en toda el área metropolitana de Barcelona. Los costes de envío varían según la ubicación y el tamaño del pedido. Para eventos fuera de esta zona, consúltanos para valorar la posibilidad.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <button class="faq-question">
+            ¿Pueden adaptarse a restricciones alimentarias?
+            <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <div class="faq-answer">
+            <p>¡Claro! Ofrecemos opciones sin gluten, sin lactosa, veganas y para otras restricciones alimentarias. Por favor, infórmanos de cualquier requisito especial al hacer tu pedido para que podamos ofrecerte las mejores alternativas.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <button class="faq-question">
+            ¿Cómo se realiza el pago?
+            <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <div class="faq-answer">
+            <p>Para confirmar tu reserva, se requiere un depósito del 30% del total del pedido. El pago restante debe realizarse como mínimo 7 días antes del evento. Aceptamos transferencia bancaria, tarjeta de crédito y Bizum.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="section cta-section">
+    <div class="container">
+      <div class="cta-content">
+        <h2>¿Listo para endulzar tu evento?</h2>
+        <p>Contáctanos hoy mismo y haremos de tu celebración un momento inolvidable</p>
+        <a href="#contacto" class="btn btn-light">Solicitar Presupuesto</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-about">
+          <h3>tartdesserts</h3>
+          <p>Dulces momentos hechos con ingredientes de la mejor calidad y mucho cariño.</p>
+          <div class="social-links">
+            <a href="#" aria-label="Instagram">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+            </a>
+            <a href="#" aria-label="Facebook">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+              </svg>
+            </a>
+            <a href="#" aria-label="Pinterest">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2C6.5 2 2 6.5 2 12c0 4.1 2.5 7.6 6 9.2-.1-.9-.1-2.2.2-3.2.2-.8 1.4-5 1.4-5s-.4-.7-.4-1.8c0-1.7 1-3 2.2-3 1 0 1.5.8 1.5 1.7 0 1.1-.7 2.7-1.1 4.2-.3 1.3.7 2.3 2 2.3 2.4 0 4.1-3.1 4.1-6.8 0-3.5-2.4-6-6.1-6-4.1 0-6.4 3-6.4 6.2 0 1.2.4 2.1 1.1 2.8.3.3.3.4.2.7-.1.2-.2.8-.2 1-.1.3-.3.4-.6.3-1.7-.7-2.5-2.5-2.5-4.6 0-3.3 2.7-7.2 7.8-7.2 4.1 0 7.2 2.9 7.2 6.9 0 4.1-2.5 7.4-6.1 7.4-1.2 0-2.3-.6-2.7-1.3l-.7 2.8c-.3 1.1-.9 2.4-1.4 3.3 1.1.3 2.2.5 3.3.5 5.5 0 10-4.5 10-10S17.5 2 12 2z"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+        
+        <div class="footer-links">
+          <h4>Enlaces Rápidos</h4>
+          <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="productos.html">Productos</a></li>
+            <li><a href="catering.html">Catering</a></li>
+            <li><a href="recetas.html">Recetas</a></li>
+            <li><a href="subscription.html">Suscripción</a></li>
+            <li><a href="about.html">Sobre mí</a></li>
+            <li><a href="contact.html">Contacto</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-contact">
+          <h4>Contacto</h4>
+          <ul>
+            <li>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              Barcelona, España
+            </li>
+            <li>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+              </svg>
+              <a href="tel:+34123456789">+34 123 456 789</a>
+            </li>
+            <li>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+              <a href="mailto:info@tartdesserts.com">info@tartdesserts.com</a>
+            </li>
+          </ul>
+        </div>
+        
+        <div class="footer-newsletter">
+          <h4>Newsletter</h4>
+          <p>Suscríbete para recibir nuestras novedades y ofertas especiales</p>
+          <form class="newsletter-form">
+            <input type="email" placeholder="Tu correo electrónico" required>
+            <button type="submit" class="btn btn-small">Suscribirse</button>
+          </form>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2023 tartdesserts. Todos los derechos reservados.</p>
+        <div class="footer-legal">
+          <a href="politica-privacidad.html">Política de Privacidad</a>
+          <span>|</span>
+          <a href="terminos-condiciones.html">Términos y Condiciones</a>
+          <span>|</span>
+          <a href="politica-cookies.html">Política de Cookies</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button id="back-to-top" aria-label="Volver arriba">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script src="js/main.js"></script>
+  <script>
+    // FAQ Accordion
+    document.addEventListener('DOMContentLoaded', function() {
+      const faqItems = document.querySelectorAll('.faq-item');
+      
+      faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        const answer = item.querySelector('.faq-answer');
+        const icon = item.querySelector('.faq-icon');
+        
+        question.addEventListener('click', () => {
+          // Toggle active class on question
+          question.classList.toggle('active');
+          
+          // Toggle answer visibility
+          if (answer.style.maxHeight) {
+            answer.style.maxHeight = null;
+            icon.style.transform = 'rotate(0deg)';
+          } else {
+            answer.style.maxHeight = answer.scrollHeight + 'px';
+            icon.style.transform = 'rotate(180deg)';
+          }
+          
+          // Close other open items
+          faqItems.forEach(otherItem => {
+            if (otherItem !== item) {
+              otherItem.querySelector('.faq-question').classList.remove('active');
+              otherItem.querySelector('.faq-answer').style.maxHeight = null;
+              otherItem.querySelector('.faq-icon').style.transform = 'rotate(0deg)';
+            }
+          });
+        });
+      });
+      
+      // Form submission
+      const cateringForm = document.getElementById('catering-form');
+      if (cateringForm) {
+        cateringForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          // Here you would typically send the form data to a server
+          alert('¡Gracias por tu solicitud! Nos pondremos en contacto contigo lo antes posible.');
+          this.reset();
+        });
+      }
+    });
+  </script>
+</body>
+</html>

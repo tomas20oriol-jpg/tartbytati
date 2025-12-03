@@ -15,26 +15,25 @@
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <a href="#main-content" class="skip-link">Saltar al contenido</a>
   
-  <header>
+  <header class="site-header">
     <div class="container">
       <h1 class="logo">tartdesserts</h1>
-      <nav>
+      <nav class="desktop-nav">
         <ul>
           <li><a href="index.html">Inicio</a></li>
           <li><a href="productos.html">Productos</a></li>
+          <li><a href="catering.html">Catering</a></li>
+          <li><a href="recetas.html">Recetas</a></li>
           <li><a href="subscription.html">Suscripción</a></li>
-          <li><a href="about.html" class="active" aria-current="page">Sobre Nosotros</a></li>
+          <li><a href="about.html" class="active" aria-current="page">Sobre mí</a></li>
           <li><a href="contact.html">Contacto</a></li>
         </ul>
       </nav>
-      <div style="display: flex; align-items: center; gap: 20px;">
-        <a href="login.html" id="login-link" style="text-decoration: none; color: var(--text-color); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; font-weight: 500; transition: var(--transition);">
-          LOGIN
-        </a>
-        <span id="user-name-display" style="color: var(--text-color); font-size: 14px; font-weight: 500; display: none;"></span>
-        <button id="cart-toggle" class="cart-button">
+      <div class="header-actions">
+        <a href="account.html" class="header-link" id="login-link">Login</a>
+        <span id="user-name-display"></span>
+        <button id="cart-toggle" class="cart-button" aria-label="Abrir carrito">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
             <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -71,7 +70,7 @@
   <div id="cart-overlay" class="cart-overlay"></div>
   
   <main id="main-content">
-    <section class="about-hero">
+    <section class="about-hero page-hero">
       <div class="container">
         <h2>sobre nosotros</h2>
         <p class="lead">Pasión por la repostería artesanal</p>
@@ -80,30 +79,39 @@
     
     <section class="about-content">
       <div class="container">
-        <div class="about-text">
-          <h3>Conoce a Tati</h3>
-          <p>Soy Tati, la chef detrás de tartdesserts. Amante de la pastelería y de compartir lo que hago. Mi pasión es crear dulces que no solo sean deliciosos, sino que también transmitan amor en cada bocado.</p>
-          
-          <p>Estudiante de Gastronomía, combino técnicas profesionales con el cariño de la repostería casera para crear dulces únicos y especiales.</p>
-          
-          <h3>Nuestra Filosofía</h3>
-          <p>Cada dulce que creo cuenta una historia. Utilizo recetas tradicionales combinadas con técnicas que aprendo en mi formación gastronómica, siempre con los mejores ingredientes y mucho amor.</p>
-          
-          <h3>Nuestro Compromiso</h3>
-          <p>Me comprometo a usar ingredientes frescos y de calidad, a personalizar cada pedido según tus necesidades, y a hacer que tus celebraciones sean inolvidables con mis dulces artesanales hechos a mano.</p>
+        <div class="about-grid">
+          <div class="about-text">
+            <h3>Conoce a Tati</h3>
+            <p>Soy Tati, la chef detrás de tartdesserts. Amante de la pastelería y de compartir lo que hago. Mi pasión es crear dulces que no solo sean deliciosos, sino que también transmitan amor en cada bocado.</p>
+            
+            <p>Estudiante de Gastronomía, combino técnicas profesionales con el cariño de la repostería casera para crear dulces únicos y especiales.</p>
+            
+            <h3>Nuestra Filosofía</h3>
+            <p>Cada dulce que creo cuenta una historia. Utilizo recetas tradicionales combinadas con técnicas que aprendo en mi formación gastronómica, siempre con los mejores ingredientes y mucho amor.</p>
+            
+            <h3>Nuestro Compromiso</h3>
+            <p>Me comprometo a usar ingredientes frescos y de calidad, a personalizar cada pedido según tus necesidades, y a hacer que tus celebraciones sean inolvidables con mis dulces artesanales hechos a mano.</p>
+          </div>
+          <div class="about-media">
+            <div class="about-photo-wrapper" aria-hidden="true">
+              <img src="assets/images/tati-1.jpeg" alt="Retrato de Tati, fundadora de tartdesserts" class="about-photo about-photo-main" />
+              <img src="assets/images/tati-2.jpeg" alt="Tati trabajando en la cocina" class="about-photo about-photo-hover" />
+            </div>
+          </div>
         </div>
       </div>
     </section>
   </main>
   
-  <footer>
+  <center><footer>
     <div class="container">
       <p>Síguenos en <a href="https://instagram.com/tartbytati" target="_blank" rel="noopener noreferrer">Instagram</a> · Contáctanos por <a href="https://wa.me/34691738933" target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
       <p class="copyright" id="copyright-year">&copy; 2024 tartdesserts. Todos los derechos reservados.</p>
     </div>
-  </footer>
+  </footer></center>
   
   <script type="module" src="js/script.js" defer></script>
   <script src="js/config.js"></script>
+  <script src="js/auth-ui.js" defer></script>
 </body>
 </html>
