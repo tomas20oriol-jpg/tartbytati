@@ -81,6 +81,16 @@ firebase functions:config:set stripe.secret_key="tu_stripe_secret_key"
 firebase functions:config:set stripe.webhook_secret="tu_webhook_secret"
 ```
 
+### 4.1 Configurar `js/config.js` para el frontend
+- Copia `js/config.example.js` a `js/config.js` y rellena las claves de tu proyecto Firebase.
+- El archivo real `js/config.js` está en `.gitignore` para que tus credenciales no se suban al repositorio.
+- Si necesitas compartir la configuración, usa los datos públicos desde la consola de Firebase y evita incluir claves privadas o archivos de servicio.
+
+#### ¿Está listo para subir a GitHub?
+- Sí. El repositorio ignora automáticamente `js/config.js`, por lo que tu configuración real no se versionará.
+- Se versiona únicamente `js/config.example.js` para que cualquiera pueda clonar el proyecto y crear su propia copia local.
+- Antes de hacer `git push`, verifica que no haya archivos sensibles sin seguimiento con `git status`.
+
 ### 5. Ejecutar en desarrollo
 ```bash
 # Backend (emulador de Firebase Functions)
@@ -168,6 +178,11 @@ tartdesserts/
 - **Validación**: Sanitización de datos en frontend y backend
 - **CORS**: Configuración segura de APIs
 - **HTTPS**: Todas las conexiones seguras
+
+#### Seguridad de la configuración de Firebase
+- La clave `apiKey` de Firebase no es secreta: funciona como un identificador público para el proyecto y es necesaria para que el SDK funcione en el navegador.
+- Aun así, protege el proyecto aplicando **reglas de seguridad de Firestore/Storage** y activando **restricciones de dominio** para la API key desde la consola de Google Cloud.
+- Evita subir claves privadas o archivos de servicio; solo el objeto `firebaseConfig` debería estar versionado en GitHub para entornos frontend.
 
 ## 🚀 Deployment
 
