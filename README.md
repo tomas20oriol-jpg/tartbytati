@@ -83,14 +83,13 @@ firebase functions:config:set stripe.webhook_secret="tu_webhook_secret"
 ```
 
 ### 4.1 Configurar `js/config.js` para el frontend
-- Copia `js/config.example.js` a `js/config.js` y rellena las claves de tu proyecto Firebase.
-- El archivo real `js/config.js` está en `.gitignore` para que tus credenciales no se suban al repositorio.
-- Si necesitas compartir la configuración, usa los datos públicos desde la consola de Firebase y evita incluir claves privadas o archivos de servicio.
+- Edita `js/config.js` (o copia `js/config.example.js`) y rellena las claves públicas de tu proyecto Firebase.
+- Las API keys web de Firebase son identificadores públicos para el cliente, por lo que pueden incluirse en el repositorio. No coloques aquí llaves privadas de servicio.
+- Si necesitas compartir la configuración, usa los datos públicos desde la consola de Firebase y mantén las credenciales de backend en el entorno del servidor.
 
 #### ¿Está listo para subir a GitHub?
-- Sí. El repositorio ignora automáticamente `js/config.js`, por lo que tu configuración real no se versionará.
-- Se versiona únicamente `js/config.example.js` para que cualquiera pueda clonar el proyecto y crear su propia copia local.
-- Antes de hacer `git push`, verifica que no haya archivos sensibles sin seguimiento con `git status`.
+- Sí. El repositorio puede versionar `js/config.js` con la configuración pública de Firebase; aun así revisa `git status` antes de subir.
+- Mantén fuera del repositorio cualquier archivo de servicio o clave privada de backend; colócalos en variables de entorno o configuraciones del servidor.
 
 ### 5. Ejecutar en desarrollo
 ```bash
