@@ -36,6 +36,7 @@ Además de este README, encontrarás guías específicas en la carpeta `docs/`:
 | --- | --- |
 | `AUTHENTICATION-SETUP.md` | Configuración de Firebase Auth y flujo de login/logout. |
 | `FIREBASE_FIX_README.md` | Notas de mantenimiento para Hosting/Firestore. |
+| `FIREBASE-WEB-STARTER.md` | Plantilla mínima de frontend seguro con Auth + Firestore y reglas recomendadas. |
 | `PAGOS-README.md` | Guía de integración completa con Stripe (checkout, suscripciones, webhooks). |
 | `SECURITY.md` | Checklist de seguridad (env, CORS, políticas de cookies, mejores prácticas). |
 | `STRIPE-SETUP-GUIDE.md` | Pasos rápidos para crear productos, price IDs y webhooks en Stripe. |
@@ -80,6 +81,16 @@ firebase init
 firebase functions:config:set stripe.secret_key="tu_stripe_secret_key"
 firebase functions:config:set stripe.webhook_secret="tu_webhook_secret"
 ```
+
+### 4.1 Configurar `js/config.js` para el frontend
+- Edita `js/config.js` (o copia `js/config.example.js`) y rellena las claves públicas de tu proyecto Firebase.
+- Las API keys web de Firebase son identificadores públicos para el cliente, por lo que pueden incluirse en el repositorio. No coloques aquí llaves privadas de servicio.
+- Si necesitas compartir la configuración, usa los datos públicos desde la consola de Firebase y mantén las credenciales de backend en el entorno del servidor.
+- Este repositorio sólo incluye valores de ejemplo en `js/config.js`; tus datos reales no se almacenan aquí y debes añadirlos localmente.
+
+#### ¿Está listo para subir a GitHub?
+- Sí. El repositorio puede versionar `js/config.js` con la configuración pública de Firebase; aun así revisa `git status` antes de subir.
+- Mantén fuera del repositorio cualquier archivo de servicio o clave privada de backend; colócalos en variables de entorno o configuraciones del servidor.
 
 ### 5. Ejecutar en desarrollo
 ```bash
@@ -168,6 +179,11 @@ tartdesserts/
 - **Validación**: Sanitización de datos en frontend y backend
 - **CORS**: Configuración segura de APIs
 - **HTTPS**: Todas las conexiones seguras
+
+#### Seguridad de la configuración de Firebase
+- La clave `apiKey` de Firebase no es secreta: funciona como un identificador público para el proyecto y es necesaria para que el SDK funcione en el navegador.
+- Aun así, protege el proyecto aplicando **reglas de seguridad de Firestore/Storage** y activando **restricciones de dominio** para la API key desde la consola de Google Cloud.
+- Evita subir claves privadas o archivos de servicio; solo el objeto `firebaseConfig` debería estar versionado en GitHub para entornos frontend.
 
 ## 🚀 Deployment
 

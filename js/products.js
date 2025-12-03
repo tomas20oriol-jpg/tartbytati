@@ -1,4 +1,4 @@
-import store, { addToCart } from './store.js';
+import store, { addToCart as addToCartAction } from './store.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   // Initialize all quantity selectors on the page
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     
     // Add to cart functionality
-    const addToCart = () => {
+    const handleAddToCart = () => {
       const productCard = selector.closest('.product-card');
       if (!productCard) return;
       
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const productPrice = parseFloat(productCard.dataset.price) || 0;
       const productType = productCard.dataset.type || 'product';
       
-      addToCart(productName, productPrice, productType, quantity);
+      addToCartAction(productName, productPrice, productType, quantity);
       
       // Show feedback
       if (addToCartBtn) {
@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (addToCartBtn) {
       addToCartBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        addToCart();
+        handleAddToCart();
       });
     }
     
@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
     increaseBtn?.addEventListener('click', (e) => {
       if (e.shiftKey) { // Hold shift to add to cart
         e.preventDefault();
-        addToCart();
+        handleAddToCart();
       }
     });
     

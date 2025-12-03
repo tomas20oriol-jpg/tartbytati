@@ -1,21 +1,22 @@
-// Copia este archivo como `config.js` si necesitas editar la configuración en local.
-// Solo contiene identificadores públicos del SDK web (no incluyas cuentas de servicio).
+// Firebase public web configuration (client-side only; no server secrets here).
+// Estas claves son identificadores públicos para el SDK web.
 const firebaseConfig = {
-  apiKey: "TU_API_KEY",
-  authDomain: "TU_DOMINIO.firebaseapp.com",
-  projectId: "TU_PROJECT_ID",
-  storageBucket: "TU_BUCKET.appspot.com",
-  messagingSenderId: "TU_MESSAGING_SENDER_ID",
-  appId: "TU_APP_ID",
-  measurementId: "TU_MEASUREMENT_ID",
+  apiKey: "AIzaSyCPE5bk4zESRhzts3xod2YqrUE09j8RfBQ",
+  authDomain: "tartdesserts-3b414.firebaseapp.com",
+  projectId: "tartdesserts-3b414",
+  storageBucket: "tartdesserts-3b414.firebasestorage.app",
+  messagingSenderId: "534807668671",
+  appId: "1:534807668671:web:c2ad9d868c1a930f86e30a",
+  measurementId: "G-CWFFD5JD20",
 };
 
+// Haz la configuración visible globalmente para scripts tradicionales y módulos.
 if (typeof window !== "undefined") {
   window.firebaseConfig = firebaseConfig;
 }
 
-// Inicializa Firebase automáticamente si el SDK compat (v8) ya está cargado,
-// o importa el SDK modular para habilitar Analytics en páginas simples.
+// Inicialización ligera: usa Firebase compat si ya está cargado (v8),
+// o importa dinámicamente el SDK modular para habilitar Analytics en páginas simples.
 (async () => {
   try {
     if (typeof firebase !== "undefined" && firebase?.apps) {
