@@ -36,6 +36,7 @@ Además de este README, encontrarás guías específicas en la carpeta `docs/`:
 | --- | --- |
 | `AUTHENTICATION-SETUP.md` | Configuración de Firebase Auth y flujo de login/logout. |
 | `FIREBASE_FIX_README.md` | Notas de mantenimiento para Hosting/Firestore. |
+| `FIREBASE-WEB-STARTER.md` | Plantilla mínima de frontend seguro con Auth + Firestore y reglas recomendadas. |
 | `PAGOS-README.md` | Guía de integración completa con Stripe (checkout, suscripciones, webhooks). |
 | `SECURITY.md` | Checklist de seguridad (env, CORS, políticas de cookies, mejores prácticas). |
 | `STRIPE-SETUP-GUIDE.md` | Pasos rápidos para crear productos, price IDs y webhooks en Stripe. |
