@@ -86,7 +86,7 @@ firebase functions:config:set stripe.webhook_secret="tu_webhook_secret"
 - Edita `js/config.js` (o copia `js/config.example.js`) y rellena las claves públicas de tu proyecto Firebase.
 - Las API keys web de Firebase son identificadores públicos para el cliente, por lo que pueden incluirse en el repositorio. No coloques aquí llaves privadas de servicio.
 - Si necesitas compartir la configuración, usa los datos públicos desde la consola de Firebase y mantén las credenciales de backend en el entorno del servidor.
-- Este repositorio sólo incluye valores de ejemplo en `js/config.js`; tus datos reales no se almacenan aquí y debes añadirlos localmente.
+- Este repositorio ya incluye `js/config.js` con la configuración pública de producción para que la web funcione al desplegarla en GitHub.
 
 #### ¿Está listo para subir a GitHub?
 - Sí. El repositorio puede versionar `js/config.js` con la configuración pública de Firebase; aun así revisa `git status` antes de subir.

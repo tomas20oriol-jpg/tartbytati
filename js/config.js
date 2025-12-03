@@ -1,5 +1,6 @@
 // Firebase public web configuration (client-side only; no server secrets here).
-// Estas claves son identificadores públicos para el SDK web.
+// Este archivo sí se versiona en GitHub porque solo contiene identificadores públicos
+// necesarios para que el sitio funcione.
 const firebaseConfig = {
   apiKey: "AIzaSyCPE5bk4zESRhzts3xod2YqrUE09j8RfBQ",
   authDomain: "tartdesserts-3b414.firebaseapp.com",
